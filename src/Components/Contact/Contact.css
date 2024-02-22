@@ -1,0 +1,87 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&display=swap');
+
+.top {
+    width: 100vh;
+    height: 100px;
+    top: 0;
+    right: 5;
+    position: fixed;
+    padding: 15px 15px 15px 15px;
+    text-align: left;
+}
+
+.bottom {
+    width: 100vh;
+    height: 50px;
+    bottom: 0;
+    right: 0;
+    margin: 0;
+    text-align: right;
+    position: fixed;
+    padding: 15px 15px 15px 15px;
+}
+
+.container .main img{
+    width: 2.3rem;
+    height: 2.3rem;
+    gap: 1.5rem;
+}
+
+.contact{
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    
+    max-width: 300px;
+       
+}
+
+.container .main{
+    background: linear-gradient(to right bottom,  rgb(81, 220, 118), rgb(54, 24, 206));
+    border-radius: 50px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
+    position: relative;
+    overflow: hidden;
+    min-width: 500px;
+    max-width: 100%;
+    min-height: 360px;
+    justify-content: center;
+    align-items: center;
+    display: flex;
+    flex-direction: column;
+    word-spacing: 0.05rem;
+    letter-spacing: 0.3px;
+    padding: 15px 15px 15px 15px;
+    margin-left: auto;
+    margin-right: auto;
+    
+}
+
+.main address,h1{
+    color: aliceblue;
+}
+
+.main address:hover, h1:hover{
+    color: black;
+}
+
+.container button{
+    align-items: center;
+    word-spacing: 0.3rem;
+    justify-content: center;
+    background-color: transparent;
+    border: none;
+    color: black;
+    text-transform: capitalize;
+}
+
+.container button:hover{
+    cursor: pointer;
+    
+    border: none;
+    color: white;
+    text-transform: uppercase;
+}

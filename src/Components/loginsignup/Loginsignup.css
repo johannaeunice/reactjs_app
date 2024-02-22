@@ -1,0 +1,219 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&display=swap');
+
+.top {
+    width: 100vw;
+    height: 100px;
+    top: 0;
+    right: 5;
+    position: fixed;
+    padding: 15px 15px 15px 15px;
+    text-align: left;
+}
+
+.bottom {
+    width: 100vw;
+    height: 50px;
+    bottom: 0;
+    right: 0;
+    margin: 0;
+    text-align: right;
+    position: fixed;
+    padding: 15px 15px 15px 15px;
+}
+
+.bottom .btn button{
+    
+    margin-bottom: 5px;
+    right: 0;
+    position: fixed;
+    bottom: 5px;
+}
+
+.form {   
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        height: 100vh;
+        /* width: 350px; */
+}
+
+.form .container {   
+    background: linear-gradient(to right bottom, rgba(54, 24, 206, 0.647),rgba(81, 220, 118, 0.795));
+    border-radius: 50px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
+    position: relative;
+    overflow: hidden;
+    min-width: 500px;
+    max-width: 100vw;
+    min-height: 400px;
+    justify-content: center;
+    align-items: center;
+    display: flex;
+    flex-direction: column;
+    word-spacing: 0.05rem;
+    letter-spacing: 0.3px;
+    padding: 15px 15px 15px 15px;
+    margin: 0;
+}
+
+.header {
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 9px;
+    width: 100%;
+    margin-top: 30px;
+}
+
+.text{
+    overflow: hidden;
+    color: rgb(197, 226, 226);
+    font-size: 60px;
+    font-weight: 700;
+}
+
+.text:hover, .forgot-password:hover{
+    color: white;
+}
+
+.underline{
+    overflow-x: hidden;
+    width: 100px;
+    height: 9px;
+    background:linear-gradient(to right, transparent, rgb(255,255,255));
+    border-radius: 9px;
+}
+
+.underline:hover{
+    background: linear-gradient(to left, transparent, rgb(255,255,255));
+}
+
+.inputs{
+    overflow-x: hidden;
+    margin-top: 55px;
+    display: flex;
+    flex-direction: column;
+    gap: 25px;
+    margin-bottom: 25px;
+    
+}
+
+.input{
+    overflow-x: hidden;
+    display: flex;
+    opacity: 0.7;
+    align-items: center;
+    margin: auto;
+    /* width: 480px;
+    height: 80px; */
+    background: transparent;
+    border-radius: 19px;
+    border: solid rgb(214, 210, 210);
+}
+
+.input:hover{
+    background-color: #fff;
+    color: black;
+}
+
+.input img{
+    margin: 0px 30px;
+}
+
+.input input{
+    /* overflow: hidden; */
+    /* max-height: 100px;
+    max-width: 400px; */
+    background: transparent;
+    border: none;
+    outline: none;
+    color: black;
+    font-size: 19px;
+    padding: 5px 5px 5px 5px;
+}
+
+img {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    width: 1.5rem;
+    height: 1.5rem;
+}
+
+.forgot-password{
+    align-items: center;
+    text-align: center;
+    display: inline;
+    justify-content: center;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    color: rgb(197, 226, 226);
+    font-size: 18px;
+}
+
+.forgot-password a{
+    color: rgb(54, 24, 206);
+}
+
+.forgot-password a:hover{
+    color: rgb(18, 18, 20);    
+}
+
+.forgot-password .btn{
+    align-items: center;
+    justify-content: center;
+    display: flex;
+    flex-direction: column;
+}
+.forgot-password .btn button{
+    display: flex;
+    flex-direction:row;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    
+    background-color: rgba(197, 226, 226, 0);
+    border: none;
+    color: black;
+    text-transform: capitalize;
+}
+
+.submit-container{
+    display: flex;
+    gap: 30px;
+    margin: 60px auto;
+}
+
+Link{
+    color: transparent;
+}
+.btn button{
+  
+    display: flex;
+    flex-direction:row;
+    margin-top: 10px;
+    
+    background-color: transparent;
+    border: none;
+    color: black;
+    text-transform: capitalize;
+}
+
+.btn a:hover{
+    cursor: pointer;
+    /* background: linear-gradient(to right bottom, rgb(81, 220, 118), rgb(54, 24, 206)); */
+    border: none;
+    color: white;
+    text-transform: uppercase;
+}
+
+.btn button:hover{
+    cursor: pointer;
+    justify-content: center;
+    /* background: linear-gradient(to right bottom, rgb(81, 220, 118), rgb(54, 24, 206)); */
+    border: none;
+    color: white;
+    text-transform: uppercase;
+}
+
