@@ -6,15 +6,15 @@ import './Dashboard.css'
 import axios from 'axios'
 
 const Dashboard = () => {
-  const [expense, setExpense] = useState()
+  // const [expense, setExpense] = useState()
 
-  useEffect(() =>{
+  // useEffect(() =>{
 
-    axios.get('/https://le-nkap-v1.onrender.com/transactions').then((data) =>{
-      console.log(data);
-      setExpense(data)
-    })
-  },[])
+  //   axios.get('/https://le-nkap-v1.onrender.com/transactions').then((data) =>{
+  //     console.log(data);
+  //     setExpense(data)
+  //   })
+  // },[])
   return (
     <>
       <HelmetProvider>
