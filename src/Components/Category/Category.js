@@ -1,29 +1,27 @@
 import React, { useState } from 'react';
-import axios from 'axios'
+import axios from 'axios';
 
 const CategoryForm = () => {
   const [categoryName, setCategoryName] = useState('');
   const [categoryType, setCategoryType] = useState('');
-  const [categories, setCategories] = useState([]);
-  const [post, setPost] = useState({
-    name: '',
-    type: '',
-    headers: { 'x-auth-token': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NWNmODc5ZDBkNmFhYWJjMmQ5OWM1YWYiLCJpYXQiOjE3MDg0NDM3OTB9.o8tMIvya4m61HGGN9bYLuBsezxAGv5goEZfzox6G9L0' },
-})
+  const [categories, setCategories] = useState([
+    { name: 'School', type: 'expense' },
+    { name: 'Work', type: 'income' },
+    { name: 'Home', type: 'expense' },
+    { name: 'Shop', type: 'income'},
+  ]);
 
-const handleInput= (event)=>{
-    setPost({...post, [event.target.name] : event.target.value})
-}
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
+
     if (!categoryName || !categoryType) {
       alert('Please fill in all fields');
       return;
     }
     if (categoryName.length < 5) {
-        alert('Category name must be at least 5 characters long.');
-        return;
-      }
+      alert('Category name must be at least 5 characters long.');
+      return;
+    }
 
     const newCategory = {
       name: categoryName,
@@ -40,9 +38,24 @@ const handleInput= (event)=>{
     setCategoryName('');
     setCategoryType('');
 
-    axios.post('https://le-nkap-v1.onrender.com/categories', post)
-        .then(res => console.log(res))
-        .catch(err => console.log(err))
+    try {
+      // Get token from local storage
+      const token = localStorage.getItem('x-auth-token');
+
+      // Include token in request headers
+      const config = {
+        headers: {
+          'Content-Type': 'application/json',
+          'x-auth-token': token,
+        },
+      };
+
+      // Make post request with token included in headers
+      const response = await axios.post('https://le-nkap-v1.onrender.com/categories', newCategory, config);
+      console.log(response.data); // Handle response data if needed
+    } catch (error) {
+      console.log('Error:', error);
+    }
   };
 
   return (
@@ -54,7 +67,6 @@ const handleInput= (event)=>{
             type="text"
             value={categoryName}
             onChange={(e) => setCategoryName(e.target.value)}
-            onInput={handleInput}
             placeholder="Enter category name"
             className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
             required
@@ -65,7 +77,6 @@ const handleInput= (event)=>{
           <select
             value={categoryType}
             onChange={(e) => setCategoryType(e.target.value)}
-            
             className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
             required
           >

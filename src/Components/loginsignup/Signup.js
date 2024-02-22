@@ -1,8 +1,10 @@
 import React, { useState } from 'react';
-import {Link} from 'react-router-dom';
+import {Link, useNavigate} from 'react-router-dom';
 import axios from 'axios'
 
 const SignUpForm = () => {
+
+    const navigate = useNavigate(); // Initialize useNavigate hook
 
     const [formData, setFormData] = useState({
         name: '',
@@ -13,25 +15,15 @@ const SignUpForm = () => {
     });
 
     const [errors, setErrors] = useState({});
+    const [successMessage, setSuccessMessage] = useState(null); // State to hold success message
 
-    const [post, setPost] = useState({
-                name: '',
-                email: '',
-                phone: '',
-                password: '',
-                passwordConfirmation: ''
-    })
     const handleChange = (e) => {
         const { name, value } = e.target;
         setFormData({
             ...formData,
             [name]: value
-        });
-        
+        });       
     };
-const handleInput= (event)=>{
-            setPost({...post, [event.target.name] : event.target.value})
-        }
     
     const handleSubmit = (e) => {
         e.preventDefault();
@@ -47,13 +39,20 @@ const handleInput= (event)=>{
             });
         } else {
             setErrors(validationErrors);
+            return;// Stop execution if there are validation errors
         }
-        axios.post('https://le-nkap-v1.onrender.com/users', post)
-        .then(res => console.log(res))
-        .catch(err => console.log(err))
+       axios.post('https://le-nkap-v1.onrender.com/users', formData)
+            .then(res => {
+                console.log(res);
+                setSuccessMessage('Successful Registration!');
+                console.log('User successfully registered');
+                setTimeout(() => {
+                    navigate('/login'); // Use navigate to redirect to login page after a delay
+                }, 6000);
+            })
+            .catch(err => console.log(err));
     };
 
-    
     const validateForm = (formData) => {
         const errors = {};
         if (!formData.name.trim()) {
@@ -95,7 +94,6 @@ const handleInput= (event)=>{
                         name="name"
                         value={formData.name}
                         onChange={handleChange}
-                        onInput={handleInput}
                         required
                     />
                     {errors.name && <p className="text-red-500 text-xs italic">{errors.name}</p>}
@@ -112,7 +110,6 @@ const handleInput= (event)=>{
                         name="email"
                         value={formData.email}
                         onChange={handleChange}
-                        onInput={handleInput}
                         required
                     />
                     {errors.email && <p className="text-red-500 text-xs italic">{errors.email}</p>}
@@ -129,7 +126,6 @@ const handleInput= (event)=>{
                         name="phone"
                         value={formData.phone}
                         onChange={handleChange}
-                        onInput={handleInput}
                         required
                     />
                     {errors.phone && <p className="text-red-500 text-xs italic">{errors.phone}</p>}
@@ -146,7 +142,6 @@ const handleInput= (event)=>{
                         name="password"
                         value={formData.password}
                         onChange={handleChange}
-                        onInput={handleInput}
                         required
                     />
                     {errors.password && <p className="text-red-500 text-xs italic">{errors.password}</p>}
@@ -163,11 +158,13 @@ const handleInput= (event)=>{
                         name="passwordConfirmation"
                         value={formData.passwordConfirmation}
                         onChange={handleChange}
-                        onInput={handleInput}
                         required
                     />
                     {errors.passwordConfirmation && <p className="text-red-500 text-xs italic">{errors.passwordConfirmation}</p>}
                 </div>
+                {successMessage && (
+                    <p className="text-green-600 mb-4">{successMessage}</p>
+                )}
                 <div className="flex items-center justify-between">
                     <p className='mt-3'>
                         Already Have An Account ? <Link to='/login' className='text-sm text-purple-600 font-semibold hover:text-purple-950'>Click Here!</Link>

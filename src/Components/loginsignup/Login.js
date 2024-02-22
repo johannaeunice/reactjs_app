@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import {Link} from 'react-router-dom'
+import { Link } from 'react-router-dom';
 
 const LoginForm = () => {
   const [formData, setFormData] = useState({
@@ -8,6 +8,7 @@ const LoginForm = () => {
   });
 
   const [errors, setErrors] = useState({});
+  const [token, setToken] = useState(null); // Initialize token state
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -17,27 +18,33 @@ const LoginForm = () => {
     });
   };
 
-  const handleSubmit = async(e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-        const response = await fetch('https://le-nkap-v1.onrender.com/auth', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json'
-          },
-          body: JSON.stringify(formData)
-        });
-  
-        if (!response.ok) {
-          throw new Error('Network response was not ok');
-        }
-  
-        const data = await response.json();
-        console.log(data); // Handle response data
-      } catch (error) {
-        console.log('Error:', error);
+      const response = await fetch('https://le-nkap-v1.onrender.com/auth', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(formData)
+      });
+
+      if (!response.ok) {
+        throw new Error('Network response was not ok');
       }
-    
+
+      const data = await response.json();
+      console.log(data); // Handle response data
+
+      // Store the obtained x-auth-token in local storage
+      localStorage.setItem('x-auth-token', data.x_auth_token);
+
+      // Store the obtained token in component state
+      setToken(data.x_auth_token);
+    } catch (error) {
+      console.log('Error:', error);
+    }
+
     const validationErrors = validateForm(formData);
     if (Object.keys(validationErrors).length === 0) {
       console.log(formData);
