@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import {Link, useNavigate} from 'react-router-dom';
 import axios from 'axios'
+import { useNavigate } from 'react-router-dom';
 
 const SignUpForm = () => {
 
@@ -15,8 +16,14 @@ const SignUpForm = () => {
     });
 
     const [errors, setErrors] = useState({});
-    const [successMessage, setSuccessMessage] = useState(null); // State to hold success message
-
+    const navigate = useNavigate()
+    const [post, setPost] = useState({
+                name: '',
+                email: '',
+                phone: '',
+                password: '',
+                passwordConfirmation: ''
+    })
     const handleChange = (e) => {
         const { name, value } = e.target;
         setFormData({
@@ -27,6 +34,7 @@ const SignUpForm = () => {
     
     const handleSubmit = (e) => {
         e.preventDefault();
+        alert('hello')
         const validationErrors = validateForm(formData);
         if (Object.keys(validationErrors).length === 0) {
             console.log(formData);
@@ -41,16 +49,13 @@ const SignUpForm = () => {
             setErrors(validationErrors);
             return;// Stop execution if there are validation errors
         }
-       axios.post('https://le-nkap-v1.onrender.com/users', formData)
-            .then(res => {
-                console.log(res);
-                setSuccessMessage('Successful Registration!');
-                console.log('User successfully registered');
-                setTimeout(() => {
-                    navigate('/login'); // Use navigate to redirect to login page after a delay
-                }, 6000);
-            })
-            .catch(err => console.log(err));
+        axios.post('https://le-nkap-v1.onrender.com/users', post)
+        .then((res) => {
+            console.log(res)
+            alert('hello')
+            navigate('/login')
+        })
+        .catch(err => console.log(err))
     };
 
     const validateForm = (formData) => {
