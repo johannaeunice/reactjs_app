@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import {Link, useNavigate} from 'react-router-dom';
-import axios from 'axios'
-import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
 
 const SignUpForm = () => {
 
@@ -16,7 +15,6 @@ const SignUpForm = () => {
     });
 
     const [errors, setErrors] = useState({});
-    const navigate = useNavigate()
     const [post, setPost] = useState({
                 name: '',
                 email: '',
@@ -167,9 +165,9 @@ const SignUpForm = () => {
                     />
                     {errors.passwordConfirmation && <p className="text-red-500 text-xs italic">{errors.passwordConfirmation}</p>}
                 </div>
-                {successMessage && (
+                {/* {successMessage && (
                     <p className="text-green-600 mb-4">{successMessage}</p>
-                )}
+                )} */}
                 <div className="flex items-center justify-between">
                     <p className='mt-3'>
                         Already Have An Account ? <Link to='/login' className='text-sm text-purple-600 font-semibold hover:text-purple-950'>Click Here!</Link>

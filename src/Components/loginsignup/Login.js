@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import {Link} from 'react-router-dom'
-import { useNavigate } from 'react-router-dom';
+// import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 const LoginForm = () => {
   const [formData, setFormData] = useState({
@@ -9,7 +9,7 @@ const LoginForm = () => {
   });
 
   const [errors, setErrors] = useState({});
-  const navigate = useNavigate()
+  // const navigate = useNavigate()
 
 
   const handleChange = (e) => {
@@ -56,17 +56,17 @@ const LoginForm = () => {
         console.log('Error:', error);
       }
 
-      const data = await response.json();
-      console.log(data); // Handle response data
+    //   const data = await response.json();
+    //   console.log(data); // Handle response data
 
-      // Store the obtained x-auth-token in local storage
-      localStorage.setItem('x-auth-token', data.x_auth_token);
+    //   // Store the obtained x-auth-token in local storage
+    //   localStorage.setItem('x-auth-token', data.x_auth_token);
 
-      // Store the obtained token in component state
-      setToken(data.x_auth_token);
-    } .catch (error) {
-      console.log('Error:', error);
-    }
+    //   // Store the obtained token in component state
+    //   setToken(data.x_auth_token);
+    //  .catch (error) {
+    //   console.log('Error:', error);
+    // }
 
     const validationErrors = validateForm(formData);
     if (Object.keys(validationErrors).length === 0) {

@@ -38,7 +38,7 @@ const CategoryForm = () => {
     setCategoryName('');
     setCategoryType('');
 
-    axios.post('https://le-nkap-v1.onrender.com/categories', post)
+    axios.post('https://le-nkap-v1.onrender.com/categories', newCategory)
         .then(res => console.log(res))
         .catch(err => console.log(err))
   };
