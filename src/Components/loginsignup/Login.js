@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import {Link} from 'react-router-dom'
-
+import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
 const LoginForm = () => {
   const [formData, setFormData] = useState({
     email: '',
@@ -8,6 +9,8 @@ const LoginForm = () => {
   });
 
   const [errors, setErrors] = useState({});
+  const navigate = useNavigate()
+
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -20,20 +23,35 @@ const LoginForm = () => {
   const handleSubmit = async(e) => {
     e.preventDefault();
     try {
-        const response = await fetch('https://le-nkap-v1.onrender.com/auth', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json'
-          },
-          body: JSON.stringify(formData)
-        });
+      
+        // const response = await fetch('https://le-nkap-v1.onrender.com/auth', {
+        //   method: 'POST',
+        //   headers: {
+        //     'Content-Type': 'application/json'
+        //   },
+        //   body: JSON.stringify(formData)
+        // })
+        axios.post('https://le-nkap-v1.onrender.com/auth', formData)
+        .then((res) => {
+
+            console.log(`value of the token\n`,res)
+            console.log(`value of the token\n`,res.data)
+            // alert('hello')
+            // navigate('/dashboard')
+        })
+        .catch(err => console.log(err))
   
-        if (!response.ok) {
-          throw new Error('Network response was not ok');
-        }
+        // if (!response.ok) {
+        //   alert('error')
+        //   throw new Error('Network response was not ok');
+        // }
+
   
-        const data = await response.json();
-        console.log(data); // Handle response data
+        // const data = await response.json();
+        // alert(JSON.stringify(data))
+        // console.log(data); // Handle response data
+        // navigate('/dashboard')
+
       } catch (error) {
         console.log('Error:', error);
       }

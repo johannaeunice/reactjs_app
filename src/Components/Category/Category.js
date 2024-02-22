@@ -40,8 +40,12 @@ const handleInput= (event)=>{
     setCategoryName('');
     setCategoryType('');
 
-    axios.post('https://le-nkap-v1.onrender.com/categories', post)
-        .then(res => console.log(res))
+    alert('hello world ')
+    axios.post('https://le-nkap-v1.onrender.com/categories',newCategory)
+        .then((res) => {
+          alert('data')
+          console.log(res)
+        })
         .catch(err => console.log(err))
   };
 

@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import {Link} from 'react-router-dom';
 import axios from 'axios'
+import { useNavigate } from 'react-router-dom';
 
 const SignUpForm = () => {
 
@@ -13,7 +14,7 @@ const SignUpForm = () => {
     });
 
     const [errors, setErrors] = useState({});
-
+    const navigate = useNavigate()
     const [post, setPost] = useState({
                 name: '',
                 email: '',
@@ -35,6 +36,7 @@ const handleInput= (event)=>{
     
     const handleSubmit = (e) => {
         e.preventDefault();
+        alert('hello')
         const validationErrors = validateForm(formData);
         if (Object.keys(validationErrors).length === 0) {
             console.log(formData);
@@ -49,11 +51,14 @@ const handleInput= (event)=>{
             setErrors(validationErrors);
         }
         axios.post('https://le-nkap-v1.onrender.com/users', post)
-        .then(res => console.log(res))
+        .then((res) => {
+            console.log(res)
+            alert('hello')
+            navigate('/login')
+        })
         .catch(err => console.log(err))
     };
 
-    
     const validateForm = (formData) => {
         const errors = {};
         if (!formData.name.trim()) {

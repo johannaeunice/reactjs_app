@@ -1,3 +1,4 @@
+import axios from 'axios';
 import React, { useState } from 'react';
 
 function TransactionForm() {
@@ -22,6 +23,12 @@ function TransactionForm() {
     const newTransaction = { ...formData };
     setTransactions([...transactions, newTransaction]);
     console.log("New Transaction Added:", newTransaction);
+
+    axios.post('/url', newTransaction).then((data) =>{
+      console.log(data);
+    }).catch((err)=>{
+      console.log(err);
+    })
     resetForm();
   };
 
