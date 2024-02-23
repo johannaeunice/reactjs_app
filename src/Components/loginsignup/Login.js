@@ -33,9 +33,9 @@ const LoginForm = () => {
         // })
         axios.post('https://le-nkap-v1.onrender.com/auth', formData)
         .then((res) => {
-
             console.log(`value of the token\n`,res)
             console.log(`value of the token\n`,res.data)
+          sessionStorage.setItem('x-auth-token', res.data)
             // alert('hello')
             // navigate('/dashboard')
         })

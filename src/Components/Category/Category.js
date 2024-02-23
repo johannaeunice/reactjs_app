@@ -41,12 +41,20 @@ const handleInput= (event)=>{
     setCategoryType('');
 
     alert('hello world ')
-    axios.post('https://le-nkap-v1.onrender.com/categories',newCategory)
-        .then((res) => {
-          alert('data')
-          console.log(res)
-        })
-        .catch(err => console.log(err))
+    const token = sessionStorage.getItem('x-auth-token');
+
+    console.log(`value of the token\n`, token);
+    axios.post('https://le-nkap-v1.onrender.com/categories', newCategory, {
+      headers: {
+        'x-auth-token': token
+      }
+    })
+      .then((res) => {
+        alert('data');
+        console.log(res);
+      })
+      .catch(err => console.log(err));
+    
   };
 
   return (
