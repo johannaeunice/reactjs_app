@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
-import couple from './login.png';
-import { Link } from 'react-router-dom';
+import {Link} from 'react-router-dom'
+import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
+import couple from "./login.png"
 
 
 const LoginForm = () => {
@@ -10,7 +12,8 @@ const LoginForm = () => {
   });
 
   const [errors, setErrors] = useState({});
-  const [token, setToken] = useState(null); // Initialize token state
+  const navigate = useNavigate()
+
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -23,29 +26,21 @@ const LoginForm = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await fetch('https://le-nkap-v1.onrender.com/auth', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(formData)
-      });
+        axios.post('https://le-nkap-v1.onrender.com/auth', formData)
+        .then((res) => {
+            console.log(`value of the token\n`,res)
+            console.log(`value of the token\n`,res.data)
+          sessionStorage.setItem('x-auth-token', res.data)
+            navigate('/dashboard')
+        })
+        .catch(err => {console.log(err)
+          throw new Error('Network response was not ok');
 
-      if (!response.ok) {
-        throw new Error('Network response was not ok');
+        })
+
+      } catch (error) {
+        console.log('Error:', error);
       }
-
-      const data = await response.json();
-      console.log(data); // Handle response data
-
-      // Store the obtained x-auth-token in local storage
-      localStorage.setItem('x-auth-token', data.x_auth_token);
-
-      // Store the obtained token in component state
-      setToken(data.x_auth_token);
-    } catch (error) {
-      console.log('Error:', error);
-    }
 
     const validationErrors = validateForm(formData);
     if (Object.keys(validationErrors).length === 0) {

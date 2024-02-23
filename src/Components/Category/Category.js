@@ -33,24 +33,21 @@ const CategoryForm = () => {
     setCategoryName('');
     setCategoryType('');
 
-    try {
-      // Get token from local storage
-      const token = localStorage.getItem('x-auth-token');
-  
-      // Include token in request headers
-      const config = {
-        headers: {
-          'Content-Type': 'application/json',
-          'x-auth-token': token,
-        },
-      };
-  
-      // Make post request with token included in headers
-      const response = await axios.post('https://le-nkap-v1.onrender.com/categories', newCategory, config);
-      console.log(response.data); // Handle response data if needed
-    } catch (error) {
-      console.log('Error:', error);
-    }
+    alert('hello world ')
+    const token = sessionStorage.getItem('x-auth-token');
+
+    console.log(`value of the token\n`, token);
+    axios.post('https://le-nkap-v1.onrender.com/categories', newCategory, {
+      headers: {
+        'x-auth-token': token
+      }
+    })
+      .then((res) => {
+        alert('data');
+        console.log(res);
+      })
+      .catch(err => console.log(err));
+    
   };
 
   return (
