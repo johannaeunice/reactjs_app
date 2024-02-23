@@ -104,94 +104,109 @@ function TransactionForm() {
   }
 
   return (
-    <div className='bg-purple-300'>
-      <form onSubmit={(e) => e.preventDefault()}>
-        <input
-          type="text"
-          name="name"
-          className='border-2 border-purple-900'
-          value={formData.name}
-          placeholder="Transaction Name"
-          onChange={handleChange}
-          required
-          minLength={4}
-        />
-        <select
-          name="type"
-          className='border-2 border-purple-900'
-          value={formData.type}
-          onChange={handleChange}
-          required
-        >
-          <option value="">Select Type</option>
-          <option value="expense">Expense</option>
-          <option value="income">Income</option>
-        </select>
-        <input
-          type="number"
-          name="amount"
-          className='border-2 border-purple-900'
-          value={formData.amount}
-          placeholder="Amount"
-          onChange={handleChange}
-          required
-        />
-        <input
-          type="text"
-          name="category"
-          className='border-2 border-purple-900'
-          value={formData.category}
-          placeholder="Category"
-          onChange={handleChange}
-          required
-        />
-        <button className='border' onClick={selectedTransaction ? updateTransaction : addTransaction}>
-          {selectedTransaction ? 'Update Transaction' : 'Add Transaction'}
-        </button>
-        {selectedTransaction && (
-          <button className='border' type="button" onClick={cancelUpdate}>Cancel</button>
-        )}
-      </form>
+    <div className="w-full h-full m-0 bg-purple-200 p-5 flex items-center">
+      <div className="bg-white shadow-md rounded-xl px-8 pt-6 pb-8 m-5 flex items-center">
+        <h1>Transaction Form</h1>
+        <form className="bg-white w-1/2 shadow-md rounded-xl px-8 pt-6 pb-8 mt-3 inline-block"
+          onSubmit={(e) => e.preventDefault()}>
+          <label className="block text-gray-700 text-sm font-bold mb-2 pt-2" htmlFor="name">
+            Name of transaction: 
+          </label>
+          <input
+            type="text"
+            name="name"
+            className='border-2 border-purple-900 w-45'
+            value={formData.name}
+            placeholder="Transaction Name"
+            onChange={handleChange}
+            required
+            minLength={4}
+          />
+          <label className="block text-gray-700 text-sm font-bold mb-2 pt-2" htmlFor="name">
+            Type of transaction: 
+          </label>
+          <select
+            name="type"
+            className='border-2 border-purple-900'
+            value={formData.type}
+            onChange={handleChange}
+            required
+          >
+            <option value="">Select Type</option>
+            <option value="expense">Expense</option>
+            <option value="income">Income</option>
+          </select>
+          <label className="block text-gray-700 text-sm font-bold mb-2 pt-2" htmlFor="name">
+            Amount of transaction
+          </label>
+          <input
+            type="number"
+            name="amount"
+            className='border-2 border-purple-900'
+            value={formData.amount}
+            placeholder="Amount"
+            onChange={handleChange}
+            required
+          />
+          <label className="block text-gray-700 text-sm font-bold mb-2 pt-2" htmlFor="name">
+            Category of transaction
+          </label>
+          <input
+            type="text"
+            name="category"
+            className='border-2 border-purple-900'
+            value={formData.category}
+            placeholder="Category"
+            onChange={handleChange}
+            required
+          />
+          <button className='border' onClick={selectedTransaction ? updateTransaction : addTransaction}>
+            {selectedTransaction ? 'Update Transaction' : 'Add Transaction'}
+          </button>
+          {selectedTransaction && (
+            <button className='border' type="button" onClick={cancelUpdate}>Cancel</button>
+          )}
+        </form>
 
-      <div>
-        <label>Filter by Type:</label>
-        <select className='border' onChange={handleFilterType}>
-          <option value="">All</option>
-          <option value="expense">Expense</option>
-          <option value="income">Income</option>
-        </select>
-      </div>
+        <div>
+          <label>Filter by Type:</label>
+          <select className='border' onChange={handleFilterType}>
+            <option value="">All</option>
+            <option value="expense">Expense</option>
+            <option value="income">Income</option>
+          </select>
+        </div>
 
-      <table className='border'>
-        <thead>
-          <tr>
-            <th onClick={toggleSortOrder}>Name {sortOrder === 'asc' ? '▲' : '▼'}</th>
-            <th className='border'>Type</th>
-            <th className='border'>Amount</th>
-            <th className='border'>Category</th>
-            <th className='border'>Actions</th>
-          </tr>
-        </thead>
-        <tbody>
-          {sortedTransactions.map((transaction, index) => (
-            <tr key={index}>
-              <td className='border'>{transaction.name}</td>
-              <td className='border'>{transaction.type}</td>
-              <td className='border'>${transaction.amount}</td>
-              <td className='border'>{transaction.category}</td>
-              <td className='border'>
-                <button className='border' onClick={() => handleUpdate(transaction)}>Update</button>
-                <button className='border' onClick={() => deleteTransaction(transaction)}>Delete</button>
-              </td>
+        <table className="border ">
+          <thead>
+            <tr>
+              <th onClick={toggleSortOrder}>Name {sortOrder === 'asc' ? '▲' : '▼'}</th>
+              <th className='border'>Type</th>
+              <th className='border'>Amount</th>
+              <th className='border'>Category</th>
+              <th className='border'>Actions</th>
             </tr>
-          ))}
-          <tr>
-            <td colSpan="2" className='border'><strong>Total Amount:</strong></td>
-            <td colSpan="3"><strong>${totalAmount}</strong></td>
-          </tr>
-        </tbody>
-      </table>
-      
+          </thead>
+          <tbody>
+            {sortedTransactions.map((transaction, index) => (
+              <tr key={index}>
+                <td className='border'>{transaction.name}</td>
+                <td className='border'>{transaction.type}</td>
+                <td className='border'>${transaction.amount}</td>
+                <td className='border'>{transaction.category}</td>
+                <td className='border'>
+                  <button className='border' onClick={() => handleUpdate(transaction)}>Update</button>
+                  <button className='border' onClick={() => deleteTransaction(transaction)}>Delete</button>
+                </td>
+              </tr>
+            ))}
+            <tr>
+              <td colSpan="2" className='border'><strong>Total Amount:</strong></td>
+              <td colSpan="3"><strong>${totalAmount}</strong></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
     </div>
   );
 }

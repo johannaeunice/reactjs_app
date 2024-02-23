@@ -20,42 +20,25 @@ const LoginForm = () => {
     });
   };
 
-  const handleSubmit = async(e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      
-        // const response = await fetch('https://le-nkap-v1.onrender.com/auth', {
-        //   method: 'POST',
-        //   headers: {
-        //     'Content-Type': 'application/json'
-        //   },
-        //   body: JSON.stringify(formData)
-        // })
         axios.post('https://le-nkap-v1.onrender.com/auth', formData)
         .then((res) => {
             console.log(`value of the token\n`,res)
             console.log(`value of the token\n`,res.data)
           sessionStorage.setItem('x-auth-token', res.data)
-            // alert('hello')
-            // navigate('/dashboard')
+            navigate('/dashboard')
         })
-        .catch(err => console.log(err))
-  
-        // if (!response.ok) {
-        //   alert('error')
-        //   throw new Error('Network response was not ok');
-        // }
+        .catch(err => {console.log(err)
+          throw new Error('Network response was not ok');
 
-  
-        // const data = await response.json();
-        // alert(JSON.stringify(data))
-        // console.log(data); // Handle response data
-        // navigate('/dashboard')
+        })
 
       } catch (error) {
         console.log('Error:', error);
       }
-    
+
     const validationErrors = validateForm(formData);
     if (Object.keys(validationErrors).length === 0) {
       console.log(formData);
