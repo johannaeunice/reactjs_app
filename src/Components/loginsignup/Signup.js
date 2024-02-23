@@ -103,7 +103,7 @@ const SignUpForm = () => {
                                         Name
                                     </label>
                                     <input
-                                        className="p-2 rounded-xl border w-full border border-purple-300"
+                                        className="p-2 rounded-xl w-full border border-purple-300"
                                         id="name"
                                         type="text"
                                         placeholder="Enter your name"
@@ -119,7 +119,7 @@ const SignUpForm = () => {
                                         Email
                                     </label>
                                     <input
-                                        className="p-2 rounded-xl border w-full border border-purple-300"
+                                        className="p-2 rounded-xl w-full border border-purple-300"
                                         id="email"
                                         type="email"
                                         placeholder="Enter your email"
@@ -135,7 +135,7 @@ const SignUpForm = () => {
                                         Phone
                                     </label>
                                     <input
-                                        className="p-2 rounded-xl border w-full border border-purple-300"
+                                        className="p-2 rounded-xl  w-full border border-purple-300"
                                         id="phone"
                                         type="tel"
                                         placeholder="Enter your phone number"
@@ -151,7 +151,7 @@ const SignUpForm = () => {
                                         Password
                                     </label>
                                     <input
-                                        className="p-2 rounded-xl border w-full border border-purple-300"
+                                        className="p-2 rounded-xl  w-full border border-purple-300"
                                         id="password"
                                         type="password"
                                         placeholder="Enter your password"
@@ -167,7 +167,7 @@ const SignUpForm = () => {
                                         Confirm Password
                                     </label>
                                     <input
-                                        className="p-2 rounded-xl border w-full border border-purple-300"
+                                        className="p-2 rounded-xl w-full border border-purple-300"
                                         id="passwordConfirmation"
                                         type="password"
                                         placeholder="Confirm your password"
