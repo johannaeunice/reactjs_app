@@ -4,14 +4,9 @@ import axios from 'axios';
 const CategoryForm = () => {
   const [categoryName, setCategoryName] = useState('');
   const [categoryType, setCategoryType] = useState('');
-  const [categories, setCategories] = useState([
-    { name: 'School', type: 'expense' },
-    { name: 'Work', type: 'income' },
-    { name: 'Home', type: 'expense' },
-    { name: 'Shop', type: 'income'},
-  ]);
+  const [categories, setCategories] = useState([]);
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = async(e) => {
     e.preventDefault();
 
     if (!categoryName || !categoryType) {
@@ -38,9 +33,24 @@ const CategoryForm = () => {
     setCategoryName('');
     setCategoryType('');
 
-    axios.post('https://le-nkap-v1.onrender.com/categories', newCategory)
-        .then(res => console.log(res))
-        .catch(err => console.log(err))
+    try {
+      // Get token from local storage
+      const token = localStorage.getItem('x-auth-token');
+  
+      // Include token in request headers
+      const config = {
+        headers: {
+          'Content-Type': 'application/json',
+          'x-auth-token': token,
+        },
+      };
+  
+      // Make post request with token included in headers
+      const response = await axios.post('https://le-nkap-v1.onrender.com/categories', newCategory, config);
+      console.log(response.data); // Handle response data if needed
+    } catch (error) {
+      console.log('Error:', error);
+    }
   };
 
   return (

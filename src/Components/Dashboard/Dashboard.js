@@ -1,20 +1,10 @@
 // import React from 'react'
 import { HelmetProvider } from 'react-helmet-async'
 import {Link } from 'react-router-dom'
-import React, { useEffect, useState} from 'react'
+import React from 'react'
 import './Dashboard.css'
-import axios from 'axios'
 
 const Dashboard = () => {
-  // const [expense, setExpense] = useState()
-
-  // useEffect(() =>{
-
-  //   axios.get('/https://le-nkap-v1.onrender.com/transactions').then((data) =>{
-  //     console.log(data);
-  //     setExpense(data)
-  //   })
-  // },[])
   return (
     <>
       <HelmetProvider>
@@ -54,15 +44,21 @@ const Dashboard = () => {
               </li>
 
               <li className="nav-item">
-                <Link className="nav-link" to="/transactions">
+                <Link className="nav-link" to="/expense">
                   <svg className="bi bi-chevron-right" width="16" height="16" viewBox="0 0 20 20" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><path fillRule="evenodd" d="M6.646 3.646a.5.5 0 01.708 0l6 6a.5.5 0 010 .708l-6 6a.5.5 0 01-.708-.708L12.293 10 6.646 4.354a.5.5 0 010-.708z" clipRule="evenodd" /></svg>
-                 Transactions
+                  Expenses
                 </Link>
               </li>
               <li className="nav-item">
-                <Link className="nav-link" to="/category">
+                <a className="nav-link" href="#">
                   <svg className="bi bi-chevron-right" width="16" height="16" viewBox="0 0 20 20" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><path fillRule="evenodd" d="M6.646 3.646a.5.5 0 01.708 0l6 6a.5.5 0 010 .708l-6 6a.5.5 0 01-.708-.708L12.293 10 6.646 4.354a.5.5 0 010-.708z" clipRule="evenodd" /></svg>
-                  Categories
+                  Summary
+                </a>
+              </li>
+              <li className="nav-item">
+                <Link className="nav-link" to="/contact">
+                  <svg className="bi bi-chevron-right" width="16" height="16" viewBox="0 0 20 20" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><path fillRule="evenodd" d="M6.646 3.646a.5.5 0 01.708 0l6 6a.5.5 0 010 .708l-6 6a.5.5 0 01-.708-.708L12.293 10 6.646 4.354a.5.5 0 010-.708z" clipRule="evenodd" /></svg>
+                  Contacts
                 </Link>
               </li>
             </ul>

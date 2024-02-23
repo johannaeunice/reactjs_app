@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
-import {Link} from 'react-router-dom'
-// import { useNavigate } from 'react-router-dom';
-import axios from 'axios';
+import couple from './login.png';
+import { Link } from 'react-router-dom';
+
+
 const LoginForm = () => {
   const [formData, setFormData] = useState({
     email: '',
@@ -9,8 +10,7 @@ const LoginForm = () => {
   });
 
   const [errors, setErrors] = useState({});
-  // const navigate = useNavigate()
-
+  const [token, setToken] = useState(null); // Initialize token state
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -23,50 +23,29 @@ const LoginForm = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      
-        // const response = await fetch('https://le-nkap-v1.onrender.com/auth', {
-        //   method: 'POST',
-        //   headers: {
-        //     'Content-Type': 'application/json'
-        //   },
-        //   body: JSON.stringify(formData)
-        // })
-        axios.post('https://le-nkap-v1.onrender.com/auth', formData)
-        .then((res) => {
+      const response = await fetch('https://le-nkap-v1.onrender.com/auth', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(formData)
+      });
 
-            console.log(`value of the token\n`,res)
-            console.log(`value of the token\n`,res.data)
-            // alert('hello')
-            // navigate('/dashboard')
-        })
-        .catch(err => console.log(err))
-  
-        // if (!response.ok) {
-        //   alert('error')
-        //   throw new Error('Network response was not ok');
-        // }
-
-  
-        // const data = await response.json();
-        // alert(JSON.stringify(data))
-        // console.log(data); // Handle response data
-        // navigate('/dashboard')
-
-      } catch (error) {
-        console.log('Error:', error);
+      if (!response.ok) {
+        throw new Error('Network response was not ok');
       }
 
-    //   const data = await response.json();
-    //   console.log(data); // Handle response data
+      const data = await response.json();
+      console.log(data); // Handle response data
 
-    //   // Store the obtained x-auth-token in local storage
-    //   localStorage.setItem('x-auth-token', data.x_auth_token);
+      // Store the obtained x-auth-token in local storage
+      localStorage.setItem('x-auth-token', data.x_auth_token);
 
-    //   // Store the obtained token in component state
-    //   setToken(data.x_auth_token);
-    //  .catch (error) {
-    //   console.log('Error:', error);
-    // }
+      // Store the obtained token in component state
+      setToken(data.x_auth_token);
+    } catch (error) {
+      console.log('Error:', error);
+    }
 
     const validationErrors = validateForm(formData);
     if (Object.keys(validationErrors).length === 0) {
@@ -92,52 +71,76 @@ const LoginForm = () => {
   };
 
   return (
-    <div className="max-w-md mx-auto mt-8">
-      <form onSubmit={handleSubmit} className="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4">
-        <div className="mb-4">
-          <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="email">
-            Email
-          </label>
-          <input
-            className={`shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline ${errors.email && 'border-red-500'}`}
-            id="email"
-            type="email"
-            placeholder="Enter your email"
-            name="email"
-            value={formData.email}
-            onChange={handleChange}
-            required
-          />
-          {errors.email && <p className="text-red-500 text-xs italic">{errors.email}</p>}
+    <div className="flex bg-purple-200 min-h-screen  items-center justify-center py-6 sm:py-12">
+      {/* login container */}
+      <div className="bg-white mx-auto overflow-hidden rounded-md shadow-lg max-w-3xl p-5">
+        {/* form */}
+        <div className="grid grid-cols-2 ">
+          <div className="relative col-span-1 hidden md:block">
+            <div className="absolute inset-0 bg-purple-200">
+              <img className="h-full w-full object-cover" src={couple} alt='couple' />
+            </div></div>
+          <div className="col-span-2 md:col-span-1 p-8">
+            <div className="flex flex-col justify-center h-full">
+              <h2 className="mb-2 text-xl font-bold uppercase tracking-tight text-gray-600">Login</h2>
+              <p className="">
+                If you are already a member, easily login by filling this form.
+              </p>
+              <form onSubmit={handleSubmit} className="w-full space-y-4">
+                <div className="space-y-2">
+                  <div>
+                    <label className="mt-4 block text-gray-700 text-sm font-bold mb-2" htmlFor="email">
+                      Email
+                    </label>
+                    <input
+                      className="p-2 mt-1 rounded-xl border border-purple-300 w-full"
+                      id="email"
+                      type="email"
+                      placeholder="Enter your email"
+                      name="email"
+                      value={formData.email}
+                      onChange={handleChange}
+                      required
+                    />
+                    {errors.email && <p className="text-red-500 text-xs italic">{errors.email}</p>}
+                  </div>
+                </div>
+                <div className="mb-6">
+                  <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="password">
+                    Password
+                  </label>
+                  <input
+                    className="p-2 rounded-xl border w-full border border-purple-300"
+                    id="password"
+                    type="password"
+                    placeholder="Enter your password"
+                    name="password"
+                    value={formData.password}
+                    onChange={handleChange}
+                    required
+                  />
+                  {errors.password && <p className="text-red-500 text-xs italic">{errors.password}</p>}
+                </div>
+                <p className='mt-3'>
+                  No Account yet? <Link className="text-purple-600" to="/signup">Click Here!</Link>
+                </p>
+                <div className="flex flex-column items-center justify-between">
+
+                  <button
+                    className="w-full px-4 py-1 text-sm text-purple-600 font-semibold rounded-xl border border-purple-200 hover:text-white hover:bg-purple-600 hover:border-transparent hover:scale-110 duration-300 focus:outline-none focus:ring-2 focus:ring-purple-600 focus:ring-offset-2"
+                    type="submit"
+                  >
+                    Sign In
+                  </button>
+                </div>
+              </form>
+            </div>
+          </div>
+
+
         </div>
-        <div className="mb-6">
-          <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="password">
-            Password
-          </label>
-          <input
-            className={`shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline ${errors.password && 'border-red-500'}`}
-            id="password"
-            type="password"
-            placeholder="Enter your password"
-            name="password"
-            value={formData.password}
-            onChange={handleChange}
-            required
-          />
-          {errors.password && <p className="text-red-500 text-xs italic">{errors.password}</p>}
-        </div>
-        <div className="flex items-center justify-between">
-          <p className='mt-3'>
-            No Account yet? <Link to="/signup">Click Here!</Link>
-          </p>
-          <button
-            className="bg-blue-500 hover:bg-blue-700 text-black font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
-            type="submit"
-          >
-            Sign In
-          </button>
-        </div>
-      </form>
+      </div>
+
     </div>
   );
 };

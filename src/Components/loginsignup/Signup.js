@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
-import {Link, useNavigate} from 'react-router-dom';
-import axios from 'axios';
+import { Link, useNavigate } from 'react-router-dom';
+import couple from './signup.png'
+import axios from 'axios'
 
 const SignUpForm = () => {
 
@@ -15,24 +16,18 @@ const SignUpForm = () => {
     });
 
     const [errors, setErrors] = useState({});
-    const [post, setPost] = useState({
-                name: '',
-                email: '',
-                phone: '',
-                password: '',
-                passwordConfirmation: ''
-    })
+    const [successMessage, setSuccessMessage] = useState(null); // State to hold success message
+
     const handleChange = (e) => {
         const { name, value } = e.target;
         setFormData({
             ...formData,
             [name]: value
-        });       
+        });
     };
-    
+
     const handleSubmit = (e) => {
         e.preventDefault();
-        alert('hello')
         const validationErrors = validateForm(formData);
         if (Object.keys(validationErrors).length === 0) {
             console.log(formData);
@@ -47,13 +42,16 @@ const SignUpForm = () => {
             setErrors(validationErrors);
             return;// Stop execution if there are validation errors
         }
-        axios.post('https://le-nkap-v1.onrender.com/users', post)
-        .then((res) => {
-            console.log(res)
-            alert('hello')
-            navigate('/login')
-        })
-        .catch(err => console.log(err))
+        axios.post('https://le-nkap-v1.onrender.com/users', formData)
+            .then(res => {
+                console.log(res);
+                setSuccessMessage('Successful Registration!');
+                console.log('User successfully registered');
+                setTimeout(() => {
+                    navigate('/login'); // Use navigate to redirect to login page after a delay
+                }, 6000);
+            })
+            .catch(err => console.log(err));
     };
 
     const validateForm = (formData) => {
@@ -80,106 +78,127 @@ const SignUpForm = () => {
         return errors;
     };
 
-    
+
 
     return (
-        <div className="max-w-md mx-auto mt-8 bg-purple-200 p-5">
-            <form onSubmit={handleSubmit} className="bg-white w-1/2 shadow-md rounded-xl px-8 pt-6 pb-8 m-5">
-                <div className="mb-4">
-                    <label className="block text-gray-700 text-sm font-bold mb-2 pt-2" htmlFor="name">
-                        Name
-                    </label>
-                    <input
-                        className={`shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline ${errors.name && 'border-red-500'}`}
-                        id="name"
-                        type="text"
-                        placeholder="Enter your name"
-                        name="name"
-                        value={formData.name}
-                        onChange={handleChange}
-                        required
-                    />
-                    {errors.name && <p className="text-red-500 text-xs italic">{errors.name}</p>}
+        <div className="flex bg-purple-200 min-h-screen  items-center justify-center py-6 sm:py-12">
+            {/* signup container */}
+            <div className="bg-white mx-auto overflow-hidden rounded-md shadow-lg max-w-3xl p-5">
+                <div className="grid grid-cols-2 ">
+                    <div className="relative col-span-1 hidden md:block">
+                        <div className="absolute inset-0 bg-purple-200">
+                            <img className="h-full w-full object-cover" src={couple} alt='couple' />
+                        </div></div>
+                    <div className="col-span-2 md:col-span-1 p-8">
+                        <div className="flex flex-col justify-center h-full">
+                            <h2 className="mb-2 text-xl font-bold uppercase tracking-tight txt-gray-600">
+                                SIGN UP
+                            </h2>
+                            <p>
+                                If you're not a member yet, easily sign up by filling this form
+                            </p>
+                            <form onSubmit={handleSubmit} className="w-full space-y-4">
+                                <div className="mb-4">
+                                    <label className="block text-gray-700 text-sm font-bold mb-2 pt-2" htmlFor="name">
+                                        Name
+                                    </label>
+                                    <input
+                                        className="p-2 rounded-xl border w-full border border-purple-300"
+                                        id="name"
+                                        type="text"
+                                        placeholder="Enter your name"
+                                        name="name"
+                                        value={formData.name}
+                                        onChange={handleChange}
+                                        required
+                                    />
+                                    {errors.name && <p className="text-red-500 text-xs italic">{errors.name}</p>}
+                                </div>
+                                <div className="mb-4">
+                                    <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="email">
+                                        Email
+                                    </label>
+                                    <input
+                                        className="p-2 rounded-xl border w-full border border-purple-300"
+                                        id="email"
+                                        type="email"
+                                        placeholder="Enter your email"
+                                        name="email"
+                                        value={formData.email}
+                                        onChange={handleChange}
+                                        required
+                                    />
+                                    {errors.email && <p className="text-red-500 text-xs italic">{errors.email}</p>}
+                                </div>
+                                <div className="mb-4">
+                                    <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="phone">
+                                        Phone
+                                    </label>
+                                    <input
+                                        className="p-2 rounded-xl border w-full border border-purple-300"
+                                        id="phone"
+                                        type="tel"
+                                        placeholder="Enter your phone number"
+                                        name="phone"
+                                        value={formData.phone}
+                                        onChange={handleChange}
+                                        required
+                                    />
+                                    {errors.phone && <p className="text-red-500 text-xs italic">{errors.phone}</p>}
+                                </div>
+                                <div className="mb-4">
+                                    <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="password">
+                                        Password
+                                    </label>
+                                    <input
+                                        className="p-2 rounded-xl border w-full border border-purple-300"
+                                        id="password"
+                                        type="password"
+                                        placeholder="Enter your password"
+                                        name="password"
+                                        value={formData.password}
+                                        onChange={handleChange}
+                                        required
+                                    />
+                                    {errors.password && <p className="text-red-500 text-xs italic">{errors.password}</p>}
+                                </div>
+                                <div className="mb-4">
+                                    <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="passwordConfirmation">
+                                        Confirm Password
+                                    </label>
+                                    <input
+                                        className="p-2 rounded-xl border w-full border border-purple-300"
+                                        id="passwordConfirmation"
+                                        type="password"
+                                        placeholder="Confirm your password"
+                                        name="passwordConfirmation"
+                                        value={formData.passwordConfirmation}
+                                        onChange={handleChange}
+                                        required
+                                    />
+                                    {errors.passwordConfirmation && <p className="text-red-500 text-xs italic">{errors.passwordConfirmation}</p>}
+                                </div>
+                                {successMessage && (
+                                    <p className="text-green-600 mb-4">{successMessage}</p>
+                                )}
+                                 <p className='mt-3'>
+                                        Already Have An Account ? <Link to='/login' className='text-sm text-purple-600 font-semibold hover:text-purple-950'>Click Here!</Link>
+                                    </p>
+                                <div className="flex items-center justify-between">
+                                   
+                                    <button
+                                        className="w-full px-4 py-1 text-sm text-purple-600 font-semibold rounded-full border border-purple-200 hover:text-white hover:bg-purple-600 hover:border-transparent hover:scale-110 duration-300 focus:outline-none focus:ring-2 focus:ring-purple-600 focus:ring-offset-2 mb-3"
+                                        type="submit" >
+                                        Sign Up
+                                    </button>
+
+                                </div>
+                            </form>
+                        </div>
+                    </div>
                 </div>
-                <div className="mb-4">
-                    <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="email">
-                        Email
-                    </label>
-                    <input
-                        className={`shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline ${errors.email && 'border-red-500'}`}
-                        id="email"
-                        type="email"
-                        placeholder="Enter your email"
-                        name="email"
-                        value={formData.email}
-                        onChange={handleChange}
-                        required
-                    />
-                    {errors.email && <p className="text-red-500 text-xs italic">{errors.email}</p>}
-                </div>
-                <div className="mb-4">
-                    <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="phone">
-                        Phone
-                    </label>
-                    <input
-                        className={`shadow appearance-none border rounded w-full py-2 px-3 text-blue-700 leading-tight focus:outline-none focus:shadow-outline ${errors.phone && 'border-red-500'}`}
-                        id="phone"
-                        type="tel"
-                        placeholder="Enter your phone number"
-                        name="phone"
-                        value={formData.phone}
-                        onChange={handleChange}
-                        required
-                    />
-                    {errors.phone && <p className="text-red-500 text-xs italic">{errors.phone}</p>}
-                </div>
-                <div className="mb-4">
-                    <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="password">
-                        Password
-                    </label>
-                    <input
-                        className={`shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline ${errors.password && 'border-red-500'}`}
-                        id="password"
-                        type="password"
-                        placeholder="Enter your password"
-                        name="password"
-                        value={formData.password}
-                        onChange={handleChange}
-                        required
-                    />
-                    {errors.password && <p className="text-red-500 text-xs italic">{errors.password}</p>}
-                </div>
-                <div className="mb-4">
-                    <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="passwordConfirmation">
-                        Confirm Password
-                    </label>
-                    <input
-                        className={`shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline ${errors.passwordConfirmation && 'border-red-500'}`}
-                        id="passwordConfirmation"
-                        type="password"
-                        placeholder="Confirm your password"
-                        name="passwordConfirmation"
-                        value={formData.passwordConfirmation}
-                        onChange={handleChange}
-                        required
-                    />
-                    {errors.passwordConfirmation && <p className="text-red-500 text-xs italic">{errors.passwordConfirmation}</p>}
-                </div>
-                {/* {successMessage && (
-                    <p className="text-green-600 mb-4">{successMessage}</p>
-                )} */}
-                <div className="flex items-center justify-between">
-                    <p className='mt-3'>
-                        Already Have An Account ? <Link to='/login' className='text-sm text-purple-600 font-semibold hover:text-purple-950'>Click Here!</Link>
-                    </p>
-                    <button
-                        className="px-4 py-1 text-sm text-purple-600 font-semibold rounded-full border border-purple-200 hover:text-white hover:bg-purple-600 hover:border-transparent focus:outline-none focus:ring-2 focus:ring-purple-600 focus:ring-offset-2 mb-3"
-                        type="submit" >
-                        Sign Up
-                    </button>      
-                    
-                </div>
-            </form>
+            </div>
+
         </div>
     );
 };
