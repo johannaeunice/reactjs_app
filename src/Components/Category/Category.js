@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import axios from 'axios';
+import Navbar from '../Navbar/Navbar'
 
 const CategoryForm = () => {
   const [categoryName, setCategoryName] = useState('');
@@ -51,6 +52,8 @@ const CategoryForm = () => {
   }; 
 
   return (
+    <div>
+      <Navbar/>
     <div>
       <form onSubmit={handleSubmit}>
         <div className="mb-4">
@@ -104,6 +107,7 @@ const CategoryForm = () => {
           </tbody>
         </table>
       </div>
+    </div>
     </div>
   );
 };

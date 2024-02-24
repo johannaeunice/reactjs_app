@@ -1,170 +1,194 @@
-// import React from 'react'
-import { HelmetProvider } from 'react-helmet-async'
-import {Link } from 'react-router-dom'
-import React from 'react'
-import './Dashboard.css'
+import React, { useState, useEffect } from 'react';
+import { Link } from 'react-router-dom';
+import axios from 'axios';
+import Chart from 'react-apexcharts';
+import Navbar from "../Navbar/Navbar"
 
 const Dashboard = () => {
+  const [transactions, setTransactions] = useState([]);
+  const [categories, setCategories] = useState([]);
+
+  useEffect(() => {
+    const authToken = sessionStorage.getItem('x-auth-token');
+    axios.get('https://le-nkap-v1.onrender.com/transactions', { 
+      headers: {
+        'x-auth-token' : authToken 
+      } 
+    })
+    .then(response => {
+      setTransactions(response.data);
+    })
+    .catch(error => {
+      console.error('Error fetching transactions: ', error);
+    });
+  }, []);
+
+  useEffect(() => {
+    const authToken = sessionStorage.getItem('x-auth-token');
+    axios.get('https://le-nkap-v1.onrender.com/categories', { 
+      headers: {
+        'x-auth-token' : authToken 
+      } 
+    })
+    .then(response => {
+      setCategories(response.data);
+    })
+    .catch(error => {
+      console.error('Error fetching categories: ', error);
+    });
+  }, []);
+
+  const calculateTotalAmount = (type) => {
+    const filteredTransactions = transactions.filter(transaction => transaction.type === type);
+    return filteredTransactions.reduce((total, transaction) => total + transaction.amount, 0);
+  };
+
+  const incomeTotal = calculateTotalAmount('income');
+  const expenseTotal = calculateTotalAmount('expense');
+  const balance = incomeTotal - expenseTotal;
+
+  const generateGraphData = () => {
+    const incomeTransactions = transactions.filter(transaction => transaction.type === 'income');
+    const labels = incomeTransactions.map(transaction => transaction.name);
+
+    return {
+      series: [{
+        name: 'Income',
+        data: incomeTransactions.map(transaction => transaction.amount)
+      }, {
+        name: 'Expense',
+        data: transactions.filter(transaction => transaction.type === 'expense').map(transaction => transaction.amount)
+      }, {
+        name: 'Balance',
+        data: new Array(labels.length).fill(balance)
+      }],
+      options: {
+        chart: {
+          height: 350,
+          type: 'area',
+          stacked: true,
+        },
+        dataLabels: {
+          enabled: false
+        },
+        stroke: {
+          curve: 'smooth'
+        },
+        xaxis: {
+          categories: labels
+        },
+        tooltip: {
+          x: {
+            format: 'MMM dd yyyy'
+          }
+        }
+      }
+    };
+  };
+
+  const graphData = generateGraphData();
+
   return (
-    <>
-      <HelmetProvider>
-        <html lang="en" />
-        <head>
-          <meta charSet="UTF-8" />
-          <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-          <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.1/font/bootstrap-icons.css"></link>
-          <title>Dashboard</title>
-        </head>
-
-      </HelmetProvider>
-
-      <div className='stcky-top'>
-        <nav className="navbar bg-body-tertiary" data-bs-theme="dark">
-          <form className="container-fluid">
-            <div className="input-group">
-              <span className="input-group-text" id="basic-addon1">Le Nkap</span>
-              <input type="text" className="form-control" placeholder="Search..." aria-label="Username" aria-describedby="basic-addon1" />
-              <button className="btn btn-outline-success" type="submit"><i className="bi bi-search"></i></button>
-            </div>
-          </form>
-        </nav>
-      </div>
-
-      {/* Sidebar */}
-      <div className="row">
-        <div className="col-md-2 bg-light d-none d-md-block sidebar">
-          <div className="left-sidebar">
-            <ul className="nav flex-column sidebar-nav">
-              <li className="nav-item">
-                <a className="nav-link active" href="#">
-                  {/* // eslint-disable-next-line react/no-unknown-property */}
-                  <svg className="bi bi-chevron-right" width="16" height="16" viewBox="0 0 20 20" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><path fillRule="evenodd" d="M6.646 3.646a.5.5 0 01.708 0l6 6a.5.5 0 010 .708l-6 6a.5.5 0 01-.708-.708L12.293 10 6.646 4.354a.5.5 0 010-.708z" clipRule="evenodd" /></svg>
-                  Account
-                </a>
-              </li>
-
-              <li className="nav-item">
-                <Link className="nav-link" to="/expense">
-                  <svg className="bi bi-chevron-right" width="16" height="16" viewBox="0 0 20 20" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><path fillRule="evenodd" d="M6.646 3.646a.5.5 0 01.708 0l6 6a.5.5 0 010 .708l-6 6a.5.5 0 01-.708-.708L12.293 10 6.646 4.354a.5.5 0 010-.708z" clipRule="evenodd" /></svg>
-                  Expenses
-                </Link>
-              </li>
-              <li className="nav-item">
-                <a className="nav-link" href="#">
-                  <svg className="bi bi-chevron-right" width="16" height="16" viewBox="0 0 20 20" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><path fillRule="evenodd" d="M6.646 3.646a.5.5 0 01.708 0l6 6a.5.5 0 010 .708l-6 6a.5.5 0 01-.708-.708L12.293 10 6.646 4.354a.5.5 0 010-.708z" clipRule="evenodd" /></svg>
-                  Summary
-                </a>
-              </li>
-              <li className="nav-item">
-                <Link className="nav-link" to="/contact">
-                  <svg className="bi bi-chevron-right" width="16" height="16" viewBox="0 0 20 20" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><path fillRule="evenodd" d="M6.646 3.646a.5.5 0 01.708 0l6 6a.5.5 0 010 .708l-6 6a.5.5 0 01-.708-.708L12.293 10 6.646 4.354a.5.5 0 010-.708z" clipRule="evenodd" /></svg>
-                  Contacts
-                </Link>
-              </li>
-            </ul>
+    <div>
+      <Navbar/>
+      <div className="w-full min-h-screen bg-purple-200 p-5 flex items-center">
+        <div className="bg-white w-full shadow-lg rounded-xl p-8 m-4 md:max-w-sm md:mx-auto flex flex-col">
+          <h2 className="block w-full font-bold text-xl text-grey-darkest text-center mx-auto uppercase">Dashboard</h2>
+      {/* First Section */}
+      <div className="my-8">
+        {/* Transaction Table */}
+        <table className="table-fixed border-collapse border w-full mb-4 mt-4">
+          <thead>
+            <tr>
+              <th className="border px-4 py-2">Name</th>
+              <th className="border px-4 py-2">Amount</th>
+              <th className="border px-4 py-2">Type</th>
+              <th className="border px-4 py-2">Category</th>
+            </tr>
+          </thead>
+          <tbody>
+            {transactions.map(transaction => (
+              <tr key={transaction.id}>
+                <td className="border px-4 py-2">{transaction.name}</td>
+                <td className="border px-4 py-2">${transaction.amount}</td>
+                <td className="border px-4 py-2">{transaction.type}</td>
+                <td className="border px-4 py-2">{transaction.category.name}</td>
+              </tr>
+            ))}
+            <tr key="total">
+              <td className="border px-4 py-2" colSpan="1"><strong>Total Amount:</strong> </td>
+              <td className="border px-4 py-2" colSpan="3"><strong>${incomeTotal + expenseTotal}</strong></td>
+              
+            </tr>
+            <tr key="balance">
+            <td className="border px-4 py-2" colSpan="1"><strong>Balance:</strong> </td>
+              <td className="border px-4 py-2" colSpan="3"><strong>${balance}</strong></td>
+            </tr>
+          </tbody>
+        </table>
+        {/* Button to Add New Transaction */}
+        <div className="flex justify-center mb-4 mt-4">
+          <Link to="/transactions" className='mx-auto rounded-xl w-3/4 px-4 py-1 text-sm text-purple-600 font-semibold border border-purple-200 hover:text-white hover:bg-purple-600 hover:border-transparent hover:scale-105 duration-300 focus:outline-none focus:ring-2 focus:ring-purple-600 focus:ring-offset-2 mb-3'>
+            Add New Transaction +
+          </Link>
+        </div>
+        {/* Pie Chart */}
+        <div className="flex justify-center mt-4">
+          <div className="mr-8">
+            <Chart
+              options={{
+                labels: ['Income', 'Expense'],
+                colors: ['#008FFB', '#FF4560'],
+              }}
+              series={[incomeTotal, expenseTotal]}
+              type="pie"
+              width="380"
+            />
+          </div>
+          <div>
+            <p className="text-xs">Total Income: ${incomeTotal}</p>
+            <p className="text-xs">Total Expense: ${expenseTotal}</p>
+            <p className="text-xs">Total Transactions: {transactions.length}</p>
           </div>
         </div>
       </div>
-
-      {/* Main */}
-      <main role="main" className="col-md-9 ml-sm-auto col-lg-10 px-4">
-        <h3>Expenses</h3>
-        <hr />
-        <div className="table-responsive">
-          <table className="table table-primary">
-            <thead>
-              <tr>
-                <th scope="col">#</th>
-                <th scope="col">Description</th>
-                <th scope="col">Amount</th>
-                <th scope="col">Category</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <th scope="row">1</th>
-                <td>2 packs of sugar</td>
-                <td>$50</td>
-                <td>Groceries</td>
-              </tr>
-              <tr>
-                <th scope="row">2</th>
-                <td>2 packs of biscuit</td>
-                <td>$60</td>
-                <td>Groceries</td>
-              </tr>
-              <tr>
-                <th scope="row">3</th>
-                <td>Electricity bill</td>
-                <td>$100</td>
-                <td>Utilities</td>
-              </tr>
-              <tr>
-                <th scope="row">4</th>
-                <td>1 spotify subscription</td>
-                <td>$30</td>
-                <td>Entertainment</td>
-              </tr>
-              <tr>
-                <th scope="row">5</th>
-                <td>2 boomplay subscriptions</td>
-                <td>$30</td>
-                <td>Entertainment</td>
-              </tr>
-              <tr>
-                <th scope="row">6</th>
-                <td>Paper clips and books</td>
-                <td>$50</td>
-                <td>Stationaries</td>
-              </tr>
-            </tbody>
-          </table>
+      
+      {/* Second Section */}
+      <div className="my-8">
+        {/* Area Graph */}
+        <Chart
+          options={graphData.options}
+          series={graphData.series}
+          type="area"
+          height={350}
+        />
+      </div>
+      
+      {/* Third Section */}
+      <div className="my-8">
+        {/* Category Cards */}
+        <div className="flex flex-wrap">
+          {categories.map(category => (
+            <div key={category.id} className="w-full sm:w-1/2 md:w-1/3 lg:w-1/4 p-4">
+              <div className="bg-white rounded-lg shadow-md p-4">
+                <p className="font-semibold">{category.name}</p>
+                <p className="text-sm text-gray-500">{category.type}</p>
+              </div>
+            </div>
+          ))}
+          {/* "Add New Category" Card */}
+          <Link to="/category" className="border border-dashed  border-indigo-600 w-full sm:w-1/2 md:w-1/3 lg:w-1/4 p-4 flex items-center justify-center">
+            <div className="bg-white rounded-lg shadow-md p-4 flex items-center justify-center ">
+              <p className="font-semibold">Add New Category</p>
+              <span className="text-xl ml-2">+</span>
+            </div>
+          </Link>
         </div>
-        <div className="row">
-          <div className="col-sm-6">
-            <div className="card">
-              <div className="card-body">
-                <h3 className="card-title">Groceries</h3>
-                <p className="card-text">Total: $110</p>
-                <Link className='btn btn-primary' to='/expense' >See More</Link>
-              </div>
-            </div>
-          </div>
-          <div className="col-sm-6">
-            <div className="card">
-              <div className="card-body">
-                <h3 className="card-title">Entertainment</h3>
-                <p className="card-text">Total: $60</p>
-                <Link className='btn btn-primary' to='/expense' >See More</Link>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div className="row">
-          <div className="col-sm-6">
-            <div className="card">
-              <div className="card-body">
-                <h3 className="card-title">Utilities</h3>
-                <p className="card-text">Total: $100</p>
-                <Link className='btn btn-primary' to='/expense' >See More</Link>
-              </div>
-            </div>
-          </div>
-          <div className="col-sm-6">
-            <div className="card">
-              <div className="card-body">
-                <h3 className="card-title">Stationaries</h3>
-                <p className="card-text">Total: $50</p>
-                <Link className='btn btn-primary' to='/expense' >See More</Link>
-              </div>
-            </div>
-          </div>
-        </div>
-      </main>
-    </>
-
-  )
-}
+      </div>
+    </div>
+    </div>
+    </div>
+  );
+};
 
 export default Dashboard;

@@ -4,14 +4,15 @@
 import { HelmetProvider } from 'react-helmet-async';
 import { Link } from 'react-router-dom';
 import couple_money from './black_couple.jpg'
+import Navbar from '../Navbar/Navbar'
 
 const HomePage = () => {
 
     
 
     return (
-       
-            
+       <div className="bg-purple-200">
+        <Navbar/>
             <div className="py-8 px-8 max-w-fit max-h-fit mx-0 bg-purple-200 rounded-xl shadow-lg space-y-2 sm:py-4 sm:flex sm:items-center sm:space-y-0 sm:space-x-6">
                 {/*  */}
                 <img className="block mx-auto h-50 w-50 rounded-full sm:mx-0 sm:shrink-0" src={couple_money} alt="Couple holding money" />
@@ -47,7 +48,7 @@ const HomePage = () => {
                 </div>
                 
             </div>
-           
+           </div>
            
 
     )
