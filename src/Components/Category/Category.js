@@ -54,25 +54,28 @@ const CategoryForm = () => {
   return (
     <div>
       <Navbar/>
-    <div>
+      <div className="w-full min-h-screen bg-purple-200 p-5 flex items-center">
+        <div className="bg-white w-full shadow-lg rounded-xl p-8 m-4 md:max-w-sm md:mx-auto flex flex-col">
+          <h2 className="block w-full font-bold text-xl text-grey-darkest text-center mx-auto uppercase">Category Form</h2>
+
       <form onSubmit={handleSubmit}>
-        <div className="mb-4">
-          <label className="block text-gray-700 text-sm font-bold mb-2">Category Name</label>
+        <div className="flex flex-col mb-4 mt-4">
+          <label className="mb-2 capitalize font-semibold text-lg text-grey-darkest">Category Name</label>
           <input
             type="text"
             value={categoryName}
             onChange={(e) => setCategoryName(e.target.value)}
             placeholder="Enter category name"
-            className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+            className="p-2 rounded-xl w-full border border-purple-300"
             required
           />
         </div>
-        <div className="mb-4">
-          <label className="block text-gray-700 text-sm font-bold mb-2">Category Type</label>
+        <div className="flex flex-col mb-4 mt-4">
+          <label className="mb-2 capitalize font-semibold text-lg text-grey-darkest">Category Type</label>
           <select
             value={categoryType}
             onChange={(e) => setCategoryType(e.target.value)}
-            className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+            className="p-2 rounded-xl w-full border border-purple-300"
             required
           >
             <option value="">Select category type</option>
@@ -80,33 +83,35 @@ const CategoryForm = () => {
             <option value="income">Income</option>
           </select>
         </div>
-        <button
-          type="submit"
-          className="bg-blue-500 hover:bg-blue-700 text-black font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
-        >
-          Add Category
-        </button>
+        <div className="mb-4 mt-4 flex">
+        <button className='mx-auto mt-4 rounded-xl w-3/4 px-4 py-1 text-sm text-purple-600 font-semibold border border-purple-200 hover:text-white hover:bg-purple-600 hover:border-transparent hover:scale-105 duration-300 focus:outline-none focus:ring-2 focus:ring-purple-600 focus:ring-offset-2 mb-3'
+                  type="submit"
+                  >Add Category</button>
+                  </div>
       </form>
 
-      <div className="mt-8">
-        <h2 className="text-lg font-bold mb-4">Categories</h2>
-        <table className="border-collapse border border-gray-400">
+      <div className="my-8">
+        <div mb-4 mt-4 flex>
+        <h2 className="text-lg mx-auto font-bold mb-4">Categories</h2>
+        </div>
+        <table className="table-fixed border-collapse border w-full mb-4 mt-4">
           <thead>
             <tr>
-              <th className="border border-gray-400 px-4 py-2"> Name</th>
-              <th className="border border-gray-400 px-4 py-2"> Type</th>
+              <th className="border px-4 py-2"> Name</th>
+              <th className="border px-4 py-2"> Type</th>
             </tr>
           </thead>
           <tbody>
             {categories.map((category, index) => (
               <tr key={index}>
-                <td className="border border-gray-400 px-4 py-2">{category.name}</td>
-                <td className="border border-gray-400 px-4 py-2">{category.type}</td>
+                <td className="border px-4 py-2">{category.name}</td>
+                <td className="border px-4 py-2">{category.type}</td>
               </tr>
             ))}
           </tbody>
         </table>
       </div>
+    </div>
     </div>
     </div>
   );

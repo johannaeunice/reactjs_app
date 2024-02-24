@@ -248,42 +248,44 @@ function TransactionForm() {
               )}</div>
           </form>
 
-          <div>
-            <label>Filter by Type:</label>
-            <select className='border' onChange={handleFilterType}>
+          <div className="flex flex-col mb-4 mt-4">
+              <label className="mb-2 capitalize font-semibold text-lg text-grey-darkest">
+              Filter by Type:</label>
+            <select className='p-2 rounded-xl w-full border border-purple-300' 
+            onChange={handleFilterType}>
               <option value="">All</option>
               <option value="expense">Expense</option>
               <option value="income">Income</option>
             </select>
           </div>
 
-          <div>
-            <table className="border ">
+          <div className="my-8">
+            <table className="table-fixed border-collapse border w-full mb-4 mt-4">
               <thead>
                 <tr>
                   <th onClick={toggleSortOrder}>Name {sortOrder === 'asc' ? '▲' : '▼'}</th>
-                  <th className='border'>Type</th>
-                  <th className='border'>Amount</th>
-                  <th className='border'>Category</th>
-                  <th className='border'>Actions</th>
+                  <th className='border px-4 py-2'>Type</th>
+                  <th className='border px-4 py-2'>Amount</th>
+                  <th className='border px-4 py-2'>Category</th>
+                  <th className='border px-4 py-2'>Actions</th>
                 </tr>
               </thead>
               <tbody>
                 {sortedTransactions.map((transaction, index) => (
                   <tr key={index}>
-                    <td className='border'>{transaction.name}</td>
-                    <td className='border'>{transaction.type}</td>
-                    <td className='border'>${transaction.amount}</td>
-                    <td className='border'>{transaction.categoryName}</td>
-                    <td className='border'>
-                      <button className='border' onClick={() => handleUpdate(transaction)}>Update</button>
-                      <button className='border' onClick={() => deleteTransaction(transaction)}>Delete</button>
+                    <td className='border px-4 py-2'>{transaction.name}</td>
+                    <td className='border px-4 py-2'>{transaction.type}</td>
+                    <td className='border px-4 py-2'>${transaction.amount}</td>
+                    <td className='border px-4 py-2'>{transaction.categoryName}</td>
+                    <td className='border px-4 py-2'>
+                      <button className='border px-4 py-2' onClick={() => handleUpdate(transaction)}>Update</button>
+                      <button className='border px-4 py-2' onClick={() => deleteTransaction(transaction)}>Delete</button>
                     </td>
                   </tr>
                 ))}
                 <tr>
-                  <td colSpan="2" className='border'><strong>Total Amount:</strong></td>
-                  <td colSpan="3"><strong>${totalAmount}</strong></td>
+                  <td colSpan="2" className='border px-4 py-2'><strong>Total Amount:</strong></td>
+                  <td colSpan="3" className="border px-4 py-2"><strong>${totalAmount}</strong></td>
                 </tr>
               </tbody>
             </table></div>

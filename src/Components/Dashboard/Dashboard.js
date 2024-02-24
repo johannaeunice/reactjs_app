@@ -92,7 +92,7 @@ const Dashboard = () => {
     <div>
       <Navbar/>
       <div className="w-full min-h-screen bg-purple-200 p-5 flex items-center">
-        <div className="bg-white w-full shadow-lg rounded-xl p-8 m-4 md:max-w-sm md:mx-auto flex flex-col">
+        <div className="bg-white min-w-full shadow-lg rounded-xl p-8 m-4 md:max-w-sm md:mx-auto flex flex-col">
           <h2 className="block w-full font-bold text-xl text-grey-darkest text-center mx-auto uppercase">Dashboard</h2>
       {/* First Section */}
       <div className="my-8">
@@ -169,20 +169,19 @@ const Dashboard = () => {
         {/* Category Cards */}
         <div className="flex flex-wrap">
           {categories.map(category => (
-            <div key={category.id} className="w-full sm:w-1/2 md:w-1/3 lg:w-1/4 p-4">
+            <div key={category.id} className="w-full inline-grid grid-cols-3 gap-4">
               <div className="bg-white rounded-lg shadow-md p-4">
-                <p className="font-semibold">{category.name}</p>
-                <p className="text-sm text-gray-500">{category.type}</p>
+                <p className="font-semibold">Name: {category.name}</p>
+                <p className="text-sm text-gray-500">Type: {category.type}</p>
               </div>
             </div>
           ))}
           {/* "Add New Category" Card */}
-          <Link to="/category" className="border border-dashed  border-indigo-600 w-full sm:w-1/2 md:w-1/3 lg:w-1/4 p-4 flex items-center justify-center">
-            <div className="bg-white rounded-lg shadow-md p-4 flex items-center justify-center ">
-              <p className="font-semibold">Add New Category</p>
-              <span className="text-xl ml-2">+</span>
-            </div>
+          <div className="flex justify-center ">
+          <Link to="/category" className='flex rounded-xl w-full px-4 py-1 text-sm text-purple-600 font-semibold border border-dotted border-purple-200 hover:text-white hover:bg-purple-600 hover:border-transparent hover:scale-105 duration-300 focus:outline-none focus:ring-2 focus:ring-purple-600 focus:ring-offset-2 mb-3'>
+            Add New Category +
           </Link>
+        </div>
         </div>
       </div>
     </div>
