@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import Navbar from '../Navbar/Navbar'
+import Navbar from '../Navbar/Navbar';
 
 function TransactionForm() {
   const [transactions, setTransactions] = useState([]);
@@ -16,12 +16,25 @@ function TransactionForm() {
   const [categories, setCategories] = useState([]);
   const [token, setToken] = useState(sessionStorage.getItem('x-auth-token'));
   const [successMessage, setSuccessMessage] = useState('');
-  const [categoryId, setCategoryId]= useState();
+  const [categoryId, setCategoryId] = useState('');
 
   useEffect(() => {
-    // Fetch categories when component mounts
+    fetchTransactions();
     fetchCategories();
   }, []);
+
+  const fetchTransactions = async () => {
+    try {
+      const response = await axios.get('https://le-nkap-v1.onrender.com/transactions', {
+        headers: {
+          'x-auth-token': token
+        }
+      });
+      setTransactions(response.data);
+    } catch (error) {
+      console.error('Error fetching transactions:', error);
+    }
+  };
 
   const fetchCategories = async () => {
     try {
@@ -36,31 +49,18 @@ function TransactionForm() {
     }
   };
 
-  const getCategoryID = (categoryName) => {
-    const category = categories.find(category => category.name === categoryName);
-    return category ? category.id : null;
-  };
-
   const addTransaction = async () => {
-    if (!formData.name || !formData.type || !formData.amount || !formData.categoryName) {
+    if (!formData.name || !formData.type || !formData.amount || !formData.categoryId) {
       alert('Please fill out all fields.');
       return;
     }
     try {
-      const categoryId = getCategoryID(formData.categoryName);
-      console.log('Category ID:', categoryId); // Add this line for logging
-      if (!categoryId) {
-        alert('Category not found.');
-        return;
-      }
-      const newTransaction = { ...formData, categoryId };
-      await axios.post('https://le-nkap-v1.onrender.com/transactions', newTransaction, {
+      await axios.post('https://le-nkap-v1.onrender.com/transactions', formData, {
         headers: {
           'x-auth-token': token
         }
       });
-      setTransactions([...transactions, newTransaction]);
-      console.log("New Transaction Added:", newTransaction);
+      fetchTransactions();
       resetForm();
       setSuccessMessage('Transaction added successfully');
       setTimeout(() => {
@@ -71,27 +71,16 @@ function TransactionForm() {
     }
   };
 
-
-
   const updateTransaction = async () => {
     if (!selectedTransaction) return;
     try {
-      const categoryId = getCategoryID(formData.categoryName);
-      if (!categoryId) {
-        alert('Category not found.');
-        return;
-      }
-      const updatedTransaction = { ...formData, categoryId };
+      const updatedTransaction = { ...formData, categoryId: selectedTransaction.categoryId };
       await axios.put(`https://le-nkap-v1.onrender.com/transactions/${selectedTransaction.id}`, updatedTransaction, {
         headers: {
           'x-auth-token': token
         }
       });
-      const updatedTransactions = transactions.map((transaction) =>
-        transaction === selectedTransaction ? updatedTransaction : transaction
-      );
-      setTransactions(updatedTransactions);
-      console.log("Transaction Updated:", updatedTransaction);
+      fetchTransactions();
       resetForm();
       setSuccessMessage('Transaction updated successfully');
       setTimeout(() => {
@@ -101,40 +90,53 @@ function TransactionForm() {
       console.error('Error updating transaction:', error);
     }
   };
-
+  
   const deleteTransaction = async (transaction) => {
     try {
-      await axios.delete(`https://le-nkap-v1.onrender.com/transactions/${transaction.id}`, {
+      await axios.delete(`https://le-nkap-v1.onrender.com/transactions/${transaction._id}`, {
         headers: {
           'x-auth-token': token
         }
       });
-      const updatedTransactions = transactions.filter((t) => t !== transaction);
-      setTransactions(updatedTransactions);
-      console.log("Transaction Deleted:", transaction);
-      calculateTotalAmount(updatedTransactions);
+      fetchTransactions();
       setSuccessMessage('Transaction deleted');
       setTimeout(() => {
         setSuccessMessage('');
       }, 3000);
     } catch (error) {
       console.error('Error deleting transaction:', error);
+      setSuccessMessage('Error deleting transaction');
+      setTimeout(() => {
+        setSuccessMessage('');
+      }, 3000);
     }
   };
 
   const handleUpdate = (transaction) => {
     setSelectedTransaction(transaction);
-    setFormData({ ...transaction });
+    const category = categories.find(cat => cat._id === transaction.categoryId);
+    const updatedFormData = { ...transaction, categoryId: transaction.categoryId };
+    if (category) {
+      updatedFormData.categoryId = category._id;
+      updatedFormData.categoryName = category.name;
+    }
+    setFormData(updatedFormData);
   };
-
+  
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setFormData({ ...formData, [name]: value });
+    if (name === 'categoryId') {
+      setFormData({ ...formData, [name]: value });
+    } else {
+      setFormData({ ...formData, [name]: value });
+    }
   };
+  
+  
 
   const resetForm = () => {
     setSelectedTransaction(null);
-    setFormData({ name: '', type: '', amount: '', categoryName: '', categoryId: '' });
+    setFormData({ name: '', type: '', amount: '', categoryId: '' });
   };
 
   const toggleSortOrder = () => {
@@ -226,13 +228,13 @@ function TransactionForm() {
               <select
                 name="categoryId"
                 className='p-2 rounded-xl w-full border border-purple-300'
-                value={formData.categoryId}
+                value={categoryId}
                 onChange={handleChange}
                 required
               >
                 <option value="">Select Category</option>
-                {categories.map((category, index) => (
-                  <option key={index} onClick={() => setCategoryId(category._id)}>{category.name}</option>
+                {categories.map((category) => (
+                  <option key={category._id} value={category._id}>{category.name}</option>
                 ))}
               </select>
             </div>
@@ -250,10 +252,10 @@ function TransactionForm() {
           </form>
 
           <div className="flex flex-col mb-4 mt-4">
-              <label className="mb-2 capitalize font-semibold text-lg text-grey-darkest">
+            <label className="mb-2 capitalize font-semibold text-lg text-grey-darkest">
               Filter by Type:</label>
-            <select className='p-2 rounded-xl w-full border border-purple-300' 
-            onChange={handleFilterType}>
+            <select className='p-2 rounded-xl w-full border border-purple-300'
+              onChange={handleFilterType}>
               <option value="">All</option>
               <option value="expense">Expense</option>
               <option value="income">Income</option>
@@ -277,10 +279,16 @@ function TransactionForm() {
                     <td className='border px-4 py-2'>{transaction.name}</td>
                     <td className='border px-4 py-2'>{transaction.type}</td>
                     <td className='border px-4 py-2'>${transaction.amount}</td>
-                    <td className='border px-4 py-2'>{transaction.categoryName}</td>
                     <td className='border px-4 py-2'>
-                      <button className='border px-4 py-2' onClick={() => handleUpdate(transaction)}>Update</button>
-                      <button className='border px-4 py-2' onClick={() => deleteTransaction(transaction)}>Delete</button>
+                      {categories.find(category => category._id === transaction.categoryId)?.name}
+                    </td>
+                    <td className='border px-4 py-2'>
+                      <div className="mb-1 mt-1 flex">
+                        <button className='mx-auto rounded-xl w-3/4 px-4 py-1 text-sm text-orange-500 font-semibold border border-yellow-200 hover:text-black hover:bg-yellow-600 hover:border-transparent hover:scale-105 duration-300 focus:outline-none focus:ring-2 focus:ring-yellow-600 focus:ring-offset-2 mb-3'
+                          onClick={() => handleUpdate(transaction)}>Update</button>
+                        <button className='mx-auto rounded-xl w-3/4 px-4 py-1 text-sm text-red-500 font-semibold border border-red-200 hover:text-black hover:bg-red-600 hover:border-transparent hover:scale-105 duration-300 focus:outline-none focus:ring-2 focus:ring-red-600 focus:ring-offset-2 mb-3'
+                          onClick={() => deleteTransaction(transaction)}>Delete</button>
+                      </div>
                     </td>
                   </tr>
                 ))}

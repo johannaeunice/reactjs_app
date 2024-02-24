@@ -1,9 +1,8 @@
 import React, { useState } from 'react';
-import {Link} from 'react-router-dom'
+import { Link } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import couple from "./login.png"
-
 
 const LoginForm = () => {
   const [formData, setFormData] = useState({
@@ -12,8 +11,8 @@ const LoginForm = () => {
   });
 
   const [errors, setErrors] = useState({});
-  const navigate = useNavigate()
-
+  const navigate = useNavigate();
+  const [loginSuccess, setLoginSuccess] = useState(false); // State to manage login success message
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -26,21 +25,18 @@ const LoginForm = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-        axios.post('https://le-nkap-v1.onrender.com/auth', formData)
-        .then((res) => {
-            console.log(`value of the token\n`,res)
-            console.log(`value of the token\n`,res.data)
-          sessionStorage.setItem('x-auth-token', res.data)
-            navigate('/dashboard')
-        })
-        .catch(err => {console.log(err)
-          throw new Error('Network response was not ok');
-
-        })
-
-      } catch (error) {
-        console.log('Error:', error);
-      }
+      const response = await axios.post('https://le-nkap-v1.onrender.com/auth', formData);
+      console.log('value of the token:', response.data);
+      sessionStorage.setItem('x-auth-token', response.data);
+      setLoginSuccess(true); // Set state to display success message
+      setTimeout(() => {
+        navigate('/dashboard'); // Navigate to dashboard after 2 seconds
+      }, 2000);
+    } catch (error) {
+      console.log('Error:', error);
+      setLoginSuccess(false); // Set state to hide success message if there's an error
+      alert('Login unsuccessful'); // Alert user about unsuccessful login
+    }
 
     const validationErrors = validateForm(formData);
     if (Object.keys(validationErrors).length === 0) {
@@ -74,10 +70,12 @@ const LoginForm = () => {
           <div className="relative col-span-1 hidden md:block">
             <div className="absolute inset-0 bg-purple-200">
               <img className="h-full w-full object-cover" src={couple} alt='couple' />
-            </div></div>
+            </div>
+          </div>
           <div className="col-span-2 md:col-span-1 p-8">
             <div className="flex flex-col justify-center h-full">
               <h2 className="mb-2 text-xl font-bold uppercase tracking-tight text-gray-600">Login</h2>
+              {loginSuccess && <p className="text-green-600">Login Successful</p>}
               <p className="">
                 If you are already a member, easily login by filling this form.
               </p>
@@ -105,7 +103,7 @@ const LoginForm = () => {
                     Password
                   </label>
                   <input
-                    className="p-2 rounded-xl border w-full border border-purple-300"
+                    className="p-2 rounded-xl w-full border border-purple-300"
                     id="password"
                     type="password"
                     placeholder="Enter your password"
@@ -120,7 +118,6 @@ const LoginForm = () => {
                   No Account yet? <Link className="text-purple-600" to="/signup">Click Here!</Link>
                 </p>
                 <div className="flex flex-column items-center justify-between">
-
                   <button
                     className="w-full px-4 py-1 text-sm text-purple-600 font-semibold rounded-xl border border-purple-200 hover:text-white hover:bg-purple-600 hover:border-transparent hover:scale-110 duration-300 focus:outline-none focus:ring-2 focus:ring-purple-600 focus:ring-offset-2"
                     type="submit"
@@ -131,11 +128,8 @@ const LoginForm = () => {
               </form>
             </div>
           </div>
-
-
         </div>
       </div>
-
     </div>
   );
 };
