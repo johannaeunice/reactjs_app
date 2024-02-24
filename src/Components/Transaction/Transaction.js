@@ -16,6 +16,7 @@ function TransactionForm() {
   const [categories, setCategories] = useState([]);
   const [token, setToken] = useState(sessionStorage.getItem('x-auth-token'));
   const [successMessage, setSuccessMessage] = useState('');
+  const [categoryId, setCategoryId]= useState();
 
   useEffect(() => {
     // Fetch categories when component mounts
@@ -168,7 +169,7 @@ function TransactionForm() {
     <div>
       <Navbar />
       <div className="w-full min-h-screen bg-purple-200 p-5 flex items-center">
-        <div className="bg-white w-full shadow-lg rounded-xl p-8 m-4 md:max-w-sm md:mx-auto flex flex-col">
+        <div className="bg-white min-w-full shadow-lg rounded-xl p-8 m-4 md:max-w-sm md:mx-auto flex flex-col">
           <h2 className="block w-full font-bold text-xl text-grey-darkest text-center mx-auto uppercase">Transaction Form</h2>
 
           <form className="bg-white  shadow-md font-bold rounded-xl px-8 pt-6 pb-8 mt-3 inline-block"
@@ -230,8 +231,8 @@ function TransactionForm() {
                 required
               >
                 <option value="">Select Category</option>
-                {categories.map(category => (
-                  <option key={category.id} value={category.id}>{category.name}</option>
+                {categories.map((category, index) => (
+                  <option key={index} onClick={() => setCategoryId(category._id)}>{category.name}</option>
                 ))}
               </select>
             </div>
