@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
-import couple from "./login.png"
+import couple from "./login.png";
 
 const LoginForm = () => {
   const [formData, setFormData] = useState({
@@ -12,7 +12,7 @@ const LoginForm = () => {
 
   const [errors, setErrors] = useState({});
   const navigate = useNavigate();
-  const [loginSuccess, setLoginSuccess] = useState(false); // State to manage login success message
+  const [apiErrorMessage, setApiErrorMessage] = useState(null); // State to manage API error message
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -20,6 +20,7 @@ const LoginForm = () => {
       ...formData,
       [name]: value
     });
+    setApiErrorMessage(null); // Clear API error message when user starts filling the form again
   };
 
   const handleSubmit = async (e) => {
@@ -28,14 +29,19 @@ const LoginForm = () => {
       const response = await axios.post('https://le-nkap-v1.onrender.com/auth', formData);
       console.log('value of the token:', response.data);
       sessionStorage.setItem('x-auth-token', response.data);
-      setLoginSuccess(true); // Set state to display success message
+      setApiErrorMessage(null); // Clear any previous error message
       setTimeout(() => {
-        navigate('/dashboard'); // Navigate to dashboard after 2 seconds
+        navigate('/dashboard'); // Navigate to dashboard after successful login
       }, 2000);
     } catch (error) {
       console.log('Error:', error);
-      setLoginSuccess(false); // Set state to hide success message if there's an error
-      alert('Login unsuccessful'); // Alert user about unsuccessful login
+      if (error.response && error.response.data && error.response.data.message) {
+        setApiErrorMessage(`Error: ${error.response.data.message}`);
+      } else if (error.response && error.response.data) {
+        setApiErrorMessage(`Error: ${error.response.data}`);
+      } else {
+        setApiErrorMessage('An error occurred while processing your request. Please try again later.');
+      }
     }
 
     const validationErrors = validateForm(formData);
@@ -75,7 +81,7 @@ const LoginForm = () => {
           <div className="col-span-2 md:col-span-1 p-8">
             <div className="flex flex-col justify-center h-full">
               <h2 className="mb-2 text-xl font-bold uppercase tracking-tight text-gray-600">Login</h2>
-              {loginSuccess && <p className="text-green-600">Login Successful</p>}
+              {apiErrorMessage && <p className="text-red-500">{apiErrorMessage}</p>}
               <p className="">
                 If you are already a member, easily login by filling this form.
               </p>
