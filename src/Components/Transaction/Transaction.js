@@ -168,10 +168,10 @@ function TransactionForm() {
   const totalAmount = calculateTotalAmount(sortedTransactions);
 
   return (
-    <div>
+    <div className="bg-purple-200">
       <Navbar />
       <div className="w-full min-h-screen bg-purple-200 p-5 flex items-center">
-        <div className="bg-white min-w-full shadow-lg rounded-xl p-8 m-4 md:max-w-sm md:mx-auto flex flex-col">
+        <div className="bg-white w-full shadow-lg rounded-xl p-8 m-4 md:max-w-sm md:mx-auto flex flex-col">
           <h2 className="block w-full font-bold text-xl text-grey-darkest text-center mx-auto uppercase">Transaction Form</h2>
 
           <form className="bg-white  shadow-md font-bold rounded-xl px-8 pt-6 pb-8 mt-3 inline-block"
@@ -278,7 +278,7 @@ function TransactionForm() {
                   <tr key={index}>
                     <td className='border px-4 py-2'>{transaction.name}</td>
                     <td className='border px-4 py-2'>{transaction.type}</td>
-                    <td className='border px-4 py-2'>${transaction.amount}</td>
+                    <td className='border px-4 py-2'>{transaction.amount} FCFA</td>
                     <td className='border px-4 py-2'>
                       {categories.find(category => category._id === transaction.categoryId)?.name}
                     </td>
@@ -294,7 +294,7 @@ function TransactionForm() {
                 ))}
                 <tr>
                   <td colSpan="2" className='border px-4 py-2'><strong>Total Amount:</strong></td>
-                  <td colSpan="3" className="border px-4 py-2"><strong>${totalAmount}</strong></td>
+                  <td colSpan="3" className="border px-4 py-2"><strong>{totalAmount} FCFA</strong></td>
                 </tr>
               </tbody>
             </table></div>

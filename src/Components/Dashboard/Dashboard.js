@@ -92,7 +92,7 @@ const Dashboard = () => {
     <div>
       <Navbar/>
       <div className="w-full min-h-screen bg-purple-200 p-5 flex items-center">
-        <div className="bg-white min-w-full shadow-lg rounded-xl p-8 m-4 md:max-w-sm md:mx-auto flex flex-col">
+        <div className="bg-white w-full shadow-lg rounded-xl p-8 m-4 md:max-w-sm md:mx-auto flex flex-col">
           <h2 className="block w-full font-bold text-xl text-grey-darkest text-center mx-auto uppercase">Dashboard</h2>
       {/* First Section */}
       <div className="my-8">
@@ -110,19 +110,19 @@ const Dashboard = () => {
             {transactions.map(transaction => (
               <tr key={transaction.id}>
                 <td className="border px-4 py-2">{transaction.name}</td>
-                <td className="border px-4 py-2">${transaction.amount}</td>
+                <td className="border px-4 py-2">{transaction.amount} FCFA</td>
                 <td className="border px-4 py-2">{transaction.type}</td>
                 <td className="border px-4 py-2">{transaction.category.name}</td>
               </tr>
             ))}
             <tr key="total">
               <td className="border px-4 py-2" colSpan="1"><strong>Total Amount:</strong> </td>
-              <td className="border px-4 py-2" colSpan="3"><strong>${incomeTotal + expenseTotal}</strong></td>
+              <td className="border px-4 py-2" colSpan="3"><strong>{incomeTotal + expenseTotal} FCFA</strong></td>
               
             </tr>
             <tr key="balance">
             <td className="border px-4 py-2" colSpan="1"><strong>Balance:</strong> </td>
-              <td className="border px-4 py-2" colSpan="3"><strong>${balance}</strong></td>
+              <td className="border px-4 py-2" colSpan="3"><strong>{balance} FCFA</strong></td>
             </tr>
           </tbody>
         </table>
@@ -146,8 +146,8 @@ const Dashboard = () => {
             />
           </div>
           <div>
-            <p className="text-xs">Total Income: ${incomeTotal}</p>
-            <p className="text-xs">Total Expense: ${expenseTotal}</p>
+            <p className="text-xs">Total Income: {incomeTotal} FCFA</p>
+            <p className="text-xs">Total Expense: {expenseTotal}FCFA</p>
             <p className="text-xs">Total Transactions: {transactions.length}</p>
           </div>
         </div>

@@ -1,12 +1,13 @@
-import React from 'react';
-import { Link, useLocation, useNavigate } from 'react-router-dom';
+import React, {useState} from 'react';
+import { NavLink, useLocation, useNavigate } from 'react-router-dom';
 
 const Navbar = () => {
   const location = useLocation();
   const navigate = useNavigate();
+  const [activeLink, setActiveLink] = useState('')
   const isHomePage = location.pathname === '/';
 
-  const handleSignUpClick = (event) => {
+  const handleHomeClick = (event) => {
     if (!isHomePage) {
       const confirmed = window.confirm("You are about to leave the current page. Do you want to proceed?");
       if (!confirmed) {
@@ -14,58 +15,115 @@ const Navbar = () => {
         return;
       }
     }
-    // Add logic to handle Sign Up click
-    navigate('/signup'); // Redirect to sign up page
+    // Redirect to home page ("/")
+    navigate('/');
+  };
+
+  const handleSignUpClick = (event) => {
+    const confirmed = window.confirm("You are about to leave the current page.You will be directed to the Sign Up page. Do you want to proceed?");
+    if (!confirmed) {
+      event.preventDefault(); // Prevent default behavior
+    }else {
+      // Logout user by removing the x-auth-token
+      sessionStorage.removeItem('x-auth-token');
+      // Redirect to signup page
+    navigate('/signup');
+    setActiveLink('Sign Up');
+    }
   };
 
   const handleSignInClick = (event) => {
-    if (!isHomePage) {
-      const confirmed = window.confirm("You are about to leave the current page. Do you want to proceed?");
-      if (!confirmed) {
-        event.preventDefault(); // Prevent default behavior
-        return;
-      }
+    const confirmed = window.confirm("You are about to leave the current page. You will be directed to the Sign In page. Do you want to proceed?");
+    if (!confirmed) {
+      event.preventDefault(); // Prevent default behavior
+    }else {
+      // Logout user by removing the x-auth-token
+      sessionStorage.removeItem('x-auth-token');
+      // Redirect to login page
+    navigate('/login');
+    setActiveLink('Sign In');
     }
-    // Add logic to handle Sign In click
-    navigate('/login'); // Redirect to login page
+    
   };
+
+  const handleLinkClick = (event) => {
+    const confirmed = window.confirm("You are about to leave the current page.You will be directed to the Landing page. Do you want to proceed?");
+    if (!confirmed) {
+      event.preventDefault(); // Prevent default behavior
+    } else {
+      // Logout user by removing the x-auth-token
+      sessionStorage.removeItem('x-auth-token');
+      navigate('/');
+      setActiveLink('Home');
+    }
+  };
+
+  const homeClick = (event) => {
+    navigate('/');
+    setActiveLink('Home');
+  };
+  const signupClick = (event) => {
+    navigate('/signup');
+    setActiveLink('Sign Up');
+  }
+  const signinClick = (event) => {
+    navigate('/login');
+    setActiveLink('Sign In');
+  }
+  const transactionlink = (event) => {
+    navigate('/transactions');
+    setActiveLink('Transactions');
+  }
+  const categoryclick = (event) =>{
+    navigate('/category');
+    setActiveLink('Category');
+  }
+  const dashboardClick = (event) => {
+    navigate('/dashboard');
+    setActiveLink('Dashboard');
+  }
 
   return (
     <nav>
       <ul style={styles.navList}>
         <div style={styles.containerItem}>
           {isHomePage && (
-            <li style={styles.navItem}>
-              <Link to="/" style={styles.link}>Home</Link>
-            </li>
-          )}
-          {isHomePage && (
-            <li style={styles.navItem}>
-              <Link to="/signup" style={styles.link} onClick={handleSignUpClick}>Sign Up</Link>
-            </li>
-          )}
-          {isHomePage && (
-            <li style={styles.navItem}>
-              <Link to="/login" style={styles.link} onClick={handleSignInClick}>Sign In</Link>
-            </li>
+            <>
+              <li style={styles.navItem}>
+                <NavLink exact to="/" style={styles.link} onClick={homeClick} activeStyle={activeLink === 'Home' ? styles.activeLink : null} >Home</NavLink>
+              </li>
+              <li style={styles.navItem}>
+                <NavLink to="/signup" style={styles.link} onClick={signinClick} activeStyle={activeLink === 'Sign Up' ? styles.activeLink : null} >Sign Up</NavLink>
+              </li>
+              <li style={styles.navItem}>
+                <NavLink to="/login" style={styles.link} onClick={signupClick} activeStyle={activeLink === 'Sign In' ? styles.activeLink : null} >Sign In</NavLink>
+              </li>
+            </>
           )}
           {!isHomePage && (
             <>
               <li style={styles.navItem}>
-                <Link to="/dashboard" style={styles.link}>Dashboard</Link>
+                <NavLink exact to="/" style={styles.link} activestyle={activeLink === 'Home' ? styles.activeLink : null} onClick={handleLinkClick}>Home</NavLink>
               </li>
               <li style={styles.navItem}>
-                <Link to="/category" style={styles.link}>Categories</Link>
+                <NavLink to="/dashboard" style={styles.link} activestyle={activeLink === 'Dashboard' ? styles.activeLink : null} >Dashboard</NavLink>
               </li>
               <li style={styles.navItem}>
-                <Link to="/transactions" style={styles.link}>Transactions</Link>
+                <NavLink to="/category" style={styles.link} activestyle={activeLink === 'Category' ? styles.activeLink : null} >Categories</NavLink>
               </li>
               <li style={styles.navItem}>
-                <Link to="/signup" style={styles.link} onClick={handleSignUpClick}>Sign Up</Link>
+                <NavLink to="/transactions" style={styles.link} activestyle={activeLink === 'Transactions' ? styles.activeLink : null} >Transactions</NavLink>
               </li>
               <li style={styles.navItem}>
-                <Link to="/login" style={styles.link} onClick={handleSignInClick}>Sign In</Link>
+                <NavLink to="/account" style={styles.link} activestyle={activeLink === 'Account' ? styles.activeLink : null} >Account</NavLink>
               </li>
+              <li style={styles.navItem}>
+                <NavLink to="/signup" style={styles.link} activestyle={activeLink === 'Sign Up' ? styles.activeLink : null} onClick={handleSignUpClick}>Sign Up</NavLink>
+              </li>
+              <li style={styles.navItem}>
+                <NavLink to="/login" style={styles.link} activestyle={activeLink === 'Sign In' ? styles.activeLink : null} onClick={handleSignInClick}>Sign In</NavLink>
+              </li>
+              
             </>
           )}
         </div>
@@ -91,6 +149,12 @@ const styles = {
     textAlign: 'center',
     padding: '14px 16px',
     textDecoration: 'none',
+    transition: 'color 0.3s ease', // Smooth transition for font color change
+  },
+  activeLink: {
+    fontWeight: 'bold', // Increase font weight for active link
+    textDecoration: 'underline', // Add underline for active link
+    fontSize: '1.1em', // Increase font size for active link
   },
   containerItem: {
     margin: 'auto',

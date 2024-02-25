@@ -57,7 +57,7 @@ const CategoryForm = () => {
     <div>
       <Navbar/>
       <div className="w-full min-h-screen bg-purple-200 p-5 flex items-center">
-        <div className="bg-white min-w-full shadow-lg rounded-xl p-8 m-4 md:max-w-sm md:mx-auto flex flex-col">
+        <div className="bg-white w-full shadow-lg rounded-xl p-8 m-4 md:max-w-sm md:mx-auto flex flex-col">
           <h2 className="block w-full font-bold text-xl text-grey-darkest text-center mx-auto uppercase">Category Form</h2>
 
           <form onSubmit={handleSubmit}>
