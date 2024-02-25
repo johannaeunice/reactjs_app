@@ -20,7 +20,7 @@ const Navbar = () => {
   };
 
   const handleSignUpClick = (event) => {
-    const confirmed = window.confirm("You are about to leave the current page.You will be directed to the Sign Up page. Do you want to proceed?");
+    const confirmed = window.confirm("You are about to leave the current page.You will be logged out. Do you want to proceed?");
     if (!confirmed) {
       event.preventDefault(); // Prevent default behavior
     }else {
@@ -33,7 +33,7 @@ const Navbar = () => {
   };
 
   const handleSignInClick = (event) => {
-    const confirmed = window.confirm("You are about to leave the current page. You will be directed to the Sign In page. Do you want to proceed?");
+    const confirmed = window.confirm("You are about to leave the current page. You will be logged out. Do you want to proceed?");
     if (!confirmed) {
       event.preventDefault(); // Prevent default behavior
     }else {
@@ -47,7 +47,7 @@ const Navbar = () => {
   };
 
   const handleLinkClick = (event) => {
-    const confirmed = window.confirm("You are about to leave the current page.You will be directed to the Landing page. Do you want to proceed?");
+    const confirmed = window.confirm("You are about to leave the current page.You will be logged out. Do you want to proceed?");
     if (!confirmed) {
       event.preventDefault(); // Prevent default behavior
     } else {
@@ -114,9 +114,9 @@ const Navbar = () => {
               <li style={styles.navItem}>
                 <NavLink to="/transactions" style={styles.link} activestyle={activeLink === 'Transactions' ? styles.activeLink : null} >Transactions</NavLink>
               </li>
-              <li style={styles.navItem}>
+              {/* <li style={styles.navItem}>
                 <NavLink to="/account" style={styles.link} activestyle={activeLink === 'Account' ? styles.activeLink : null} >Account</NavLink>
-              </li>
+              </li> */}
               <li style={styles.navItem}>
                 <NavLink to="/signup" style={styles.link} activestyle={activeLink === 'Sign Up' ? styles.activeLink : null} onClick={handleSignUpClick}>Sign Up</NavLink>
               </li>

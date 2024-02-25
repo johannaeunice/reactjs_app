@@ -90,7 +90,7 @@ function TransactionForm() {
       console.error('Error updating transaction:', error);
     }
   };
-  
+
   const deleteTransaction = async (transaction) => {
     try {
       await axios.delete(`https://le-nkap-v1.onrender.com/transactions/${transaction._id}`, {
@@ -122,7 +122,7 @@ function TransactionForm() {
     }
     setFormData(updatedFormData);
   };
-  
+
   const handleChange = (e) => {
     const { name, value } = e.target;
     if (name === 'categoryId') {
@@ -131,8 +131,8 @@ function TransactionForm() {
       setFormData({ ...formData, [name]: value });
     }
   };
-  
-  
+
+
 
   const resetForm = () => {
     setSelectedTransaction(null);
@@ -170,6 +170,7 @@ function TransactionForm() {
   return (
     <div className="bg-purple-200">
       <Navbar />
+      <p className='font-semibold text-sm text-red-500'>For better experience (if on phone) use in landscape mode.</p>
       <div className="w-full min-h-screen bg-purple-200 p-5 flex items-center">
         <div className="bg-white w-full shadow-lg rounded-xl p-8 m-4 md:max-w-sm md:mx-auto flex flex-col">
           <h2 className="block w-full font-bold text-xl text-grey-darkest text-center mx-auto uppercase">Transaction Form</h2>
@@ -238,6 +239,9 @@ function TransactionForm() {
                 ))}
               </select>
             </div>
+            {successMessage && (
+            <div className="text-green-600 mt-4 text-center">{successMessage}</div>
+          )}
             <div className="mb-4 mt-4 flex">
               <button className='mx-auto rounded-xl w-3/4 px-4 py-1 text-sm text-purple-600 font-semibold border border-purple-200 hover:text-white hover:bg-purple-600 hover:border-transparent hover:scale-105 duration-300 focus:outline-none focus:ring-2 focus:ring-purple-600 focus:ring-offset-2 mb-3'
                 onClick={selectedTransaction ? updateTransaction : addTransaction}>
@@ -264,6 +268,9 @@ function TransactionForm() {
 
           <div className="my-8">
             <table className="table-fixed border-collapse border w-full mb-4 mt-4">
+              <caption class="caption-top mb-2">
+                Table: Transactions Registered.
+              </caption>
               <thead>
                 <tr>
                   <th onClick={toggleSortOrder}>Name {sortOrder === 'asc' ? '▲' : '▼'}</th>
@@ -297,10 +304,9 @@ function TransactionForm() {
                   <td colSpan="3" className="border px-4 py-2"><strong>{totalAmount} FCFA</strong></td>
                 </tr>
               </tbody>
-            </table></div>
-          {successMessage && (
-            <div className="text-green-600 mt-4 text-center">{successMessage}</div>
-          )}
+            </table>
+            </div>
+          
         </div>
       </div>
     </div>
