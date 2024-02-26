@@ -305,25 +305,25 @@ function TransactionForm() {
                       </td>
                       <td className='border px-4 py-2'>
                         <div className="mb-1 mt-1 flex">
-                          
-{/* Update Button */}
-<button style={{ backgroundColor: 'white', color: '#F59E0B', borderColor: '#F59E0B', transition: 'background-color 0.3s, color 0.3s, border-color 0.3s' }} 
-        className='mx-auto rounded-xl w-3/4 px-4 py-1 text-sm font-semibold border duration-300 focus:outline-none 
+
+                          {/* Update Button */}
+                          <button style={{ backgroundColor: 'white', color: '#F59E0B', borderColor: '#F59E0B', transition: 'background-color 0.3s, color 0.3s, border-color 0.3s' }}
+                            className='mx-auto rounded-xl w-3/4 px-4 py-1 text-sm font-semibold border duration-300 focus:outline-none 
                    focus:border-transparent focus:ring-2 focus:ring-yellow-600 focus:ring-offset-2 mb-3'
-        onClick={() => handleUpdate(transaction)}
-        onMouseEnter={(e) => { e.target.style.backgroundColor = '#F59E0B'; e.target.style.color = 'white'; }}
-        onMouseLeave={(e) => { e.target.style.backgroundColor = 'white'; e.target.style.color = '#F59E0B'; }}>
-  Update
-</button>
-{/* Delete Button */}
-<button style={{ backgroundColor: 'white', color: '#EF4444', borderColor: '#EF4444', transition: 'background-color 0.3s, color 0.3s, border-color 0.3s' }} 
-        className='mx-auto rounded-xl w-3/4 px-4 py-1 text-sm font-semibold border duration-300 focus:outline-none 
+                            onClick={() => handleUpdate(transaction)}
+                            onMouseEnter={(e) => { e.target.style.backgroundColor = '#F59E0B'; e.target.style.color = 'white'; }}
+                            onMouseLeave={(e) => { e.target.style.backgroundColor = 'white'; e.target.style.color = '#F59E0B'; }}>
+                            Update
+                          </button>
+                          {/* Delete Button */}
+                          <button style={{ backgroundColor: 'white', color: '#EF4444', borderColor: '#EF4444', transition: 'background-color 0.3s, color 0.3s, border-color 0.3s' }}
+                            className='mx-auto rounded-xl w-3/4 px-4 py-1 text-sm font-semibold border duration-300 focus:outline-none 
                    focus:border-transparent focus:ring-2 focus:ring-red-600 focus:ring-offset-2 mb-3'
-        onClick={() => deleteTransaction(transaction)}
-        onMouseEnter={(e) => { e.target.style.backgroundColor = '#EF4444'; e.target.style.color = 'white'; }}
-        onMouseLeave={(e) => { e.target.style.backgroundColor = 'white'; e.target.style.color = '#EF4444'; }}>
-  Delete
-</button>
+                            onClick={() => deleteTransaction(transaction)}
+                            onMouseEnter={(e) => { e.target.style.backgroundColor = '#EF4444'; e.target.style.color = 'white'; }}
+                            onMouseLeave={(e) => { e.target.style.backgroundColor = 'white'; e.target.style.color = '#EF4444'; }}>
+                            Delete
+                          </button>
 
                         </div>
                       </td>
