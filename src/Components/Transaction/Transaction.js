@@ -72,11 +72,14 @@ function TransactionForm() {
 
   const updateTransaction = async () => {
     if (!selectedTransaction) return;
+    const { _id, name, type, amount, categoryId } = formData;
     try {
-      // Destructure the formData object to remove unwanted fields
-      const { _id, category, userId, date, __v, categoryName, ...formDataWithoutUnwantedFields } = formData;
-      
-      await axios.put(`https://le-nkap-v1.onrender.com/transactions/${selectedTransaction.id}`, formDataWithoutUnwantedFields, {
+      await axios.put(`https://le-nkap-v1.onrender.com/transactions/${_id}`, {
+        name,
+        type,
+        amount,
+        categoryId
+      }, {
         headers: {
           'x-auth-token': token
         }
@@ -90,7 +93,8 @@ function TransactionForm() {
     } catch (error) {
       console.error('Error updating transaction:', error);
     }
-  };      
+  };
+     
 
   const deleteTransaction = async (transaction) => {
     try {
