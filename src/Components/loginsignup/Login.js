@@ -3,6 +3,8 @@ import { Link } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import couple from "./login.png";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faSpinner } from '@fortawesome/free-solid-svg-icons';
 
 const LoginForm = () => {
   const [formData, setFormData] = useState({
@@ -13,6 +15,7 @@ const LoginForm = () => {
   const [errors, setErrors] = useState({});
   const navigate = useNavigate();
   const [apiErrorMessage, setApiErrorMessage] = useState(null); // State to manage API error message
+  const [loading, setLoading] = useState(false); // State to track loading state
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -25,6 +28,7 @@ const LoginForm = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setLoading(true); // Set loading state to true when API request starts
     try {
       const response = await axios.post('https://le-nkap-v1.onrender.com/auth', formData);
       console.log('value of the token:', response.data);
@@ -42,6 +46,8 @@ const LoginForm = () => {
       } else {
         setApiErrorMessage('An error occurred while processing your request. Please try again later.');
       }
+    } finally {
+      setLoading(false); // Set loading state to false regardless of the result
     }
 
     const validationErrors = validateForm(formData);
@@ -127,8 +133,13 @@ const LoginForm = () => {
                   <button
                     className="w-full px-4 py-1 text-sm text-purple-600 font-semibold rounded-xl border border-purple-200 hover:text-white hover:bg-purple-600 hover:border-transparent hover:scale-110 duration-300 focus:outline-none focus:ring-2 focus:ring-purple-600 focus:ring-offset-2"
                     type="submit"
+                    disabled={loading} // Disable button while loading
                   >
-                    Sign In
+                    {loading ? (
+                      <FontAwesomeIcon icon={faSpinner} spin /> // Display loading spinner if loading
+                    ) : (
+                      'Sign In' // Display "Sign In" text if not loading
+                    )}
                   </button>
                 </div>
               </form>

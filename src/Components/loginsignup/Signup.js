@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faSpinner } from '@fortawesome/free-solid-svg-icons';
 import couple from './signup.png';
 
 const SignUpForm = () => {
@@ -17,6 +19,7 @@ const SignUpForm = () => {
   const [errors, setErrors] = useState({});
   const [apiErrorMessage, setApiErrorMessage] = useState(null); // State to manage API error message
   const [successMessage, setSuccessMessage] = useState(null); // State to hold success message
+  const [isLoading, setIsLoading] = useState(false); // State to manage loading state
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -35,7 +38,7 @@ const SignUpForm = () => {
     e.preventDefault();
     const validationErrors = validateForm(formData);
     if (Object.keys(validationErrors).length === 0) {
-      console.log(formData);
+      setIsLoading(true); // Set loading state to true
       setErrors({}); // Clear all form errors when user submits corrected data
       axios.post('https://le-nkap-v1.onrender.com/users', formData)
         .then(res => {
@@ -54,6 +57,9 @@ const SignUpForm = () => {
           } else {
             setApiErrorMessage('An error occurred while processing your request. Please try again later.');
           }
+        })
+        .finally(() => {
+          setIsLoading(false); // Set loading state to false after request completion
         });
     } else {
       setErrors(validationErrors);
@@ -190,9 +196,11 @@ const SignUpForm = () => {
                 </p>
                 <div className="flex items-center justify-between">
                   <button
-                    className="w-full px-4 py-1 text-sm text-purple-600 font-semibold rounded-full border border-purple-200 hover:text-white hover:bg-purple-600 hover:border-transparent hover:scale-110 duration-300 focus:outline-none focus:ring-2 focus:ring-purple-600 focus:ring-offset-2 mb-3"
-                    type="submit" >
-                    Sign Up
+                    className="w-full px-4 py-1 text-sm text-purple-600 font-semibold rounded-xl border border-purple-200 hover:text-white hover:bg-purple-600 hover:border-transparent hover:scale-110 duration-300 focus:outline-none focus:ring-2 focus:ring-purple-600 focus:ring-offset-2 mb-3"
+                    type="submit" 
+                    disabled={isLoading}
+                  >
+                    {isLoading ? <FontAwesomeIcon icon={faSpinner} spin /> : "Sign Up"}
                   </button>
                 </div>
               </form>
