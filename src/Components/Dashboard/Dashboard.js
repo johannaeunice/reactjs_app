@@ -17,39 +17,39 @@ const Dashboard = () => {
   useEffect(() => {
     const authToken = sessionStorage.getItem('x-auth-token');
     setTransactionsLoading(true); // Set loading state to true before API call
-    axios.get('https://le-nkap-v1.onrender.com/transactions', { 
+    axios.get('https://le-nkap-v1.onrender.com/transactions', {
       headers: {
-        'x-auth-token' : authToken 
-      } 
+        'x-auth-token': authToken
+      }
     })
-    .then(response => {
-      setTransactions(response.data);
-    })
-    .catch(error => {
-      console.error('Error fetching transactions: ', error);
-    })
-    .finally(() => {
-      setTransactionsLoading(false); // Set loading state to false after API call (whether success or failure)
-    });
+      .then(response => {
+        setTransactions(response.data);
+      })
+      .catch(error => {
+        console.error('Error fetching transactions: ', error);
+      })
+      .finally(() => {
+        setTransactionsLoading(false); // Set loading state to false after API call (whether success or failure)
+      });
   }, []);
 
   useEffect(() => {
     const authToken = sessionStorage.getItem('x-auth-token');
     setCategoriesLoading(true); // Set loading state to true before API call
-    axios.get('https://le-nkap-v1.onrender.com/categories', { 
+    axios.get('https://le-nkap-v1.onrender.com/categories', {
       headers: {
-        'x-auth-token' : authToken 
-      } 
+        'x-auth-token': authToken
+      }
     })
-    .then(response => {
-      setCategories(response.data);
-    })
-    .catch(error => {
-      console.error('Error fetching categories: ', error);
-    })
-    .finally(() => {
-      setCategoriesLoading(false); // Set loading state to false after API call (whether success or failure)
-    });
+      .then(response => {
+        setCategories(response.data);
+      })
+      .catch(error => {
+        console.error('Error fetching categories: ', error);
+      })
+      .finally(() => {
+        setCategoriesLoading(false); // Set loading state to false after API call (whether success or failure)
+      });
   }, []);
 
   const calculateTotalAmount = (type) => {
@@ -121,10 +121,10 @@ const Dashboard = () => {
 
   return (
     <div className="bg-purple-200">
-      <Navbar/>
+      <Navbar />
       {shouldDisplayMessage && <p className='font-semibold text-sm text-red-500'>For better experience (if on phone) use in landscape mode.</p>}
       <div className="w-full min-h-screen bg-purple-200 p-5 flex items-center justify-center">
-        
+
         <div className="bg-white w-full md:max-w-xl shadow-lg rounded-xl p-8 flex flex-col">
           <h2 className="font-bold text-xl text-center uppercase mb-6">Dashboard</h2>
 
@@ -191,7 +191,7 @@ const Dashboard = () => {
               </div>
             </div>
           )}
-          
+
           {/* Second Section: Area Graph */}
           {shouldDisplayGraphs && (
             <div className="my-8">
@@ -203,7 +203,7 @@ const Dashboard = () => {
               />
             </div>
           )}
-          
+
           {/* Third Section: Category Cards */}
           <div className="my-8">
             {categoriesLoading ? (
@@ -217,15 +217,15 @@ const Dashboard = () => {
                   <div key={category.id} className="w-full md:w-1/2 lg:w-1/3 xl:w-1/4 p-2">
                     <div className="bg-white rounded-xl shadow-md px-2 mt-4 flex mx-auto hover:bg-purple-950">
                       <div className="mx-auto">
-                      <p className="font-semibold text-violet-700 ">Name: {category.name}</p>
-                      <p className="text-sm text-gray-500">Type: {category.type}</p>
+                        <p className="font-semibold text-violet-700 ">Name: {category.name}</p>
+                        <p className="text-sm text-gray-500">Type: {category.type}</p>
                       </div>
                     </div>
                   </div>
                 ))}
                 {/* "Add New Category" Card */}
                 <div className="flex justify-center mt-4">
-                  <Link to="/category" className='rounded-xl px-4 py-1 text-sm text-purple-600 font-semibold border border-dotted border-purple-200 hover:text-white hover:bg-purple-600 hover:border-transparent hover:scale-105 duration-300 focus:outline-none focus:ring-2 focus:ring-purple-600 focus:ring-offset-2'>
+                  <Link to="/categories" className='rounded-xl px-4 py-1 text-sm text-purple-600 font-semibold border border-dotted border-purple-200 hover:text-white hover:bg-purple-600 hover:border-transparent hover:scale-105 duration-300 focus:outline-none focus:ring-2 focus:ring-purple-600 focus:ring-offset-2'>
                     Add New Category +
                   </Link>
                 </div>

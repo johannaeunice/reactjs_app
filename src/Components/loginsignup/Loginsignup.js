@@ -9,20 +9,20 @@ import SignUpForm from './Signup'
 // import email_icon from '../icons/alternate_email.png'
 // import password_icon from '../icons/lock.png'
 // import feedback_icon from '../icons/feedback.png'
-// import contact_icon from '../icons/contact_support.png'
+// import contact_icon from '../icons/contact Us_support.png'
 
 function Loginsignup() {
 
-  
+
   const [user, setUser] = useState([])
   const addUser = (data) => {
-      console.log(data);
-      setUser(() => [...user, data])
+    console.log(data);
+    setUser(() => [...user, data])
   }
 
   return (
     <div>
-      <SignUpForm RegisterUser={addUser}/>
+      <SignUpForm RegisterUser={addUser} />
     </div>
   )
 }

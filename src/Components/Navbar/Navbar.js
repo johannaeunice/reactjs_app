@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, { useState, useEffect } from 'react';
 import { NavLink, useLocation, useNavigate } from 'react-router-dom';
 
 const Navbar = () => {
@@ -6,6 +6,12 @@ const Navbar = () => {
   const navigate = useNavigate();
   const [activeLink, setActiveLink] = useState('')
   const isHomePage = location.pathname === '/';
+
+  useEffect(() => {
+    const path = location.pathname.substring(1); // Remove leading slash
+    const title = path.charAt(0).toUpperCase() + path.slice(1); // Capitalize first letter
+    document.title = title || 'Home'; // Set document title
+  }, [location]);
 
   const handleHomeClick = (event) => {
     if (!isHomePage) {
@@ -23,12 +29,12 @@ const Navbar = () => {
     const confirmed = window.confirm("You are about to leave the current page.You will be logged out. Do you want to proceed?");
     if (!confirmed) {
       event.preventDefault(); // Prevent default behavior
-    }else {
+    } else {
       // Logout user by removing the x-auth-token
       sessionStorage.removeItem('x-auth-token');
       // Redirect to signup page
-    navigate('/signup');
-    setActiveLink('Sign Up');
+      navigate('/signup');
+      setActiveLink('Sign Up');
     }
   };
 
@@ -36,14 +42,14 @@ const Navbar = () => {
     const confirmed = window.confirm("You are about to leave the current page. You will be logged out. Do you want to proceed?");
     if (!confirmed) {
       event.preventDefault(); // Prevent default behavior
-    }else {
+    } else {
       // Logout user by removing the x-auth-token
       sessionStorage.removeItem('x-auth-token');
       // Redirect to login page
-    navigate('/login');
-    setActiveLink('Sign In');
+      navigate('/login');
+      setActiveLink('Sign In');
     }
-    
+
   };
 
   const handleLinkClick = (event) => {
@@ -74,8 +80,8 @@ const Navbar = () => {
     navigate('/transactions');
     setActiveLink('Transactions');
   }
-  const categoryclick = (event) =>{
-    navigate('/category');
+  const categoryclick = (event) => {
+    navigate('/categories');
     setActiveLink('Category');
   }
   const dashboardClick = (event) => {
@@ -109,7 +115,7 @@ const Navbar = () => {
                 <NavLink to="/dashboard" style={styles.link} activestyle={activeLink === 'Dashboard' ? styles.activeLink : null} >Dashboard</NavLink>
               </li>
               <li style={styles.navItem}>
-                <NavLink to="/category" style={styles.link} activestyle={activeLink === 'Category' ? styles.activeLink : null} >Categories</NavLink>
+                <NavLink to="/categories" style={styles.link} activestyle={activeLink === 'Category' ? styles.activeLink : null} >Categories</NavLink>
               </li>
               <li style={styles.navItem}>
                 <NavLink to="/transactions" style={styles.link} activestyle={activeLink === 'Transactions' ? styles.activeLink : null} >Transactions</NavLink>
@@ -123,7 +129,7 @@ const Navbar = () => {
               <li style={styles.navItem}>
                 <NavLink to="/login" style={styles.link} activestyle={activeLink === 'Sign In' ? styles.activeLink : null} onClick={handleSignInClick}>Sign In</NavLink>
               </li>
-              
+
             </>
           )}
         </div>
