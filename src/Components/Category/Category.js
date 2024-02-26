@@ -107,7 +107,7 @@ const CategoryForm = () => {
               </select>
             </div>
             <div className="flex justify-center">
-              {successMessage && <div className="text-green-600">{successMessage}</div>}
+              {successMessage && <div style={{ color: 'green' }} className='font-bold text-center'>{successMessage}</div>}
             </div>
             <div className="flex justify-center">
               {/* Conditional rendering of loading spinner */}

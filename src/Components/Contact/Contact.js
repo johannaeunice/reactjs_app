@@ -67,8 +67,8 @@ const ContactPage = () => {
                                     className="p-2 rounded-xl w-full border border-purple-300 h-58 resize-none" required></textarea>
                             </div>
                             <div>
-                                {successMessage && <p className="text-green-500 mt-2 mb-2 mx-auto">{successMessage}</p>}
-                                {errorMessage && <p className="text-red-500 mt-2 mb-2 mx-auto">{errorMessage}</p>}
+                                {successMessage && <p style={{ color: 'green' }} className='font-bold mt-2 mb-2 text-center'>{successMessage}</p>}
+                                {errorMessage && <p style={{ color: 'red' }} className='font-bold mt-2 mb-2 text-center'>{errorMessage}</p>}
                                 <button type="submit" className="w-full bg-white hover:bg-purple-600 hover:border-transparent hover:scale-110 duration-300 text-purple-600 border border-purple-200 hover:text-white font-bold py-2 px-4 rounded block">
                                     {loading ? <FontAwesomeIcon icon={faSpinner} spin className="mr-2" /> : 'Send'}
                                 </button>

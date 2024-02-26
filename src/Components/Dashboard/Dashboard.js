@@ -11,6 +11,8 @@ const Dashboard = () => {
   const [categories, setCategories] = useState([]);
   const [transactionsLoading, setTransactionsLoading] = useState(true);
   const [categoriesLoading, setCategoriesLoading] = useState(true);
+  const [showWarning, setShowWarning] = useState(false);
+  const [showEncouragement, setShowEncouragement] = useState(false);
 
   useEffect(() => {
     const authToken = sessionStorage.getItem('x-auth-token');
@@ -102,6 +104,19 @@ const Dashboard = () => {
 
   const graphData = generateGraphData();
 
+  useEffect(() => {
+    if (incomeTotal < expenseTotal) {
+      setShowWarning(true);
+      setShowEncouragement(false);
+    } else if (incomeTotal > expenseTotal) {
+      setShowEncouragement(true);
+      setShowWarning(false);
+    } else {
+      setShowWarning(false);
+      setShowEncouragement(false);
+    }
+  }, [incomeTotal, expenseTotal]);
+
   const shouldDisplayMessage = window.innerWidth <= 768;
 
   return (
@@ -116,7 +131,7 @@ const Dashboard = () => {
           {/* First Section: Transaction Table, Add New Transaction Button, Pie Chart */}
           {(!transactionsLoading && transactions.length > 0) && (
             <div className="my-8">
-              <table className="table-fixed border-collapse border w-full mb-4">
+              <table className="table-auto border-collapse border w-full mb-4">
                 <thead>
                   <tr>
                     <th className="border px-4 py-2">Name</th>
@@ -129,10 +144,10 @@ const Dashboard = () => {
                   {/* Transaction Table Rows */}
                   {transactions.map(transaction => (
                     <tr key={transaction.id}>
-                      <td className="border px-4 py-2">{transaction.name}</td>
-                      <td className="border px-4 py-2">{transaction.amount} FCFA</td>
-                      <td className="border px-4 py-2">{transaction.type}</td>
-                      <td className="border px-4 py-2">{transaction.category.name}</td>
+                      <td className="border px-4 py-2 text-center">{transaction.name}</td>
+                      <td className="border px-4 py-2 text-center">{transaction.amount} FCFA</td>
+                      <td className="border px-4 py-2 text-center">{transaction.type}</td>
+                      <td className="border px-4 py-2 text-center">{transaction.category.name}</td>
                     </tr>
                   ))}
                   {/* Total Amount and Balance Rows */}
@@ -146,6 +161,11 @@ const Dashboard = () => {
                   </tr>
                 </tbody>
               </table>
+              {/* Warning or Encouragement Messages */}
+              <div className="flex justify-center mb-4">
+                {showWarning && <p className='text-red-500 font-bold'>You are spending more than you are earning. Watch your expenses!</p>}
+                {showEncouragement && <p style={{ color: 'green' }} className='font-bold'>You are managing your finances well. Keep it up!</p>}
+              </div>
               {/* Button to Add New Transaction */}
               <div className="flex justify-center mb-4">
                 <Link to="/transactions" className='rounded-xl px-4 py-1 text-sm text-purple-600 font-semibold border border-purple-200 hover:text-white hover:bg-purple-600 hover:border-transparent hover:scale-105 duration-300 focus:outline-none focus:ring-2 focus:ring-purple-600 focus:ring-offset-2'>

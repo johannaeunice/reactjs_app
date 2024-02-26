@@ -249,7 +249,7 @@ function TransactionForm() {
             </div>
 
             {successMessage && (
-              <div className="text-green-600 mt-4 text-center">{successMessage}</div>
+              <div style={{ color: 'green' }} className='font-bold text-center'>{successMessage}</div>
             )}
             <div className="mb-4 mt-4 flex">
               <button className='mx-auto rounded-xl w-3/4 px-4 py-1 text-sm text-purple-600 font-semibold border border-purple-200 hover:text-white hover:bg-purple-600 hover:border-transparent hover:scale-105 duration-300 focus:outline-none focus:ring-2 focus:ring-purple-600 focus:ring-offset-2 mb-3'
@@ -305,10 +305,26 @@ function TransactionForm() {
                       </td>
                       <td className='border px-4 py-2'>
                         <div className="mb-1 mt-1 flex">
-                          <button className='mx-auto rounded-xl w-3/4 px-4 py-1 text-sm text-yellow-500 font-semibold border border-yellow-200 hover:text-black hover:bg-yellow-600  hover:scale-105 duration-300 focus:outline-none focus:ring-2 focus:ring-yellow-600 focus:ring-offset-2 mb-3'
-                            onClick={() => handleUpdate(transaction)}>Update</button>
-                          <button className='mx-auto rounded-xl w-3/4 px-4 py-1 text-sm text-red-500 font-semibold border border-red-200 hover:text-black hover:bg-red-600  hover:scale-105 duration-300 focus:outline-none focus:ring-2 focus:ring-red-600 focus:ring-offset-2 mb-3'
-                            onClick={() => deleteTransaction(transaction)}>Delete</button>
+                          
+{/* Update Button */}
+<button style={{ backgroundColor: 'white', color: '#F59E0B', borderColor: '#F59E0B', transition: 'background-color 0.3s, color 0.3s, border-color 0.3s' }} 
+        className='mx-auto rounded-xl w-3/4 px-4 py-1 text-sm font-semibold border duration-300 focus:outline-none 
+                   focus:border-transparent focus:ring-2 focus:ring-yellow-600 focus:ring-offset-2 mb-3'
+        onClick={() => handleUpdate(transaction)}
+        onMouseEnter={(e) => { e.target.style.backgroundColor = '#F59E0B'; e.target.style.color = 'white'; }}
+        onMouseLeave={(e) => { e.target.style.backgroundColor = 'white'; e.target.style.color = '#F59E0B'; }}>
+  Update
+</button>
+{/* Delete Button */}
+<button style={{ backgroundColor: 'white', color: '#EF4444', borderColor: '#EF4444', transition: 'background-color 0.3s, color 0.3s, border-color 0.3s' }} 
+        className='mx-auto rounded-xl w-3/4 px-4 py-1 text-sm font-semibold border duration-300 focus:outline-none 
+                   focus:border-transparent focus:ring-2 focus:ring-red-600 focus:ring-offset-2 mb-3'
+        onClick={() => deleteTransaction(transaction)}
+        onMouseEnter={(e) => { e.target.style.backgroundColor = '#EF4444'; e.target.style.color = 'white'; }}
+        onMouseLeave={(e) => { e.target.style.backgroundColor = 'white'; e.target.style.color = '#EF4444'; }}>
+  Delete
+</button>
+
                         </div>
                       </td>
                     </tr>
