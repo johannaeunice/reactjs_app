@@ -9,14 +9,13 @@ function TransactionForm() {
     name: '',
     type: '',
     amount: '',
-    categoryId: '', // Use categoryId instead of categoryName
+    categoryId: '',
   });
   const [sortOrder, setSortOrder] = useState('asc');
   const [filterType, setFilterType] = useState('');
   const [categories, setCategories] = useState([]);
   const [token, setToken] = useState(sessionStorage.getItem('x-auth-token'));
   const [successMessage, setSuccessMessage] = useState('');
-  const [categoryId, setCategoryId] = useState('');
 
   useEffect(() => {
     fetchTransactions();
@@ -74,8 +73,10 @@ function TransactionForm() {
   const updateTransaction = async () => {
     if (!selectedTransaction) return;
     try {
-      const updatedTransaction = { ...formData, categoryId: selectedTransaction.categoryId };
-      await axios.put(`https://le-nkap-v1.onrender.com/transactions/${selectedTransaction.id}`, updatedTransaction, {
+      // Destructure the formData object to remove unwanted fields
+      const { _id, category, userId, date, __v, categoryName, ...formDataWithoutUnwantedFields } = formData;
+      
+      await axios.put(`https://le-nkap-v1.onrender.com/transactions/${selectedTransaction.id}`, formDataWithoutUnwantedFields, {
         headers: {
           'x-auth-token': token
         }
@@ -89,7 +90,7 @@ function TransactionForm() {
     } catch (error) {
       console.error('Error updating transaction:', error);
     }
-  };
+  };      
 
   const deleteTransaction = async (transaction) => {
     try {
@@ -114,25 +115,18 @@ function TransactionForm() {
 
   const handleUpdate = (transaction) => {
     setSelectedTransaction(transaction);
-    const category = categories.find(cat => cat._id === transaction.categoryId);
-    const updatedFormData = { ...transaction, categoryId: transaction.categoryId };
-    if (category) {
-      updatedFormData.categoryId = category._id;
-      updatedFormData.categoryName = category.name;
-    }
-    setFormData(updatedFormData);
+    setFormData({
+      ...transaction,
+      categoryId: transaction.category._id, // Set category ID
+      categoryName: transaction.category.name // Set category name
+    });
   };
+  
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    if (name === 'categoryId') {
-      setFormData({ ...formData, [name]: value });
-    } else {
-      setFormData({ ...formData, [name]: value });
-    }
+    setFormData({ ...formData, [name]: value });
   };
-
-
 
   const resetForm = () => {
     setSelectedTransaction(null);
@@ -149,10 +143,9 @@ function TransactionForm() {
   };
 
   const calculateTotalAmount = (transactions) => {
-    const totalAmount = transactions.reduce((total, transaction) => {
+    return transactions.reduce((total, transaction) => {
       return total + parseFloat(transaction.amount);
     }, 0);
-    return totalAmount;
   };
 
   let sortedTransactions = [...transactions];
@@ -166,11 +159,12 @@ function TransactionForm() {
   }
 
   const totalAmount = calculateTotalAmount(sortedTransactions);
+  const shouldDisplayMessage = window.innerWidth <= 768;
 
   return (
     <div className="bg-purple-200">
       <Navbar />
-      <p className='font-semibold text-sm text-red-500'>For better experience (if on phone) use in landscape mode.</p>
+      {shouldDisplayMessage && <p className='font-semibold text-sm text-red-500'>For better experience (if on phone) use in landscape mode.</p>}
       <div className="w-full min-h-screen bg-purple-200 p-5 flex items-center">
         <div className="bg-white w-full shadow-lg rounded-xl p-8 m-4 md:max-w-sm md:mx-auto flex flex-col">
           <h2 className="block w-full font-bold text-xl text-grey-darkest text-center mx-auto uppercase">Transaction Form</h2>
@@ -229,7 +223,7 @@ function TransactionForm() {
               <select
                 name="categoryId"
                 className='p-2 rounded-xl w-full border border-purple-300'
-                value={categoryId}
+                value={formData.categoryId}
                 onChange={handleChange}
                 required
               >
@@ -239,9 +233,10 @@ function TransactionForm() {
                 ))}
               </select>
             </div>
+
             {successMessage && (
-            <div className="text-green-600 mt-4 text-center">{successMessage}</div>
-          )}
+              <div className="text-green-600 mt-4 text-center">{successMessage}</div>
+            )}
             <div className="mb-4 mt-4 flex">
               <button className='mx-auto rounded-xl w-3/4 px-4 py-1 text-sm text-purple-600 font-semibold border border-purple-200 hover:text-white hover:bg-purple-600 hover:border-transparent hover:scale-105 duration-300 focus:outline-none focus:ring-2 focus:ring-purple-600 focus:ring-offset-2 mb-3'
                 onClick={selectedTransaction ? updateTransaction : addTransaction}>
@@ -252,7 +247,8 @@ function TransactionForm() {
                 <button className='mx-auto rounded-xl w-3/4 px-4 py-1 text-sm text-purple-600 font-semibold border border-purple-200 hover:text-white hover:bg-purple-600 hover:border-transparent hover:scale-105 duration-300 focus:outline-none focus:ring-2 focus:ring-purple-600 focus:ring-offset-2 mb-3'
                   type="button"
                   onClick={resetForm}>Cancel</button>
-              )}</div>
+              )}
+            </div>
           </form>
 
           <div className="flex flex-col mb-4 mt-4">
@@ -268,8 +264,8 @@ function TransactionForm() {
 
           <div className="my-8">
             <table className="table-fixed border-collapse border w-full mb-4 mt-4">
-              <caption class="caption-top mb-2">
-                Table: Transactions Registered.
+              <caption className="caption-top mb-2">
+                Table: Registered Transactions.
               </caption>
               <thead>
                 <tr>
@@ -287,13 +283,13 @@ function TransactionForm() {
                     <td className='border px-4 py-2'>{transaction.type}</td>
                     <td className='border px-4 py-2'>{transaction.amount} FCFA</td>
                     <td className='border px-4 py-2'>
-                      {categories.find(category => category._id === transaction.categoryId)?.name}
+                      {transaction.category.name}
                     </td>
                     <td className='border px-4 py-2'>
                       <div className="mb-1 mt-1 flex">
-                        <button className='mx-auto rounded-xl w-3/4 px-4 py-1 text-sm text-orange-500 font-semibold border border-yellow-200 hover:text-black hover:bg-yellow-600 hover:border-transparent hover:scale-105 duration-300 focus:outline-none focus:ring-2 focus:ring-yellow-600 focus:ring-offset-2 mb-3'
+                        <button className='mx-auto rounded-xl w-3/4 px-4 py-1 text-sm text-yellow-500 font-semibold border border-yellow-200 hover:text-black hover:bg-yellow-600  hover:scale-105 duration-300 focus:outline-none focus:ring-2 focus:ring-yellow-600 focus:ring-offset-2 mb-3'
                           onClick={() => handleUpdate(transaction)}>Update</button>
-                        <button className='mx-auto rounded-xl w-3/4 px-4 py-1 text-sm text-red-500 font-semibold border border-red-200 hover:text-black hover:bg-red-600 hover:border-transparent hover:scale-105 duration-300 focus:outline-none focus:ring-2 focus:ring-red-600 focus:ring-offset-2 mb-3'
+                        <button className='mx-auto rounded-xl w-3/4 px-4 py-1 text-sm text-red-500 font-semibold border border-red-200 hover:text-black hover:bg-red-600  hover:scale-105 duration-300 focus:outline-none focus:ring-2 focus:ring-red-600 focus:ring-offset-2 mb-3'
                           onClick={() => deleteTransaction(transaction)}>Delete</button>
                       </div>
                     </td>
@@ -305,8 +301,8 @@ function TransactionForm() {
                 </tr>
               </tbody>
             </table>
-            </div>
-          
+          </div>
+
         </div>
       </div>
     </div>

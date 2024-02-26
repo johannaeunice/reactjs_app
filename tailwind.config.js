@@ -4,7 +4,11 @@ module.exports = {
         "./src/Components/loginsignup/Login.{html,js}",  
 ],
   theme: {
-    extend: {},
+    extend: {
+      columns: {
+        '4xs': '14rem',
+      }
+    },
   },
   plugins: [],
 }

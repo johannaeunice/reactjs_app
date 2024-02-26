@@ -58,11 +58,12 @@ const CategoryForm = () => {
       })
       .catch(err => console.log(err));
   }; 
+  const shouldDisplayMessage = window.innerWidth <= 768;
 
   return (
     <div className="bg-purple-200 flex flex-col min-h-screen">
       <Navbar />
-      <p className='font-semibold text-sm text-red-500'>For better experience (if on phone) use in landscape mode.</p>
+      {shouldDisplayMessage && <p className='font-semibold text-sm text-red-500'>For better experience (if on phone) use in landscape mode.</p>}
       <div className="flex-1 bg-purple-200 p-5 flex items-center justify-center">
         <div className="bg-white w-full md:max-w-md shadow-lg rounded-xl p-8 flex flex-col">
           <h2 className="font-bold text-xl text-center uppercase mb-6">Category Form</h2>

@@ -178,9 +178,11 @@ const Dashboard = () => {
               {/* Category Cards */}
               {categories.map(category => (
                 <div key={category.id} className="w-full md:w-1/2 lg:w-1/3 xl:w-1/4 p-2">
-                  <div className="bg-white rounded-lg shadow-md p-4">
-                    <p className="font-semibold">Name: {category.name}</p>
+                  <div className="bg-white rounded-xl shadow-md px-2 mt-4 flex mx-auto hover:bg-purple-950">
+                    <div className="mx-auto">
+                    <p className="font-semibold text-violet-700 ">Name: {category.name}</p>
                     <p className="text-sm text-gray-500">Type: {category.type}</p>
+                    </div>
                   </div>
                 </div>
               ))}
