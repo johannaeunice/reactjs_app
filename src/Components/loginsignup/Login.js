@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
-import couple from "./login.png";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSpinner } from '@fortawesome/free-solid-svg-icons';
 
@@ -14,8 +13,8 @@ const LoginForm = () => {
 
   const [errors, setErrors] = useState({});
   const navigate = useNavigate();
-  const [apiErrorMessage, setApiErrorMessage] = useState(null); // State to manage API error message
-  const [loading, setLoading] = useState(false); // State to track loading state
+  const [apiErrorMessage, setApiErrorMessage] = useState(null);
+  const [loading, setLoading] = useState(false);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -23,20 +22,20 @@ const LoginForm = () => {
       ...formData,
       [name]: value
     });
-    setApiErrorMessage(null); // Clear API error message when user starts filling the form again
+    setApiErrorMessage(null);
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setLoading(true); // Set loading state to true when API request starts
+    setLoading(true);
     try {
       const response = await axios.post('https://le-nkap-v1.onrender.com/auth', formData);
       console.log('value of the token:', response.data);
       sessionStorage.setItem('x-auth-token', response.data);
-      setApiErrorMessage(null); // Clear any previous error message
+      setApiErrorMessage(null);
       setTimeout(() => {
-        navigate('/dashboard'); // Navigate to dashboard after successful login
-      }, 2000);
+        navigate('/dashboard');
+      }, 1000);
     } catch (error) {
       console.log('Error:', error);
       if (error.response && error.response.data && error.response.data.message) {
@@ -47,7 +46,7 @@ const LoginForm = () => {
         setApiErrorMessage('An error occurred while processing your request. Please try again later.');
       }
     } finally {
-      setLoading(false); // Set loading state to false regardless of the result
+      setLoading(false);
     }
 
     const validationErrors = validateForm(formData);
@@ -74,14 +73,12 @@ const LoginForm = () => {
   };
 
   return (
-    <div className="flex bg-purple-200 min-h-screen  items-center justify-center py-6 sm:py-12">
-      {/* login container */}
+    <div className="flex bg-purple-200 min-h-screen items-center justify-center py-6 sm:py-12">
       <div className="bg-white mx-auto overflow-hidden rounded-md shadow-lg max-w-3xl p-5">
-        {/* form */}
-        <div className="grid grid-cols-2 ">
+        <div className="grid grid-cols-2">
           <div className="relative col-span-1 hidden md:block">
             <div className="absolute inset-0 bg-purple-200">
-              <img className="h-full w-full object-cover" src={couple} alt='couple' />
+              <img className="h-full w-full object-cover" src='https://github.com/johannaeunice/reactjs_app/blob/master/src/Components/loginsignup/login.png?raw=true' alt='couple' />
             </div>
           </div>
           <div className="col-span-2 md:col-span-1 p-8">
@@ -133,12 +130,12 @@ const LoginForm = () => {
                   <button
                     className="w-full px-4 py-1 text-sm text-purple-600 font-semibold rounded-xl border border-purple-200 hover:text-white hover:bg-purple-600 hover:border-transparent hover:scale-110 duration-300 focus:outline-none focus:ring-2 focus:ring-purple-600 focus:ring-offset-2"
                     type="submit"
-                    disabled={loading} // Disable button while loading
+                    disabled={loading}
                   >
                     {loading ? (
-                      <FontAwesomeIcon icon={faSpinner} spin /> // Display loading spinner if loading
+                      <FontAwesomeIcon icon={faSpinner} spin />
                     ) : (
-                      'Sign In' // Display "Sign In" text if not loading
+                      'Sign In'
                     )}
                   </button>
                 </div>

@@ -3,13 +3,18 @@ import { Link } from 'react-router-dom';
 import axios from 'axios';
 import Chart from 'react-apexcharts';
 import Navbar from "../Navbar/Navbar";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faSpinner } from '@fortawesome/free-solid-svg-icons';
 
 const Dashboard = () => {
   const [transactions, setTransactions] = useState([]);
   const [categories, setCategories] = useState([]);
+  const [transactionsLoading, setTransactionsLoading] = useState(true);
+  const [categoriesLoading, setCategoriesLoading] = useState(true);
 
   useEffect(() => {
     const authToken = sessionStorage.getItem('x-auth-token');
+    setTransactionsLoading(true); // Set loading state to true before API call
     axios.get('https://le-nkap-v1.onrender.com/transactions', { 
       headers: {
         'x-auth-token' : authToken 
@@ -20,11 +25,15 @@ const Dashboard = () => {
     })
     .catch(error => {
       console.error('Error fetching transactions: ', error);
+    })
+    .finally(() => {
+      setTransactionsLoading(false); // Set loading state to false after API call (whether success or failure)
     });
   }, []);
 
   useEffect(() => {
     const authToken = sessionStorage.getItem('x-auth-token');
+    setCategoriesLoading(true); // Set loading state to true before API call
     axios.get('https://le-nkap-v1.onrender.com/categories', { 
       headers: {
         'x-auth-token' : authToken 
@@ -35,6 +44,9 @@ const Dashboard = () => {
     })
     .catch(error => {
       console.error('Error fetching categories: ', error);
+    })
+    .finally(() => {
+      setCategoriesLoading(false); // Set loading state to false after API call (whether success or failure)
     });
   }, []);
 
@@ -102,7 +114,7 @@ const Dashboard = () => {
           <h2 className="font-bold text-xl text-center uppercase mb-6">Dashboard</h2>
 
           {/* First Section: Transaction Table, Add New Transaction Button, Pie Chart */}
-          {transactions.length > 0 && (
+          {(!transactionsLoading && transactions.length > 0) && (
             <div className="my-8">
               <table className="table-fixed border-collapse border w-full mb-4">
                 <thead>
@@ -174,25 +186,31 @@ const Dashboard = () => {
           
           {/* Third Section: Category Cards */}
           <div className="my-8">
-            <div className="flex flex-wrap">
-              {/* Category Cards */}
-              {categories.map(category => (
-                <div key={category.id} className="w-full md:w-1/2 lg:w-1/3 xl:w-1/4 p-2">
-                  <div className="bg-white rounded-xl shadow-md px-2 mt-4 flex mx-auto hover:bg-purple-950">
-                    <div className="mx-auto">
-                    <p className="font-semibold text-violet-700 ">Name: {category.name}</p>
-                    <p className="text-sm text-gray-500">Type: {category.type}</p>
+            {categoriesLoading ? (
+              <div className="flex justify-center">
+                <FontAwesomeIcon icon={faSpinner} spin className="text-purple-600 text-4xl" />
+              </div>
+            ) : (
+              <div className="flex flex-wrap">
+                {/* Category Cards */}
+                {categories.map(category => (
+                  <div key={category.id} className="w-full md:w-1/2 lg:w-1/3 xl:w-1/4 p-2">
+                    <div className="bg-white rounded-xl shadow-md px-2 mt-4 flex mx-auto hover:bg-purple-950">
+                      <div className="mx-auto">
+                      <p className="font-semibold text-violet-700 ">Name: {category.name}</p>
+                      <p className="text-sm text-gray-500">Type: {category.type}</p>
+                      </div>
                     </div>
                   </div>
+                ))}
+                {/* "Add New Category" Card */}
+                <div className="flex justify-center mt-4">
+                  <Link to="/category" className='rounded-xl px-4 py-1 text-sm text-purple-600 font-semibold border border-dotted border-purple-200 hover:text-white hover:bg-purple-600 hover:border-transparent hover:scale-105 duration-300 focus:outline-none focus:ring-2 focus:ring-purple-600 focus:ring-offset-2'>
+                    Add New Category +
+                  </Link>
                 </div>
-              ))}
-              {/* "Add New Category" Card */}
-              <div className="flex justify-center mt-4">
-                <Link to="/category" className='rounded-xl px-4 py-1 text-sm text-purple-600 font-semibold border border-dotted border-purple-200 hover:text-white hover:bg-purple-600 hover:border-transparent hover:scale-105 duration-300 focus:outline-none focus:ring-2 focus:ring-purple-600 focus:ring-offset-2'>
-                  Add New Category +
-                </Link>
               </div>
-            </div>
+            )}
           </div>
         </div>
       </div>

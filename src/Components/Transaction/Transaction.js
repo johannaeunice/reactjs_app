@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import Navbar from '../Navbar/Navbar';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faSpinner } from '@fortawesome/free-solid-svg-icons';
 
 function TransactionForm() {
   const [transactions, setTransactions] = useState([]);
@@ -16,6 +18,7 @@ function TransactionForm() {
   const [categories, setCategories] = useState([]);
   const [token, setToken] = useState(sessionStorage.getItem('x-auth-token'));
   const [successMessage, setSuccessMessage] = useState('');
+  const [submitting, setSubmitting] = useState(false);
 
   useEffect(() => {
     fetchTransactions();
@@ -54,6 +57,7 @@ function TransactionForm() {
       return;
     }
     try {
+      setSubmitting(true);
       await axios.post('https://le-nkap-v1.onrender.com/transactions', formData, {
         headers: {
           'x-auth-token': token
@@ -67,6 +71,8 @@ function TransactionForm() {
       }, 3000);
     } catch (error) {
       console.error('Error adding transaction:', error);
+    } finally {
+      setSubmitting(false);
     }
   };
 
@@ -74,6 +80,7 @@ function TransactionForm() {
     if (!selectedTransaction) return;
     const { _id, name, type, amount, categoryId } = formData;
     try {
+      setSubmitting(true);
       await axios.put(`https://le-nkap-v1.onrender.com/transactions/${_id}`, {
         name,
         type,
@@ -92,12 +99,14 @@ function TransactionForm() {
       }, 3000);
     } catch (error) {
       console.error('Error updating transaction:', error);
+    } finally {
+      setSubmitting(false);
     }
   };
-     
 
   const deleteTransaction = async (transaction) => {
     try {
+      setSubmitting(true);
       await axios.delete(`https://le-nkap-v1.onrender.com/transactions/${transaction._id}`, {
         headers: {
           'x-auth-token': token
@@ -114,6 +123,8 @@ function TransactionForm() {
       setTimeout(() => {
         setSuccessMessage('');
       }, 3000);
+    } finally {
+      setSubmitting(false);
     }
   };
 
@@ -121,11 +132,10 @@ function TransactionForm() {
     setSelectedTransaction(transaction);
     setFormData({
       ...transaction,
-      categoryId: transaction.category._id, // Set category ID
-      categoryName: transaction.category.name // Set category name
+      categoryId: transaction.category._id,
+      categoryName: transaction.category.name
     });
   };
-  
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -267,44 +277,49 @@ function TransactionForm() {
           </div>
 
           <div className="my-8">
-            <table className="table-fixed border-collapse border w-full mb-4 mt-4">
-              <caption className="caption-top mb-2">
-                Table: Registered Transactions.
-              </caption>
-              <thead>
-                <tr>
-                  <th onClick={toggleSortOrder}>Name {sortOrder === 'asc' ? '▲' : '▼'}</th>
-                  <th className='border px-4 py-2'>Type</th>
-                  <th className='border px-4 py-2'>Amount</th>
-                  <th className='border px-4 py-2'>Category</th>
-                  <th className='border px-4 py-2'>Actions</th>
-                </tr>
-              </thead>
-              <tbody>
-                {sortedTransactions.map((transaction, index) => (
-                  <tr key={index}>
-                    <td className='border px-4 py-2'>{transaction.name}</td>
-                    <td className='border px-4 py-2'>{transaction.type}</td>
-                    <td className='border px-4 py-2'>{transaction.amount} FCFA</td>
-                    <td className='border px-4 py-2'>
-                      {transaction.category.name}
-                    </td>
-                    <td className='border px-4 py-2'>
-                      <div className="mb-1 mt-1 flex">
-                        <button className='mx-auto rounded-xl w-3/4 px-4 py-1 text-sm text-yellow-500 font-semibold border border-yellow-200 hover:text-black hover:bg-yellow-600  hover:scale-105 duration-300 focus:outline-none focus:ring-2 focus:ring-yellow-600 focus:ring-offset-2 mb-3'
-                          onClick={() => handleUpdate(transaction)}>Update</button>
-                        <button className='mx-auto rounded-xl w-3/4 px-4 py-1 text-sm text-red-500 font-semibold border border-red-200 hover:text-black hover:bg-red-600  hover:scale-105 duration-300 focus:outline-none focus:ring-2 focus:ring-red-600 focus:ring-offset-2 mb-3'
-                          onClick={() => deleteTransaction(transaction)}>Delete</button>
-                      </div>
-                    </td>
+            {submitting && (
+              <FontAwesomeIcon icon={faSpinner} className="animate-spin text-4xl mx-auto" />
+            )}
+            {!submitting && (
+              <table className="table-fixed border-collapse border w-full mb-4 mt-4">
+                <caption className="caption-top mb-2">
+                  Table: Registered Transactions.
+                </caption>
+                <thead>
+                  <tr>
+                    <th onClick={toggleSortOrder}>Name {sortOrder === 'asc' ? '▲' : '▼'}</th>
+                    <th className='border px-4 py-2'>Type</th>
+                    <th className='border px-4 py-2'>Amount</th>
+                    <th className='border px-4 py-2'>Category</th>
+                    <th className='border px-4 py-2'>Actions</th>
                   </tr>
-                ))}
-                <tr>
-                  <td colSpan="2" className='border px-4 py-2'><strong>Total Amount:</strong></td>
-                  <td colSpan="3" className="border px-4 py-2"><strong>{totalAmount} FCFA</strong></td>
-                </tr>
-              </tbody>
-            </table>
+                </thead>
+                <tbody>
+                  {sortedTransactions.map((transaction, index) => (
+                    <tr key={index}>
+                      <td className='border px-4 py-2'>{transaction.name}</td>
+                      <td className='border px-4 py-2'>{transaction.type}</td>
+                      <td className='border px-4 py-2'>{transaction.amount} FCFA</td>
+                      <td className='border px-4 py-2'>
+                        {transaction.category.name}
+                      </td>
+                      <td className='border px-4 py-2'>
+                        <div className="mb-1 mt-1 flex">
+                          <button className='mx-auto rounded-xl w-3/4 px-4 py-1 text-sm text-yellow-500 font-semibold border border-yellow-200 hover:text-black hover:bg-yellow-600  hover:scale-105 duration-300 focus:outline-none focus:ring-2 focus:ring-yellow-600 focus:ring-offset-2 mb-3'
+                            onClick={() => handleUpdate(transaction)}>Update</button>
+                          <button className='mx-auto rounded-xl w-3/4 px-4 py-1 text-sm text-red-500 font-semibold border border-red-200 hover:text-black hover:bg-red-600  hover:scale-105 duration-300 focus:outline-none focus:ring-2 focus:ring-red-600 focus:ring-offset-2 mb-3'
+                            onClick={() => deleteTransaction(transaction)}>Delete</button>
+                        </div>
+                      </td>
+                    </tr>
+                  ))}
+                  <tr>
+                    <td colSpan="2" className='border px-4 py-2'><strong>Total Amount:</strong></td>
+                    <td colSpan="3" className="border px-4 py-2"><strong>{totalAmount} FCFA</strong></td>
+                  </tr>
+                </tbody>
+              </table>
+            )}
           </div>
 
         </div>

@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import Navbar from '../Navbar/Navbar';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faSpinner } from '@fortawesome/free-solid-svg-icons';
 
 const CategoryForm = () => {
   const [categoryName, setCategoryName] = useState('');
@@ -8,10 +10,12 @@ const CategoryForm = () => {
   const [categories, setCategories] = useState([]);
   const [successMessage, setSuccessMessage] = useState('');
   const [authToken, setAuthToken] = useState('');
+  const [loading, setLoading] = useState(false); // State for loading spinner
 
   useEffect(() => {
     const token = sessionStorage.getItem('x-auth-token');
     setAuthToken(token);
+    setLoading(true); // Set loading to true when API request starts
     axios.get('https://le-nkap-v1.onrender.com/categories', {
       headers: {
         'x-auth-token': token
@@ -22,6 +26,9 @@ const CategoryForm = () => {
     })
     .catch(error => {
       console.error('Error fetching categories: ', error);
+    })
+    .finally(() => {
+      setLoading(false); // Set loading to false when API request finishes
     });
   }, []);
 
@@ -42,6 +49,7 @@ const CategoryForm = () => {
       type: categoryType,
     };
 
+    setLoading(true); // Set loading to true when API request starts
     axios.post('https://le-nkap-v1.onrender.com/categories', newCategory, {
       headers: {
         'x-auth-token': authToken
@@ -56,7 +64,10 @@ const CategoryForm = () => {
         setCategoryName('');
         setCategoryType('');
       })
-      .catch(err => console.log(err));
+      .catch(err => console.log(err))
+      .finally(() => {
+        setLoading(false); // Set loading to false when API request finishes
+      });
   }; 
   const shouldDisplayMessage = window.innerWidth <= 768;
 
@@ -99,12 +110,17 @@ const CategoryForm = () => {
               {successMessage && <div className="text-green-600">{successMessage}</div>}
             </div>
             <div className="flex justify-center">
-              <button
-                className="mt-4 rounded-xl px-4 py-1 text-sm text-purple-600 font-semibold border border-purple-200 hover:text-white hover:bg-purple-600 hover:border-transparent hover:scale-105 duration-300 focus:outline-none focus:ring-2 focus:ring-purple-600 focus:ring-offset-2"
-                type="submit"
-              >
-                Add Category
-              </button>
+              {/* Conditional rendering of loading spinner */}
+              {loading ? (
+                <FontAwesomeIcon icon={faSpinner} spin size="lg" className="text-purple-600 mr-2" />
+              ) : (
+                <button
+                  className="mt-4 rounded-xl px-4 py-1 text-sm text-purple-600 font-semibold border border-purple-200 hover:text-white hover:bg-purple-600 hover:border-transparent hover:scale-105 duration-300 focus:outline-none focus:ring-2 focus:ring-purple-600 focus:ring-offset-2"
+                  type="submit"
+                >
+                  Add Category
+                </button>
+              )}
             </div>
           </form>
 
