@@ -114,9 +114,9 @@ const Navbar = () => {
               <li style={styles.navItem}>
                 <NavLink to="/transactions" style={styles.link} activestyle={activeLink === 'Transactions' ? styles.activeLink : null} >Transactions</NavLink>
               </li>
-              {/* <li style={styles.navItem}>
-                <NavLink to="/account" style={styles.link} activestyle={activeLink === 'Account' ? styles.activeLink : null} >Account</NavLink>
-              </li> */}
+              <li style={styles.navItem}>
+                <NavLink to="/contact" style={styles.link} activestyle={activeLink === 'Contact Us' ? styles.activeLink : null} >Contact Us</NavLink>
+              </li>
               <li style={styles.navItem}>
                 <NavLink to="/signup" style={styles.link} activestyle={activeLink === 'Sign Up' ? styles.activeLink : null} onClick={handleSignUpClick}>Sign Up</NavLink>
               </li>
