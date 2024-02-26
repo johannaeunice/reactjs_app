@@ -1,7 +1,7 @@
 import { Routes, Route } from 'react-router-dom'
 // import './App.css';
 import Home from './Components/Home/Home'
-import Contact from './Components/Contact/Contact'
+import ContactPage from './Components/Contact/Contact'
 import Dashboard from './Components/Dashboard/Dashboard'
 import Expense from './Components/AddExpense/Expense'
 import SignUpForm from './Components/loginsignup/Signup'
@@ -18,7 +18,7 @@ function App() {
         <Route path='/' element={<Home />} />
         <Route path="expense" element={<Expense />} />
         <Route path="account" element={<AccountPage />} />
-        <Route path="contact" element={<Contact />} />
+        <Route path="contact" element={<ContactPage />} />
         <Route path="dashboard" element={<Dashboard />} />
         <Route path="signup" element={ <SignUpForm/> } />
         <Route path="login" element={<LoginForm />} />
