@@ -124,7 +124,7 @@ const LoginForm = () => {
                   {errors.password && <p className="text-red-500 text-xs italic">{errors.password}</p>}
                 </div>
                 <p className='mt-3'>
-                  No Account yet? <Link className="text-purple-600" to="/sign Up">Click Here!</Link>
+                  No Account yet? <Link className="text-purple-600" to="/signup">Click Here!</Link>
                 </p>
                 <div className="flex flex-column items-center justify-between">
                   <button

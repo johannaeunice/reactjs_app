@@ -7,6 +7,7 @@ import SignUpForm from './Components/loginsignup/Signup'
 import LoginForm from './Components/loginsignup/Login'
 import CategoryForm from './Components/Category/Category'
 import TransactionForm from './Components/Transaction/Transaction'
+import ExpensePage from './Components/Transaction/Expense'
 // import Navbar from '/.Components/Navbar/Navbar';
 
 function App() {
@@ -15,6 +16,7 @@ function App() {
       <Routes>
         <Route path='/' element={<Home />} />
         <Route path="contact" element={<ContactPage />} />
+        <Route path="expenses" element={<ExpensePage/>} />
         <Route path="dashboard" element={<Dashboard />} />
         <Route path="signup" element={<SignUpForm />} />
         <Route path="login" element={<LoginForm />} />
