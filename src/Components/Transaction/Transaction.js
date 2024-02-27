@@ -280,7 +280,7 @@ function TransactionForm() {
             {submitting && (
               <FontAwesomeIcon icon={faSpinner} className="animate-spin text-4xl mx-auto" />
             )}
-            {!submitting && (
+            
               <table className="table-fixed border-collapse border w-full mb-4 mt-4">
                 <caption className="caption-top mb-2">
                   Table: Registered Transactions.
@@ -335,7 +335,7 @@ function TransactionForm() {
                   </tr>
                 </tbody>
               </table>
-            )}
+            
           </div>
 
         </div>
