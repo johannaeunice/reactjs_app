@@ -4,10 +4,9 @@ import Navbar from '../Navbar/Navbar';
 
 const Home = () => {
   return (
+    <div>
+      <Navbar />
     <div className="min-h-screen relative bg-purple-200">
-      <div className="absolute inset-0 z-10">
-        <Navbar />
-      </div>
       <div className="absolute inset-0 bg-cover bg-center" style={{
         backgroundImage: "url('https://github.com/johannaeunice/reactjs_app/blob/master/src/Components/Home/couple_money.jpg?raw=true')",
         filter: "blur(5px) brightness(0.7)" // Adjust brightness value for visibility
@@ -26,6 +25,7 @@ const Home = () => {
           </Link>
         </div>
       </div>
+    </div>
     </div>
   );
 };

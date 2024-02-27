@@ -7,7 +7,8 @@ import { faSpinner } from '@fortawesome/free-solid-svg-icons';
 const CategoryForm = () => {
   const [categoryName, setCategoryName] = useState('');
   const [categoryType, setCategoryType] = useState('');
-  const [categories, setCategories] = useState([]);
+  const [incomeCategories, setIncomeCategories] = useState([]);
+  const [expenseCategories, setExpenseCategories] = useState([]);
   const [successMessage, setSuccessMessage] = useState('');
   const [authToken, setAuthToken] = useState('');
   const [loading, setLoading] = useState(false); // State for loading spinner
@@ -16,23 +17,27 @@ const CategoryForm = () => {
     const token = sessionStorage.getItem('x-auth-token');
     setAuthToken(token);
     setLoading(true); // Set loading to true when API request starts
+
     axios.get('https://le-nkap-v1.onrender.com/categories', {
       headers: {
         'x-auth-token': token
       }
     })
-    .then(response => {
-      setCategories(response.data);
-    })
-    .catch(error => {
-      console.error('Error fetching categories: ', error);
-    })
-    .finally(() => {
-      setLoading(false); // Set loading to false when API request finishes
-    });
-  }, []);
+      .then(response => {
+        const incomeCategories = response.data.filter(category => category.type === 'income');
+        const expenseCategories = response.data.filter(category => category.type === 'expense');
+        setIncomeCategories(incomeCategories);
+        setExpenseCategories(expenseCategories);
+      })
+      .catch(error => {
+        console.error('Error fetching categories: ', error);
+      })
+      .finally(() => {
+        setLoading(false); // Set loading to false when API request finishes
+      });
+  }, [successMessage]); // Include successMessage in dependency array to trigger useEffect when a new category is added
 
-  const handleSubmit = async(e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
     if (!categoryName || !categoryType) {
@@ -56,7 +61,6 @@ const CategoryForm = () => {
       }
     })
       .then((res) => {
-        setCategories([...categories, newCategory]);
         setSuccessMessage('Category successfully added');
         setTimeout(() => {
           setSuccessMessage('');
@@ -68,13 +72,14 @@ const CategoryForm = () => {
       .finally(() => {
         setLoading(false); // Set loading to false when API request finishes
       });
-  }; 
+  };
+
   const shouldDisplayMessage = window.innerWidth <= 768;
 
   return (
     <div className="bg-purple-200 flex flex-col min-h-screen">
       <Navbar />
-      {shouldDisplayMessage && <p className='font-semibold text-sm text-red-500'>For better experience (if on phone) use in landscape mode.</p>}
+      {shouldDisplayMessage && <p className='font-semibold text-sm text-red-500'>For better experience (if on the phone) use in landscape mode.</p>}
       <div className="flex-1 bg-purple-200 p-5 flex items-center justify-center">
         <div className="bg-white w-full md:max-w-md shadow-lg rounded-xl p-8 flex flex-col">
           <h2 className="font-bold text-xl text-center uppercase mb-6">Category Form</h2>
@@ -124,8 +129,9 @@ const CategoryForm = () => {
             </div>
           </form>
 
+        
           <div className="mt-8">
-            <h2 className="text-lg font-bold mb-4">Categories</h2>
+            <h2 className="text-lg font-bold mb-4 mt-4">Income Categories</h2>
             <div className="overflow-x-auto">
               <table className="table-auto border-collapse border w-full">
                 <thead>
@@ -135,7 +141,29 @@ const CategoryForm = () => {
                   </tr>
                 </thead>
                 <tbody>
-                  {categories.map((category, index) => (
+                  {incomeCategories.map((category, index) => (
+                    <tr key={index}>
+                      <td className="border px-4 py-2 text-center">{category.name}</td>
+                      <td className="border px-4 py-2 text-center">{category.type}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <div className="mt-8">
+            <h2 className="text-lg font-bold mb-4 mt-4">Expense Categories</h2>
+            <div className="overflow-x-auto">
+              <table className="table-auto border-collapse border w-full">
+                <thead>
+                  <tr>
+                    <th className="border px-4 py-2 text-center"> Name</th>
+                    <th className="border px-4 py-2 text-center"> Type</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {expenseCategories.map((category, index) => (
                     <tr key={index}>
                       <td className="border px-4 py-2 text-center">{category.name}</td>
                       <td className="border px-4 py-2 text-center">{category.type}</td>
