@@ -172,11 +172,11 @@ function ExpensePage() {
                 <div className="bg-white w-full shadow-lg rounded-xl p-8 m-4 md:max-w-sm md:mx-auto flex flex-col">
                <div className="mt-1 flex mb-1 justify-between">
                 <div className="justify-items-start">
-            <Link to="/transactions" className="  text-left text-purple-600 font-semibold">
+            <Link to="/transactions" className="  text-left rounded-xl px-4 py-1 text-sm text-purple-600 font-semibold border border-purple-200 hover:text-white hover:bg-purple-600 hover:border-transparent hover:scale-105 duration-300 focus:outline-none focus:ring-2 focus:ring-purple-600 focus:ring-offset-2">
             <FontAwesomeIcon icon={faArrowLeft} className="mr-2" />Transactions</Link>
             </div>
             <div className="justify-items-end ">
-            <Link to="/income" className=" text-right text-purple-600 font-semibold">
+            <Link to="/income" className=" text-right rounded-xl px-4 py-1 text-sm text-purple-600 font-semibold border border-purple-200 hover:text-white hover:bg-purple-600 hover:border-transparent hover:scale-105 duration-300 focus:outline-none focus:ring-2 focus:ring-purple-600 focus:ring-offset-2">
             Income<FontAwesomeIcon icon={faArrowRight} className="mx-auto" /></Link>
             </div>
             </div>
