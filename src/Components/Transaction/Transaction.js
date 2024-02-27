@@ -308,10 +308,10 @@ function TransactionForm() {
                 <tbody>
                   {sortedTransactions.map((transaction, index) => (
                     <tr key={index}>
-                      <td className='border px-4 py-2'>{transaction.name}</td>
-                      <td className='border px-4 py-2'>{transaction.type}</td>
-                      <td className='border px-4 py-2'>{transaction.amount} FCFA</td>
-                      <td className='border px-4 py-2'>
+                      <td className='border px-4 py-2 text-center'>{transaction.name}</td>
+                      <td className='border px-4 py-2 text-center'>{transaction.type}</td>
+                      <td className='border px-4 py-2 text-center'>{transaction.amount} FCFA</td>
+                      <td className='border px-4 py-2 text-center'>
                         {transaction.category.name}
                       </td>
                       <td className='border px-4 py-2'>

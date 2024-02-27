@@ -49,9 +49,9 @@ const ContactPage = () => {
             <div className="min-h-screen flex items-center justify-center bg-cover bg-center bg-blur bg-fixed"
                 style={{
                     backgroundImage: `url('https://github.com/johannaeunice/reactjs_app/blob/master/src/Components/Contact/contact.png?raw=true')`,
-                    filter: " brightness(0.9)"
+                    filter: "blur(0.3px) brightness(0.9)"
                 }}>
-                <div className='z-10 inset-0 '>
+                <div className='static z-10 items-center justify-center inset-0 '>
                     <div className="bg-white p-8 rounded-xl max-w-md w-full z-10"
                         style={{ margin: '0 60px' }}>
                         <h2 className="text-2xl font-bold mb-4 uppercase text-left">Contact Us</h2>
@@ -74,11 +74,11 @@ const ContactPage = () => {
                                 </button>
                             </div>
                         </form>
-
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
+      
     );
 };
 
