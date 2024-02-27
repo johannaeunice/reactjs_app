@@ -170,16 +170,16 @@ function ExpensePage() {
             <Navbar />
             <div className="w-full min-h-screen bg-purple-200 p-5 flex items-center">
                 <div className="bg-white w-full shadow-lg rounded-xl p-8 m-4 md:max-w-sm md:mx-auto flex flex-col">
-               <div className="mt-1 flex mb-1 justify-between">
-                <div className="justify-items-start">
-            <Link to="/transactions" className="  text-left rounded-xl px-4 py-1 text-sm text-purple-600 font-semibold border border-purple-200 hover:text-white hover:bg-purple-600 hover:border-transparent hover:scale-105 duration-300 focus:outline-none focus:ring-2 focus:ring-purple-600 focus:ring-offset-2">
-            <FontAwesomeIcon icon={faArrowLeft} className="mr-2" />Transactions</Link>
-            </div>
-            <div className="justify-items-end ">
-            <Link to="/income" className=" text-right rounded-xl px-4 py-1 text-sm text-purple-600 font-semibold border border-purple-200 hover:text-white hover:bg-purple-600 hover:border-transparent hover:scale-105 duration-300 focus:outline-none focus:ring-2 focus:ring-purple-600 focus:ring-offset-2">
-            Income<FontAwesomeIcon icon={faArrowRight} className="mx-auto" /></Link>
-            </div>
-            </div>
+                    <div className="mt-1 flex mb-1 justify-between">
+                        <div className="justify-items-start">
+                            <Link to="/transactions" className="  text-left rounded-xl px-4 py-1 text-sm text-purple-600 font-semibold border border-purple-200 hover:text-white hover:bg-purple-600 hover:border-transparent hover:scale-105 duration-300 focus:outline-none focus:ring-2 focus:ring-purple-600 focus:ring-offset-2">
+                                <FontAwesomeIcon icon={faArrowLeft} className="mr-2" />Transactions</Link>
+                        </div>
+                        <div className="justify-items-end ">
+                            <Link to="/income" className=" text-right rounded-xl px-4 py-1 text-sm text-purple-600 font-semibold border border-purple-200 hover:text-white hover:bg-purple-600 hover:border-transparent hover:scale-105 duration-300 focus:outline-none focus:ring-2 focus:ring-purple-600 focus:ring-offset-2">
+                                Income<FontAwesomeIcon icon={faArrowRight} className="mx-auto" /></Link>
+                        </div>
+                    </div>
                     <h2 className="block w-full font-bold text-xl text-grey-darkest text-center mx-auto uppercase">Expense Form</h2>
                     <form className="bg-white shadow-md font-bold rounded-xl px-8 pt-6 pb-8 mt-3 inline-block"
                         onSubmit={(e) => e.preventDefault()}>
@@ -231,29 +231,28 @@ function ExpensePage() {
                         </div>
                         <div className="mb-4 mt-4 flex">
                             {!selectedTransaction && (
-    <button className='mx-auto rounded-xl w-3/4 px-4 py-1 text-sm text-purple-600 font-semibold border border-purple-200 hover:text-white hover:bg-purple-600 hover:border-transparent hover:scale-105 duration-300 focus:outline-none focus:ring-2 focus:ring-purple-600 focus:ring-offset-2 mb-3'
-        type="submit"
-        onClick={addExpense}>
-        Add Expense
-        {submitting && <FontAwesomeIcon icon={faSpinner} className="animate-spin mr-2" />}
-    </button>
-)}
-{selectedTransaction && (
-    <div className="flex justify-center space-x-4">
-        <button className='mx-auto rounded-xl w-3/4 px-4 py-1 text-sm text-purple-600 font-semibold border border-purple-200 hover:text-white hover:bg-purple-600 hover:border-transparent hover:scale-105 duration-300 focus:outline-none focus:ring-2 focus:ring-purple-600 focus:ring-offset-2 mb-3'
-            type="submit"
-            onClick={updateExpense}>
-            Update Expense
-            {submitting && <FontAwesomeIcon icon={faSpinner} className="animate-spin mr-2" />}
-        </button>
-        <button className='mx-auto rounded-xl w-3/4 px-4 py-1 text-sm text-purple-600 font-semibold border border-purple-200 hover:text-white hover:bg-purple-600 hover:border-transparent hover:scale-105 duration-300 focus:outline-none focus:ring-2 focus:ring-purple-600 focus:ring-offset-2 mb-3'
-            type="button"
-            onClick={handleCancelUpdate}>
-            Cancel
-        </button>
-    </div>
-)}
-
+                                <button className='mx-auto rounded-xl w-3/4 px-4 py-1 text-sm text-purple-600 font-semibold border border-purple-200 hover:text-white hover:bg-purple-600 hover:border-transparent hover:scale-105 duration-300 focus:outline-none focus:ring-2 focus:ring-purple-600 focus:ring-offset-2 mb-3'
+                                    type="submit"
+                                    onClick={addExpense}>
+                                    Add Expense
+                                    {submitting && <FontAwesomeIcon icon={faSpinner} className="animate-spin mr-2" />}
+                                </button>
+                            )}
+                            {selectedTransaction && (
+                                <div className="flex justify-center space-x-4">
+                                    <button className='mx-auto rounded-xl w-3/4 px-4 py-1 text-sm text-purple-600 font-semibold border border-purple-200 hover:text-white hover:bg-purple-600 hover:border-transparent hover:scale-105 duration-300 focus:outline-none focus:ring-2 focus:ring-purple-600 focus:ring-offset-2 mb-3'
+                                        type="submit"
+                                        onClick={updateExpense}>
+                                        Update Expense
+                                        {submitting && <FontAwesomeIcon icon={faSpinner} className="animate-spin mr-2" />}
+                                    </button>
+                                    <button className='mx-auto rounded-xl w-3/4 px-4 py-1 text-sm text-purple-600 font-semibold border border-purple-200 hover:text-white hover:bg-purple-600 hover:border-transparent hover:scale-105 duration-300 focus:outline-none focus:ring-2 focus:ring-purple-600 focus:ring-offset-2 mb-3'
+                                        type="button"
+                                        onClick={handleCancelUpdate}>
+                                        Cancel
+                                    </button>
+                                </div>
+                            )}
                         </div>
                     </form>
                     {successMessage && (
@@ -262,23 +261,23 @@ function ExpensePage() {
                     <div className="my-8">
                         <table className="table-fixed border-collapse border w-full mb-4 mt-4">
                             <caption className="caption-top mb-2">
-                                Table: Expense Transactions.
+                                Table: Registered Expense Transactions.
                             </caption>
                             <thead>
                                 <tr>
-                                    <th>Name</th>
-                                    <th>Amount</th>
-                                    <th>Category</th>
-                                    <th>Actions</th>
+                                <th onClick={toggleSortOrder}>Name {sortOrder === 'asc' ? '▲' : '▼'}</th>
+                                    <th className='border px-4 py-2'>Amount</th>
+                                    <th className='border px-4 py-2'>Category</th>
+                                    <th className='border px-4 py-2'>Actions</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                {transactions.map((transaction, index) => (
+                                {sortedTransactions.map((transaction, index) => (
                                     <tr key={index}>
-                                        <td>{transaction.name}</td>
-                                        <td>{transaction.amount}</td>
-                                        <td>{transaction.category.name}</td>
-                                        <td>
+                                        <td className='border px-4 py-2'>{transaction.name}</td>
+                                        <td className='border px-4 py-2'>{transaction.amount} FCFA</td>
+                                        <td className='border px-4 py-2'>{transaction.category.name}</td>
+                                        <td className='border px-4 py-2'>
                                             <div className="mb-1 mt-1 flex">
 
                                                 {/* Update Button */}
@@ -305,8 +304,8 @@ focus:border-transparent focus:ring-2 focus:ring-red-600 focus:ring-offset-2 mb-
                                     </tr>
                                 ))}
                                 <tr>
-                                    <td colSpan="3" className='border px-4 py-2'><strong>Total Amount:</strong></td>
-                                    <td colSpan="1" className="border px-4 py-2"><strong>{transactions.reduce((total, transaction) => total + parseFloat(transaction.amount), 0)}</strong></td>
+                                    <td colSpan="1" className='border px-4 py-2'><strong>Total Amount:</strong></td>
+                                    <td colSpan="3" className="border px-4 py-2"><strong>{transactions.reduce((total, transaction) => total + parseFloat(transaction.amount), 0)} FCFA</strong></td>
                                 </tr>
                             </tbody>
                         </table>
