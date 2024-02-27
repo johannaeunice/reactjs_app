@@ -168,6 +168,7 @@ function ExpensePage() {
     return (
         <div className="bg-purple-200">
             <Navbar />
+            {shouldDisplayMessage && <p className='font-semibold text-sm text-red-500'>For better experience (if on phone) use in landscape mode.</p>}
             <div className="w-full min-h-screen bg-purple-200 p-5 flex items-center">
                 <div className="bg-white w-full shadow-lg rounded-xl p-8 m-4 md:max-w-sm md:mx-auto flex flex-col">
                     <div className="mt-1 flex mb-1 justify-between">
