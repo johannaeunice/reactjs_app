@@ -163,6 +163,7 @@ function ExpensePage() {
     const resetForm = () => {
         setFormData({ name: '', amount: '', categoryId: '', type: 'expense' });
     };
+    let sortedExpenseTransactions = sortedTransactions.filter(transaction => transaction.type === 'expense');
     const shouldDisplayMessage = window.innerWidth <= 768;
 
     return (
@@ -273,7 +274,7 @@ function ExpensePage() {
                                 </tr>
                             </thead>
                             <tbody>
-                                {sortedTransactions.map((transaction, index) => (
+                                {sortedExpenseTransactions.map((transaction, index) => (
                                     <tr key={index}>
                                         <td className='border px-4 py-2'>{transaction.name}</td>
                                         <td className='border px-4 py-2'>{transaction.amount} FCFA</td>
@@ -306,7 +307,7 @@ focus:border-transparent focus:ring-2 focus:ring-red-600 focus:ring-offset-2 mb-
                                 ))}
                                 <tr>
                                     <td colSpan="1" className='border px-4 py-2'><strong>Total Amount:</strong></td>
-                                    <td colSpan="3" className="border px-4 py-2"><strong>{transactions.reduce((total, transaction) => total + parseFloat(transaction.amount), 0)} FCFA</strong></td>
+                                    <td colSpan="3" className="border px-4 py-2"><strong>{sortedExpenseTransactions.reduce((total, transaction) => total + parseFloat(transaction.amount), 0)} FCFA</strong></td>
                                 </tr>
                             </tbody>
                         </table>

@@ -8,6 +8,7 @@ import LoginForm from './Components/loginsignup/Login'
 import CategoryForm from './Components/Category/Category'
 import TransactionForm from './Components/Transaction/Transaction'
 import ExpensePage from './Components/Transaction/Expense'
+import IncomePage from './Components/Transaction/Income'
 // import Navbar from '/.Components/Navbar/Navbar';
 
 function App() {
@@ -17,6 +18,7 @@ function App() {
         <Route path='/' element={<Home />} />
         <Route path="contact" element={<ContactPage />} />
         <Route path="expenses" element={<ExpensePage/>} />
+        <Route path="income" element={<IncomePage/>} />
         <Route path="dashboard" element={<Dashboard />} />
         <Route path="signup" element={<SignUpForm />} />
         <Route path="login" element={<LoginForm />} />

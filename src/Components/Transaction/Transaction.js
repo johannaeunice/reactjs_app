@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import { Link } from 'react-router-dom';
 import Navbar from '../Navbar/Navbar';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faSpinner } from '@fortawesome/free-solid-svg-icons';
+import { faSpinner, faArrowLeft, faArrowRight } from '@fortawesome/free-solid-svg-icons';
 
 function TransactionForm() {
   const [transactions, setTransactions] = useState([]);
@@ -181,6 +182,16 @@ function TransactionForm() {
       {shouldDisplayMessage && <p className='font-semibold text-sm text-red-500'>For better experience (if on phone) use in landscape mode.</p>}
       <div className="w-full min-h-screen bg-purple-200 p-5 flex items-center">
         <div className="bg-white w-full shadow-lg rounded-xl p-8 m-4 md:max-w-sm md:mx-auto flex flex-col">
+        <div className="mt-1 flex mb-1 justify-between">
+                        <div className="justify-items-start">
+                            <Link to="/income" className="  text-left rounded-xl px-4 py-1 text-sm text-purple-600 font-semibold border border-purple-200 hover:text-white hover:bg-purple-600 hover:border-transparent hover:scale-105 duration-300 focus:outline-none focus:ring-2 focus:ring-purple-600 focus:ring-offset-2">
+                                <FontAwesomeIcon icon={faArrowLeft} className="mr-2" /> Income</Link>
+                        </div>
+                        <div className="justify-items-end ">
+                            <Link to="/expenses" className=" text-right rounded-xl px-4 py-1 text-sm text-purple-600 font-semibold border border-purple-200 hover:text-white hover:bg-purple-600 hover:border-transparent hover:scale-105 duration-300 focus:outline-none focus:ring-2 focus:ring-purple-600 focus:ring-offset-2">
+                                Expenses <FontAwesomeIcon icon={faArrowRight} className="mx-auto" /></Link>
+                        </div>
+                    </div>
           <h2 className="block w-full font-bold text-xl text-grey-darkest text-center mx-auto uppercase">Transaction Form</h2>
 
           <form className="bg-white  shadow-md font-bold rounded-xl px-8 pt-6 pb-8 mt-3 inline-block"
