@@ -42,7 +42,7 @@ function IncomePage() {
     const fetchTransactions = async () => {
         try {
 
-            const response = await axios.get('https://le-nkap-v1.onrender.com/transactions?type=income', {
+            const response = await axios.get('https://le-nkap-v1.onrender.com/transactions', {
                 headers: {
                     'x-auth-token': token
                 }

@@ -42,7 +42,7 @@ function ExpensePage() {
     const fetchTransactions = async () => {
         try {
 
-            const response = await axios.get('https://le-nkap-v1.onrender.com/transactions?type=expense', {
+            const response = await axios.get('https://le-nkap-v1.onrender.com/transactions?', {
                 headers: {
                     'x-auth-token': token
                 }

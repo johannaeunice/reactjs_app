@@ -47,6 +47,9 @@ const Navbar = () => {
               <li style={styles.navItem}>
                 <NavLink to="/login" style={styles.link} onClick={(event) => handleLinkClick(event, 'Sign In')}>Sign In</NavLink>
               </li>
+              <li style={styles.navItem}>
+                <NavLink to="/contact" style={styles.link} onClick={(event) => handleLinkClick(event, 'Contact Us')}>Contact Us</NavLink>
+              </li>
             </>
           )}
           {/* If not on home page */}
