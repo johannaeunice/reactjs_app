@@ -3,6 +3,7 @@ import axios from 'axios';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSpinner } from '@fortawesome/free-solid-svg-icons';
 import Navbar from '../Navbar/Navbar';
+import couple from "./contact.png"
 
 const ContactPage = () => {
     const [formData, setFormData] = useState({
@@ -48,7 +49,7 @@ const ContactPage = () => {
             <Navbar />
             <div className="min-h-screen flex items-center justify-center bg-cover bg-center bg-blur bg-fixed"
                 style={{
-                    backgroundImage: `url('https://github.com/johannaeunice/reactjs_app/blob/master/src/Components/Contact/contact.png?raw=true')`,
+                    backgroundImage: `url(${couple})`,
                     filter: "blur(0.3px) brightness(0.9)"
                 }}>
                 <div className='static z-10 items-center justify-center inset-0 '>

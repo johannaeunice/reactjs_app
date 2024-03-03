@@ -288,9 +288,11 @@ function TransactionForm() {
           </div>
 
           <div className="my-8">
+            <div className="text-center mx-auto">
             {submitting && (
-              <FontAwesomeIcon icon={faSpinner} className="animate-spin text-4xl mx-auto" />
+              <FontAwesomeIcon icon={faSpinner} spin size="lg" className="text-purple-600 text-4xl " />
             )}
+            </div>
             
               <table className="table-fixed border-collapse border w-full mb-4 mt-4">
                 <caption className="caption-top mb-2">

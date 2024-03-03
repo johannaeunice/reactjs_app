@@ -1,14 +1,16 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import Navbar from '../Navbar/Navbar';
+import homeImage from './R.jpg'
 
 const Home = () => {
   return (
     <div>
       <Navbar />
     <div className="min-h-screen relative bg-purple-200">
-      <div className="absolute inset-0 bg-cover bg-center" style={{
-        backgroundImage: "url('https://github.com/johannaeunice/reactjs_app/blob/master/src/Components/Home/couple_money.jpg?raw=true')",
+      <div className="absolute inset-0 bg-cover bg-center" 
+      style={{
+        backgroundImage: `url(${homeImage})`,
         filter: "blur(5px) brightness(0.7)" // Adjust brightness value for visibility
       }}></div>
 

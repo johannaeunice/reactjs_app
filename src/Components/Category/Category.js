@@ -93,7 +93,7 @@ const CategoryForm = () => {
                 value={categoryName}
                 onChange={(e) => setCategoryName(e.target.value)}
                 placeholder="Enter category name"
-                className="p-2 rounded-xl border border-purple-300"
+                className="mt-3 p-2 rounded-xl border border-purple-300"
                 required
               />
             </div>
@@ -103,7 +103,7 @@ const CategoryForm = () => {
                 id="categoryType"
                 value={categoryType}
                 onChange={(e) => setCategoryType(e.target.value)}
-                className="p-2 rounded-xl border border-purple-300"
+                className="mt-3 p-2 rounded-xl border border-purple-300"
                 required
               >
                 <option value="">Select category type</option>

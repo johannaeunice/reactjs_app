@@ -3,6 +3,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSpinner } from '@fortawesome/free-solid-svg-icons';
+import couple from "./signup.png";
 
 const SignUpForm = () => {
   const navigate = useNavigate(); // Initialize useNavigate hook
@@ -96,7 +97,7 @@ const SignUpForm = () => {
         <div className="grid grid-cols-2 ">
           <div className="relative col-span-1 hidden md:block">
             <div className="absolute inset-0 bg-purple-200">
-              <img className="h-full w-full object-cover" src='https://github.com/johannaeunice/reactjs_app/blob/master/src/Components/loginsignup/signup.png?raw=true' alt='couple' />
+              <img className="h-full w-full object-cover" src={couple} alt='couple' />
             </div>
           </div>
           <div className="col-span-2 md:col-span-1 p-8">

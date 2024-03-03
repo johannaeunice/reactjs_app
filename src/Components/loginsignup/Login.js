@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSpinner } from '@fortawesome/free-solid-svg-icons';
+import couple from "./login.png"
 
 const LoginForm = () => {
   const [formData, setFormData] = useState({
@@ -78,7 +79,7 @@ const LoginForm = () => {
         <div className="grid grid-cols-2">
           <div className="relative col-span-1 hidden md:block">
             <div className="absolute inset-0 bg-purple-200">
-              <img className="h-full w-full object-cover" src='https://github.com/johannaeunice/reactjs_app/blob/master/src/Components/loginsignup/login.png?raw=true' alt='couple' />
+              <img className="h-full w-full object-cover" src={couple} alt='couple' />
             </div>
           </div>
           <div className="col-span-2 md:col-span-1 p-8">
