@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { Link } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faSpinner, faArrowLeft, faArrowRight } from '@fortawesome/free-solid-svg-icons';
+import { faSpinner, faArrowLeft, faArrowRight,faEdit,faTrash,faPlus } from '@fortawesome/free-solid-svg-icons';
 import Navbar from '../Navbar/Navbar';
 
 function IncomePage() {
@@ -10,7 +10,7 @@ function IncomePage() {
         name: '',
         amount: '',
         categoryId: '',
-        type: 'income', // Type is predefined as "expense"
+        type: 'income', // Type is predefined as "income"
     });
     const [sortOrder, setSortOrder] = useState('asc');
     const [categories, setCategories] = useState([]);
@@ -18,6 +18,8 @@ function IncomePage() {
     const [submitting, setSubmitting] = useState(false);
     const [successMessage, setSuccessMessage] = useState('');
     const [selectedTransaction, setSelectedTransaction] = useState(null);
+    const [isLoading, setIsLoading] = useState(false);
+    const [isDeletingTransaction, setIsDeletingTransaction] = useState(false);
     const token = sessionStorage.getItem('x-auth-token');
 
     useEffect(() => {
@@ -27,7 +29,6 @@ function IncomePage() {
 
     const fetchCategories = async () => {
         try {
-
             const response = await axios.get('https://le-nkap-v1.onrender.com/categories', {
                 headers: {
                     'x-auth-token': token
@@ -41,7 +42,7 @@ function IncomePage() {
 
     const fetchTransactions = async () => {
         try {
-
+            setIsLoading(true);
             const response = await axios.get('https://le-nkap-v1.onrender.com/transactions', {
                 headers: {
                     'x-auth-token': token
@@ -50,6 +51,8 @@ function IncomePage() {
             setTransactions(response.data);
         } catch (error) {
             console.error('Error fetching income transactions:', error);
+        } finally {
+            setIsLoading(false);
         }
     };
 
@@ -109,7 +112,7 @@ function IncomePage() {
 
     const deleteIncome = async (deletedTransaction) => {
         try {
-            setSubmitting(true);
+            setIsDeletingTransaction(true);
             await axios.delete(`https://le-nkap-v1.onrender.com/transactions/${deletedTransaction._id}`, {
                 headers: {
                     'x-auth-token': token
@@ -127,8 +130,7 @@ function IncomePage() {
                 setSuccessMessage('');
             }, 3000);
         } finally {
-            setSubmitting(false);
-
+            setIsDeletingTransaction(false);
         }
     };
 
@@ -154,19 +156,28 @@ function IncomePage() {
     const toggleSortOrder = () => {
         setSortOrder(sortOrder === 'asc' ? 'desc' : 'asc');
     };
+
+    const resetForm = () => {
+        setFormData({ name: '', amount: '', categoryId: '', type: 'income' });
+    };
+
     let sortedTransactions = [...transactions];
     if (sortOrder === 'asc') {
         sortedTransactions.sort((a, b) => a.name.localeCompare(b.name));
     } else {
         sortedTransactions.sort((a, b) => b.name.localeCompare(a.name));
     }
-    const resetForm = () => {
-        setFormData({ name: '', amount: '', categoryId: '', type: 'expense' });
-    };
-    let sortedIncomeTransactions = sortedTransactions.filter(transaction => transaction.type === 'income');
+
+    const sortedIncomeTransactions = sortedTransactions.filter(transaction => transaction.type === 'income');
 
     const shouldDisplayMessage = window.innerWidth <= 768;
 
+    const iconMap = {
+        'Update': faEdit,
+        'Delete': faTrash,
+        'Add Income': faPlus,
+      };
+      
     return (
         <div className="bg-purple-200">
             <Navbar />
@@ -237,24 +248,27 @@ function IncomePage() {
                                 <button className='mx-auto rounded-xl w-3/4 px-4 py-1 text-sm text-purple-600 font-semibold border border-purple-200 hover:text-white hover:bg-purple-600 hover:border-transparent hover:scale-105 duration-300 focus:outline-none focus:ring-2 focus:ring-purple-600 focus:ring-offset-2 mb-3'
                                     type="submit"
                                     onClick={addIncome}>
-                                    Add Income
-                                    {submitting && <FontAwesomeIcon icon={faSpinner} spin size="lg" className=" mr-2 ml-2" />}
+                                    <FontAwesomeIcon icon={faPlus} style={{ marginRight: '6px' }} />Add Income
+                                    {isLoading && <FontAwesomeIcon icon={faSpinner} spin size="lg" className=" mr-2 ml-2" />}
                                 </button>
                             )}
                             {selectedTransaction && (
-                               <div className="flex justify-center mx-auto">
-                               <button style={{ marginRight: '60px' }} className='rounded-xl px-4 py-1 text-sm text-purple-600 font-semibold border border-purple-200 hover:text-white hover:bg-purple-600 hover:border-transparent hover:scale-105 duration-300 focus:outline-none focus:ring-2 focus:ring-purple-600 focus:ring-offset-2 mb-3'
-                                   type="submit"
-                                   onClick={updateIncome}>
-                                   Update Income
-                                   {submitting && <FontAwesomeIcon icon={faSpinner} spin size="lg" className="mr-2 ml-2" />}
-                               </button>                  
-                               <button style={{ marginLeft: '60px' }} className='rounded-xl px-4 py-1 text-sm text-purple-600 font-semibold border border-purple-200 hover:text-white hover:bg-purple-600 hover:border-transparent hover:scale-105 duration-300 focus:outline-none focus:ring-2 focus:ring-purple-600 focus:ring-offset-2 mb-3'
-                                   type="button"
-                                   onClick={handleCancelUpdate}>
-                                   Cancel
-                               </button>    
-                           </div>        
+                                <div className="flex justify-center mx-auto">
+                                    <button style={{ marginRight: '60px' }} className={`rounded-xl px-4 py-1 text-sm text-purple-600 font-semibold border duration-300 focus:outline-none focus:border-transparent focus:ring-2 focus:ring-yellow-600 focus:ring-offset-2 mb-3 ${submitting ? 'cursor-not-allowed' : 'hover:bg-purple-600 hover:text-white hover:border-transparent hover:scale-105'}`}
+                                        onClick={updateIncome}
+                                        disabled={submitting}
+                                    >
+                                        <FontAwesomeIcon icon={faEdit} style={{ marginRight: '6px' }} />Update Income
+                                        {submitting && <FontAwesomeIcon icon={faSpinner} spin size="lg" className="mr-2 ml-2" />}
+                                    </button>
+                                    <button style={{ marginLeft: '60px' }} className={`rounded-xl px-4 py-1 text-sm text-purple-600 font-semibold border duration-300 focus:outline-none focus:border-transparent focus:ring-2 focus:ring-yellow-600 focus:ring-offset-2 mb-3 ${submitting ? 'cursor-not-allowed' : 'hover:bg-purple-600 hover:text-white hover:border-transparent hover:scale-105'}`}
+                                        type="button"
+                                        onClick={handleCancelUpdate}
+                                        disabled={submitting}
+                                    >
+                                    Cancel
+                                    </button>
+                                </div>
                             )}
                         </div>
                     </form>
@@ -282,24 +296,19 @@ function IncomePage() {
                                         <td className='border px-4 py-2 text-center'>{transaction.category.name}</td>
                                         <td className='border px-4 py-2'>
                                             <div className="mb-1 mt-1 flex">
-
-                                                {/* Update Button */}
                                                 <button style={{ backgroundColor: 'white', color: '#F59E0B', borderColor: '#F59E0B', transition: 'background-color 0.3s, color 0.3s, border-color 0.3s' }}
-                                                    className='mx-auto rounded-xl w-3/4 px-4 py-1 text-sm font-semibold border duration-300 focus:outline-none 
-focus:border-transparent focus:ring-2 focus:ring-yellow-600 focus:ring-offset-2 mb-3'
+                                                    className='mx-auto rounded-xl w-3/4 px-4 py-1 text-sm font-semibold border duration-300 focus:outline-none focus:border-transparent focus:ring-2 focus:ring-yellow-600 focus:ring-offset-2 mb-3'
                                                     onClick={() => handleUpdate(transaction)}
                                                     onMouseEnter={(e) => { e.target.style.backgroundColor = '#F59E0B'; e.target.style.color = 'white'; }}
                                                     onMouseLeave={(e) => { e.target.style.backgroundColor = 'white'; e.target.style.color = '#F59E0B'; }}>
-                                                    Update
+                                                    <FontAwesomeIcon icon={faEdit} style={{ marginRight: '6px' }} />Update
                                                 </button>
-                                                {/* Delete Button */}
                                                 <button style={{ backgroundColor: 'white', color: '#EF4444', borderColor: '#EF4444', transition: 'background-color 0.3s, color 0.3s, border-color 0.3s' }}
-                                                    className='mx-auto rounded-xl w-3/4 px-4 py-1 text-sm font-semibold border duration-300 focus:outline-none 
-focus:border-transparent focus:ring-2 focus:ring-red-600 focus:ring-offset-2 mb-3'
+                                                    className='mx-auto rounded-xl w-3/4 px-4 py-1 text-sm font-semibold border duration-300 focus:outline-none focus:border-transparent focus:ring-2 focus:ring-red-600 focus:ring-offset-2 mb-3'
                                                     onClick={() => deleteIncome(transaction)}
                                                     onMouseEnter={(e) => { e.target.style.backgroundColor = '#EF4444'; e.target.style.color = 'white'; }}
                                                     onMouseLeave={(e) => { e.target.style.backgroundColor = 'white'; e.target.style.color = '#EF4444'; }}>
-                                                    Delete
+                                                    <FontAwesomeIcon icon={faTrash} style={{ marginRight: '6px' }} />Delete
                                                 </button>
                                             </div>
                                         </td>

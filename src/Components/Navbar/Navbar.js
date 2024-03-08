@@ -1,32 +1,51 @@
 import React, { useState, useEffect } from 'react';
 import { NavLink, useLocation, useNavigate } from 'react-router-dom';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faHome, faUserPlus, faSignInAlt, faSignOutAlt, faEnvelope, faTachometerAlt, faListAlt, faUser } from '@fortawesome/free-solid-svg-icons';
 
 const Navbar = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const isHomePage = location.pathname === '/';
   const protectedPaths = ['/dashboard', '/categories', '/transactions', '/contact', '/expenses', '/income'];
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
 
-  // Update document title based on current location
   useEffect(() => {
     const path = location.pathname.substring(1); // Remove leading slash
     const title = path.charAt(0).toUpperCase() + path.slice(1); // Capitalize first letter
     document.title = title || 'Home'; // Set document title
   }, [location]);
+  
+  useEffect(() => {
+    const token = sessionStorage.getItem('x-auth-token');
+    setIsLoggedIn(token ? true : false);
+  }, []);
 
-  // Handle navigation link clicks
+  const handleLogout = () => {
+    sessionStorage.removeItem('x-auth-token');
+    setIsLoggedIn(false);
+  };
+
   const handleLinkClick = (event, link) => {
-    // Check if user is on protected page and wants to navigate away
     if (protectedPaths.includes(location.pathname) && !protectedPaths.includes(link)) {
       const confirmed = window.confirm(`You are about to leave the current page. Do you want to proceed to ${link} page?`);
       if (!confirmed) {
-        event.preventDefault(); // Prevent default behavior
+        event.preventDefault();
         return;
       }
     }
+  };
 
-    // Logout user by removing the x-auth-token
-    sessionStorage.removeItem('x-auth-token');
+  const iconMap = {
+    'Home': faHome,
+    'Sign Up': faUserPlus,
+    'Sign In': faSignInAlt,
+    'Sign Out': faSignOutAlt,
+    'Dashboard': faTachometerAlt,
+    'Categories': faListAlt,
+    'Transactions': faListAlt,
+    'Contact Us': faEnvelope,
+    'Hi, Le Nkap user': faUser 
   };
 
   return (
@@ -35,58 +54,69 @@ const Navbar = () => {
         <div style={styles.containerItem}>
           {isHomePage && (
             <>
-              {/* Home link */}
               <li style={styles.navItem}>
-                <NavLink exact to="/" style={styles.link} onClick={(event) => handleLinkClick(event, 'Home')}>Home</NavLink>
-              </li>
-              {/* Signup link */}
-              <li style={styles.navItem}>
-                <NavLink to="/signup" style={styles.link} onClick={(event) => handleLinkClick(event, 'Sign Up')}>Sign Up</NavLink>
-              </li>
-              {/* Login link */}
-              <li style={styles.navItem}>
-                <NavLink to="/login" style={styles.link} onClick={(event) => handleLinkClick(event, 'Sign In')}>Sign In</NavLink>
+                <NavLink exact to="/" style={styles.link} onClick={(event) => handleLinkClick(event, 'Home')}>
+                  <FontAwesomeIcon icon={faHome} style={{ marginRight: '6px' }} />Home
+                </NavLink>
               </li>
               <li style={styles.navItem}>
-                <NavLink to="/contact" style={styles.link} onClick={(event) => handleLinkClick(event, 'Contact Us')}>Contact Us</NavLink>
+                <NavLink to="/signup" style={styles.link} onClick={(event) => handleLinkClick(event, 'Sign Up')}>
+                  <FontAwesomeIcon icon={faUserPlus} style={{ marginRight: '6px' }} />Sign Up
+                </NavLink>
+              </li>
+              <li style={styles.navItem}>
+                <NavLink to="/login" style={styles.link} onClick={(event) => handleLinkClick(event, 'Sign In')}>
+                  <FontAwesomeIcon icon={faSignInAlt} style={{ marginRight: '6px' }} />Sign In
+                </NavLink>
+              </li>
+              <li style={styles.navItem}>
+                <NavLink to="/contact" style={styles.link} onClick={(event) => handleLinkClick(event, 'Contact Us')}>
+                  <FontAwesomeIcon icon={faEnvelope} style={{ marginRight: '6px' }} />Contact Us
+                </NavLink>
               </li>
             </>
           )}
-          {/* If not on home page */}
           {!isHomePage && (
             <>
-              {/* Home link */}
               <li style={styles.navItem}>
-                <NavLink exact to="/" style={styles.link} onClick={(event) => handleLinkClick(event, 'Home')}>Home</NavLink>
+                <NavLink exact to="/" style={styles.link} onClick={(event) => handleLinkClick(event, 'Home')}>
+                  <FontAwesomeIcon icon={faHome} style={{ marginRight: '6px' }} />Home
+                </NavLink>
               </li>
-              {/* Dashboard link */}
               <li style={styles.navItem}>
-                <NavLink to="/dashboard" style={styles.link}>Dashboard</NavLink>
+                <NavLink to="/dashboard" style={styles.link}>
+                  <FontAwesomeIcon icon={faTachometerAlt} style={{ marginRight: '6px' }} />Dashboard
+                </NavLink>
               </li>
-              {/* Categories link */}
               <li style={styles.navItem}>
-                <NavLink to="/categories" style={styles.link}>Categories</NavLink>
+                <NavLink to="/categories" style={styles.link}>
+                  <FontAwesomeIcon icon={faListAlt} style={{ marginRight: '6px' }} />Categories
+                </NavLink>
               </li>
-              {/* Transactions link */}
               <li style={styles.navItem}>
-                <NavLink to="/transactions" style={styles.link}>Transactions</NavLink>
+                <NavLink to="/transactions" style={styles.link}>
+                  <FontAwesomeIcon icon={faListAlt} style={{ marginRight: '6px' }} />Transactions
+                </NavLink>
               </li>
-              {/* Contact Us link */}
               <li style={styles.navItem}>
-                <NavLink to="/contact" style={styles.link}>Contact Us</NavLink>
+                <NavLink to="/contact" style={styles.link}>
+                  <FontAwesomeIcon icon={faEnvelope} style={{ marginRight: '6px' }} />Contact Us
+                </NavLink>
               </li>
-              {/* Signup link */}
               <li style={styles.navItem}>
-                <NavLink to="/signup" style={styles.link} onClick={(event) => handleLinkClick(event, 'Sign Up')}>Sign Up</NavLink>
+                <NavLink to="/login" style={styles.link} onClick={handleLogout}>
+                  <FontAwesomeIcon icon={faSignOutAlt} style={{ marginRight: '6px' }} />Sign Out
+                </NavLink>
               </li>
-              {/* Login link */}
-              <li style={styles.navItem}>
-                <NavLink to="/login" style={styles.link} onClick={(event) => handleLinkClick(event, 'Sign In')}>Sign In</NavLink>
+              <li style={styles.userMessage} >
+                {isLoggedIn && <span style={styles.userMessage}><FontAwesomeIcon icon={faUser} style={{ marginRight: '6px' }} />Hi, Le Nkap user</span>}
               </li>
+              
             </>
           )}
         </div>
       </ul>
+      
     </nav>
   );
 };
@@ -109,6 +139,12 @@ const styles = {
     textDecoration: 'none',
     transition: 'color 0.3s ease',
     padding: '10px',
+  },
+  userMessage: {
+    color: 'white',
+    marginRight: '10px',
+    display: 'inline-block',
+    marginLeft: '270px'
   }
 };
 

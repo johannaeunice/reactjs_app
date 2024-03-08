@@ -3,7 +3,7 @@ import axios from 'axios';
 import { Link } from 'react-router-dom';
 import Navbar from '../Navbar/Navbar';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faSpinner, faArrowLeft, faArrowRight } from '@fortawesome/free-solid-svg-icons';
+import { faSpinner, faArrowLeft, faArrowRight,faEdit,faTrash,faPlus } from '@fortawesome/free-solid-svg-icons';
 
 function TransactionForm() {
   const [transactions, setTransactions] = useState([]);
@@ -20,6 +20,7 @@ function TransactionForm() {
   const [token, setToken] = useState(sessionStorage.getItem('x-auth-token'));
   const [successMessage, setSuccessMessage] = useState('');
   const [submitting, setSubmitting] = useState(false);
+  const [loading, setLoading] = useState(true); // Set loading state to true initially
 
   useEffect(() => {
     fetchTransactions();
@@ -36,6 +37,8 @@ function TransactionForm() {
       setTransactions(response.data);
     } catch (error) {
       console.error('Error fetching transactions:', error);
+    } finally {
+      setLoading(false); // Set loading to false once transactions are fetched
     }
   };
 
@@ -49,6 +52,8 @@ function TransactionForm() {
       setCategories(response.data);
     } catch (error) {
       console.error('Error fetching categories:', error);
+    } finally {
+      setLoading(false); // Set loading to false once categories are fetched
     }
   };
 
@@ -175,6 +180,11 @@ function TransactionForm() {
 
   const totalAmount = calculateTotalAmount(sortedTransactions);
   const shouldDisplayMessage = window.innerWidth <= 768;
+  const iconMap = {
+    'Update': faEdit,
+    'Delete': faTrash,
+    'Add Transaction': faPlus,
+  };
 
   return (
     <div className="bg-purple-200">
@@ -263,10 +273,14 @@ function TransactionForm() {
               <div style={{ color: 'green' }} className='font-bold text-center'>{successMessage}</div>
             )}
             <div className="mb-4 mt-4 flex">
-              <button className='mx-auto rounded-xl w-3/4 px-4 py-1 text-sm text-purple-600 font-semibold border border-purple-200 hover:text-white hover:bg-purple-600 hover:border-transparent hover:scale-105 duration-300 focus:outline-none focus:ring-2 focus:ring-purple-600 focus:ring-offset-2 mb-3'
-                onClick={selectedTransaction ? updateTransaction : addTransaction}>
-                {selectedTransaction ? 'Update Transaction' : 'Add Transaction'}
-              </button>
+              {loading ? (
+                <FontAwesomeIcon icon={faSpinner} spin size="lg" className="text-purple-600 text-4xl mx-auto" />
+              ) : (
+                <button className='mx-auto rounded-xl w-3/4 px-4 py-1 text-sm text-purple-600 font-semibold border border-purple-200 hover:text-white hover:bg-purple-600 hover:border-transparent hover:scale-105 duration-300 focus:outline-none focus:ring-2 focus:ring-purple-600 focus:ring-offset-2 mb-3'
+                  onClick={selectedTransaction ? updateTransaction : addTransaction}>
+                  {selectedTransaction ? 'Update Transaction' : 'Add Transaction'}
+                </button>
+              )}
 
               {selectedTransaction && (
                 <button className='mx-auto rounded-xl w-3/4 px-4 py-1 text-sm text-purple-600 font-semibold border border-purple-200 hover:text-white hover:bg-purple-600 hover:border-transparent hover:scale-105 duration-300 focus:outline-none focus:ring-2 focus:ring-purple-600 focus:ring-offset-2 mb-3'
@@ -326,7 +340,7 @@ function TransactionForm() {
                             onClick={() => handleUpdate(transaction)}
                             onMouseEnter={(e) => { e.target.style.backgroundColor = '#F59E0B'; e.target.style.color = 'white'; }}
                             onMouseLeave={(e) => { e.target.style.backgroundColor = 'white'; e.target.style.color = '#F59E0B'; }}>
-                            Update
+                            <FontAwesomeIcon icon={faEdit} style={{ marginRight: '6px' }} />Update
                           </button>
                           {/* Delete Button */}
                           <button style={{ backgroundColor: 'white', color: '#EF4444', borderColor: '#EF4444', transition: 'background-color 0.3s, color 0.3s, border-color 0.3s' }}
@@ -335,7 +349,7 @@ function TransactionForm() {
                             onClick={() => deleteTransaction(transaction)}
                             onMouseEnter={(e) => { e.target.style.backgroundColor = '#EF4444'; e.target.style.color = 'white'; }}
                             onMouseLeave={(e) => { e.target.style.backgroundColor = 'white'; e.target.style.color = '#EF4444'; }}>
-                            Delete
+                            <FontAwesomeIcon icon={faTrash} style={{ marginRight: '6px' }} />Delete
                           </button>
 
                         </div>
