@@ -15,7 +15,7 @@ const Navbar = () => {
     const title = path.charAt(0).toUpperCase() + path.slice(1); // Capitalize first letter
     document.title = title || 'Home'; // Set document title
   }, [location]);
-  
+
   useEffect(() => {
     const token = sessionStorage.getItem('x-auth-token');
     setIsLoggedIn(token ? true : false);
