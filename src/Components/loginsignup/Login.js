@@ -4,7 +4,8 @@ import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSpinner } from '@fortawesome/free-solid-svg-icons';
-import couple from "./login.png"
+import Navbar from '../Navbar/Navbar';
+import couple from "./login.png";
 
 const LoginForm = () => {
   const [formData, setFormData] = useState({
@@ -74,6 +75,8 @@ const LoginForm = () => {
   };
 
   return (
+    <div className="bg-purple-200">
+      <Navbar/>
     <div className="flex bg-purple-200 min-h-screen items-center justify-center py-6 sm:py-12">
       <div className="bg-white mx-auto overflow-hidden rounded-md shadow-lg max-w-3xl p-5">
         <div className="grid grid-cols-2">
@@ -145,6 +148,7 @@ const LoginForm = () => {
           </div>
         </div>
       </div>
+    </div>
     </div>
   );
 };

@@ -7,6 +7,8 @@ const Navbar = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const isHomePage = location.pathname === '/';
+  const isSignupPage = location.pathname === '/signup';
+  const isLoginPage = location.pathname === '/login';
   const protectedPaths = ['/dashboard', '/categories', '/transactions', '/contact', '/expenses', '/income'];
   const [isLoggedIn, setIsLoggedIn] = useState(false);
 
@@ -48,75 +50,138 @@ const Navbar = () => {
     'Hi, Le Nkap user': faUser 
   };
 
-  return (
+    return (
     <nav>
       <ul style={styles.navList}>
         <div style={styles.containerItem}>
-          {isHomePage && (
+          {(isHomePage || isSignupPage || isLoginPage) && (
             <>
               <li style={styles.navItem}>
-                <NavLink exact to="/" style={styles.link} onClick={(event) => handleLinkClick(event, 'Home')}>
-                  <FontAwesomeIcon icon={faHome} style={{ marginRight: '6px' }} />Home
+                <NavLink
+                  exact
+                  to="/"
+                  style={styles.link}
+                  onClick={(event) => handleLinkClick(event, "Home")}
+                >
+                  <FontAwesomeIcon
+                    icon={faHome}
+                    style={{ marginRight: "6px" }}
+                  />
+                  Home
                 </NavLink>
               </li>
               <li style={styles.navItem}>
-                <NavLink to="/signup" style={styles.link} onClick={(event) => handleLinkClick(event, 'Sign Up')}>
-                  <FontAwesomeIcon icon={faUserPlus} style={{ marginRight: '6px' }} />Sign Up
+                <NavLink
+                  to="/signup"
+                  style={styles.link}
+                  onClick={(event) => handleLinkClick(event, "Sign Up")}
+                >
+                  <FontAwesomeIcon
+                    icon={faUserPlus}
+                    style={{ marginRight: "6px" }}
+                  />
+                  Sign Up
                 </NavLink>
               </li>
               <li style={styles.navItem}>
-                <NavLink to="/login" style={styles.link} onClick={(event) => handleLinkClick(event, 'Sign In')}>
-                  <FontAwesomeIcon icon={faSignInAlt} style={{ marginRight: '6px' }} />Sign In
-                </NavLink>
-              </li>
-              <li style={styles.navItem}>
-                <NavLink to="/contact" style={styles.link} onClick={(event) => handleLinkClick(event, 'Contact Us')}>
-                  <FontAwesomeIcon icon={faEnvelope} style={{ marginRight: '6px' }} />Contact Us
+                <NavLink
+                  to="/login"
+                  style={styles.link}
+                  onClick={(event) => handleLinkClick(event, "Sign In")}
+                >
+                  <FontAwesomeIcon
+                    icon={faSignInAlt}
+                    style={{ marginRight: "6px" }}
+                  />
+                  Sign In
                 </NavLink>
               </li>
             </>
           )}
-          {!isHomePage && (
-            <>
-              <li style={styles.navItem}>
-                <NavLink exact to="/" style={styles.link} onClick={(event) => handleLinkClick(event, 'Home')}>
-                  <FontAwesomeIcon icon={faHome} style={{ marginRight: '6px' }} />Home
-                </NavLink>
-              </li>
-              <li style={styles.navItem}>
-                <NavLink to="/dashboard" style={styles.link}>
-                  <FontAwesomeIcon icon={faTachometerAlt} style={{ marginRight: '6px' }} />Dashboard
-                </NavLink>
-              </li>
-              <li style={styles.navItem}>
-                <NavLink to="/categories" style={styles.link}>
-                  <FontAwesomeIcon icon={faListAlt} style={{ marginRight: '6px' }} />Categories
-                </NavLink>
-              </li>
-              <li style={styles.navItem}>
-                <NavLink to="/transactions" style={styles.link}>
-                  <FontAwesomeIcon icon={faListAlt} style={{ marginRight: '6px' }} />Transactions
-                </NavLink>
-              </li>
-              <li style={styles.navItem}>
-                <NavLink to="/contact" style={styles.link}>
-                  <FontAwesomeIcon icon={faEnvelope} style={{ marginRight: '6px' }} />Contact Us
-                </NavLink>
-              </li>
-              <li style={styles.navItem}>
-                <NavLink to="/login" style={styles.link} onClick={handleLogout}>
-                  <FontAwesomeIcon icon={faSignOutAlt} style={{ marginRight: '6px' }} />Sign Out
-                </NavLink>
-              </li>
-              <li style={styles.userMessage} >
-                {isLoggedIn && <span style={styles.userMessage}><FontAwesomeIcon icon={faUser} style={{ marginRight: '6px' }} />Hi, Le Nkap user</span>}
-              </li>
-              
-            </>
+          {!(isHomePage || isSignupPage || isLoginPage) && (
+            <div className="mt-1 flex mb-1 justify-between">
+              <div className="justify-items-start">
+                <li style={styles.navItem}>
+                  <NavLink
+                    exact
+                    to="/"
+                    style={styles.link}
+                    onClick={(event) => handleLinkClick(event, "Home")}
+                  >
+                    <FontAwesomeIcon
+                      icon={faHome}
+                      style={{ marginRight: "6px" }}
+                    />
+                    Home
+                  </NavLink>
+                </li>
+                <li style={styles.navItem}>
+                  <NavLink to="/dashboard" style={styles.link}>
+                    <FontAwesomeIcon
+                      icon={faTachometerAlt}
+                      style={{ marginRight: "6px" }}
+                    />
+                    Dashboard
+                  </NavLink>
+                </li>
+                <li style={styles.navItem}>
+                  <NavLink to="/categories" style={styles.link}>
+                    <FontAwesomeIcon
+                      icon={faListAlt}
+                      style={{ marginRight: "6px" }}
+                    />
+                    Categories
+                  </NavLink>
+                </li>
+                <li style={styles.navItem}>
+                  <NavLink to="/transactions" style={styles.link}>
+                    <FontAwesomeIcon
+                      icon={faListAlt}
+                      style={{ marginRight: "6px" }}
+                    />
+                    Transactions
+                  </NavLink>
+                </li>
+                <li style={styles.navItem}>
+                  <NavLink to="/contact" style={styles.link}>
+                    <FontAwesomeIcon
+                      icon={faEnvelope}
+                      style={{ marginRight: "6px" }}
+                    />
+                    Contact Us
+                  </NavLink>
+                </li>
+                <li style={styles.navItem}>
+                  <NavLink
+                    to="/login"
+                    style={styles.link}
+                    onClick={handleLogout}
+                  >
+                    <FontAwesomeIcon
+                      icon={faSignOutAlt}
+                      style={{ marginRight: "6px" }}
+                    />
+                    Sign Out
+                  </NavLink>
+                </li>
+              </div>
+              <div className="justify-items-end flex">
+                <li style={styles.userMessage}>
+                  {isLoggedIn && (
+                    <span style={styles.userMessage}>
+                      <FontAwesomeIcon
+                        icon={faUser}
+                        style={{ marginRight: "6px" }}
+                      />
+                      Hi, Le Nkap user
+                    </span>
+                  )}
+                </li>
+              </div>
+            </div>
           )}
         </div>
       </ul>
-      
     </nav>
   );
 };
@@ -144,7 +209,8 @@ const styles = {
     color: 'white',
     marginRight: '10px',
     display: 'inline-block',
-    marginLeft: '270px'
+    marginTop: '6px',
+    marginBottom: '5px'
   }
 };
 
