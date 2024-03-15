@@ -19,7 +19,7 @@
     "i18next": "^23.10.0",
     "i18next-http-backend": "^2.5.0",
     "ibm-watson": "^8.0.0",
-    "mathjs": "^12.3.2",
+    "mathjs": "^12.4.0",
     "nth-check": "^2.1.1",
     "postcss": "^8.4.35",
     "react": "^18.2.0",
