@@ -21,7 +21,7 @@
     "ibm-watson": "^8.0.0",
     "mathjs": "^12.3.2",
     "nth-check": "^2.1.1",
-    "postcss": "^8.4.35",
+    "postcss": "^8.4.38",
     "react": "^18.2.0",
     "react-apexcharts": "^1.4.1",
     "react-dom": "^18.2.0",
